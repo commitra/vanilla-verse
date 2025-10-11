@@ -1,42 +1,84 @@
 body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
+    font-family: 'Arial', sans-serif;
+    background: #0f0f23;
+    color: #ffffff;
     margin: 0;
     padding: 2rem;
-    display: grid;
-    place-items: center
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 main {
-    max-width: 560px;
-    width: 100%
+    text-align: center;
+    max-width: 400px;
+}
+
+h1 {
+    color: #00ff00;
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+}
+
+#scoreboard {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #ffff00;
+    background: #1a1a2e;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #2d2d44;
 }
 
 canvas {
-    background: #17171c;
-    border: 1px solid #262631;
-    border-radius: .5rem;
+    background: #1a1a2e;
+    border: 3px solid #2d2d44;
+    border-radius: 10px;
     display: block;
-    margin: .5rem 0
+    margin: 15px auto;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
 }
 
-button,
-input {
-    font: inherit
+.controls {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 button {
-    background: #6ee7b7;
-    color: #0b1020;
+    background: #00ff00;
+    color: #000;
     border: none;
-    padding: .5rem .75rem;
-    border-radius: .5rem;
-    font-weight: 600;
-    cursor: pointer
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #ffff00;
+    transform: scale(1.05);
+}
+
+label {
+    font-size: 1.1rem;
+    color: #00ff00;
+}
+
+input[type="range"] {
+    width: 120px;
+    margin-left: 10px;
 }
 
 .notes {
-    color: #a6adbb;
-    font-size: .9rem
+    color: #888;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    line-height: 1.4;
 }

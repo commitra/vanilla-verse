@@ -1,22 +1,19 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Snake Game</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
-
 <body>
     <main>
-        <h1>Snake Game</h1><canvas id="board" width="320" height="320" aria-label="Snake game board"
-            role="img"></canvas>
-        <div class="controls"><button id="startBtn">Start</button><label>Speed <input id="speed" type="range" min="1"
-                    max="10" value="5"></label></div>
+        <h1>Snake Game</h1>
+        <div id="scoreboard">Score: 0 • Best: 0</div>
+        <canvas id="board" width="320" height="320" aria-label="Snake game board" role="img"></canvas>
+        <div class="controls"><button id="startBtn">Start</button><label>Speed <input id="speed" type="range" min="1" max="10" value="5"></label></div>
         <p class="notes">Use arrow keys. Contribute by adding: levels, obstacles, or touch controls.</p>
     </main>
     <script type="module" src="./main.js"></script>
 </body>
-
 </html>
