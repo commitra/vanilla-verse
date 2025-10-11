@@ -43,9 +43,6 @@ In addition to issue templates, each project’s starter code marks several conc
 - Fix a bug (e.g., keyboard navigation, bounds checks)
 - Improve UX (e.g., animations, colors, layout)
 
-## Deployment
-
-See `docs/DEPLOYMENT.md` to publish on GitHub Pages. This repository includes a minimal workflow (`.github/workflows/pages.yml`) to deploy the static site from the `main` branch.
 
 ## License
 
