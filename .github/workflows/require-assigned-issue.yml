@@ -1,0 +1,36 @@
+name: Require referenced assigned issue
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  issues: read
+  pull-requests: write
+  contents: read
+
+jobs:
+  check-issue:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.check.outputs.result }}
+    steps:
+      - name: Check referenced issue and assignee
+        id: check
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body || '';
+            const issueRefMatch = body.match(/#(\d+)/);
+            if (!issueRefMatch) {
+              core.setOutput('result', 'no-issue');
+              core.setFailed('PR must reference an issue (e.g., "Closes #12").');
+              return;
+            }
+            const issueNumber = Number(issueRefMatch[1]);
+            const { data: issue } = await github.rest.issues.get({ owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber });
+            if (!issue) { core.setOutput('result','issue-not-found'); core.setFailed(`Referenced issue #${issueNumber} not found.`); return; }
+            if (!issue.assignee && (!issue.assignees || issue.assignees.length === 0)) { core.setOutput('result','unassigned'); core.setFailed(`Referenced issue #${issueNumber} is not assigned. Please assign the issue before opening a PR.`); return; }
+            core.setOutput('result','ok');

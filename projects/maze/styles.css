@@ -1,0 +1,25 @@
+body {
+    font-family: system-ui;
+    background: #0f0f12;
+    color: #eef1f8;
+    margin: 0;
+    padding: 2rem;
+    display: grid;
+    place-items: center
+}
+
+main {
+    max-width: 560px;
+    width: 100%
+}
+
+canvas {
+    background: #17171c;
+    border: 1px solid #262631;
+    border-radius: .5rem
+}
+
+.notes {
+    color: #a6adbb;
+    font-size: .9rem
+}

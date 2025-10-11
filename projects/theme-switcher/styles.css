@@ -1,0 +1,38 @@
+:root {
+    --accent: #6ee7b7
+}
+
+body {
+    font-family: system-ui;
+    background: #0f0f12;
+    color: #eef1f8;
+    margin: 0;
+    padding: 2rem;
+    display: grid;
+    place-items: center
+}
+
+main {
+    max-width: 560px;
+    width: 100%
+}
+
+.controls {
+    display: flex;
+    gap: .5rem
+}
+
+button {
+    background: var(--accent);
+    color: #0b1020;
+    border: none;
+    padding: .5rem .75rem;
+    border-radius: .5rem;
+    font-weight: 600;
+    cursor: pointer
+}
+
+.notes {
+    color: #a6adbb;
+    font-size: .9rem
+}

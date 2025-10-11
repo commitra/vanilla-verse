@@ -1,0 +1,38 @@
+body {
+    font-family: system-ui;
+    background: #0f0f12;
+    color: #eef1f8;
+    margin: 0;
+    padding: 2rem;
+    display: grid;
+    place-items: center
+}
+
+main {
+    max-width: 960px;
+    width: 100%;
+    display: grid;
+    gap: .75rem
+}
+
+textarea {
+    width: 100%;
+    background: #17171c;
+    color: #eef1f8;
+    border: 1px solid #262631;
+    border-radius: .5rem;
+    padding: .5rem
+}
+
+.preview {
+    background: #17171c;
+    border: 1px solid #262631;
+    border-radius: .5rem;
+    padding: .5rem;
+    min-height: 200px
+}
+
+.notes {
+    color: #a6adbb;
+    font-size: .9rem
+}

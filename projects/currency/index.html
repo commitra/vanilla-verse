@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <main>
+        <h1>Currency Converter (Offline)</h1>
+        <form id="form"><input id="amount" type="number" step="0.01" placeholder="Amount" required> <select
+                id="from"></select> → <select id="to"></select> <button>Convert</button></form>
+        <div id="out"></div>
+        <p class="notes">Add rate editor and local overrides (no external API).</p>
+    </main>
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>

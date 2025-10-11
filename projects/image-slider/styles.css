@@ -1,0 +1,42 @@
+body {
+    font-family: system-ui;
+    background: #0f0f12;
+    color: #eef1f8;
+    margin: 0;
+    padding: 2rem;
+    display: grid;
+    place-items: center
+}
+
+main {
+    max-width: 760px;
+    width: 100%
+}
+
+.slider {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: .5rem;
+    align-items: center
+}
+
+img {
+    max-width: 100%;
+    border-radius: .5rem;
+    border: 1px solid #262631
+}
+
+button {
+    background: #6ee7b7;
+    color: #0b1020;
+    border: none;
+    padding: .5rem .75rem;
+    border-radius: .5rem;
+    font-weight: 600;
+    cursor: pointer
+}
+
+.notes {
+    color: #a6adbb;
+    font-size: .9rem
+}

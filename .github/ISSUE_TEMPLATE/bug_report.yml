@@ -1,0 +1,31 @@
+name: Bug report
+description: File a bug report
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: 1) Go to... 2) Click... 3) See...
+  - type: input
+    id: project
+    attributes:
+      label: Project slug (e.g., snake, todo)
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Browsers
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+      multiple: true

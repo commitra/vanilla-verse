@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vanilla Verse</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+</head>
+
+<body>
+    <header class="site-header">
+        <h1>Vanilla Verse</h1>
+        <p>A hub of beginner-friendly Vanilla JS projects</p>
+        <div class="controls">
+            <input id="search" type="search" placeholder="Search projects..." />
+            <select id="categoryFilter">
+                <option value="all">All categories</option>
+                <option value="games">Small Games</option>
+                <option value="productivity">Productivity</option>
+                <option value="visual">Fun UI / Visual</option>
+                <option value="data">Mini Data</option>
+            </select>
+        </div>
+    </header>
+
+    <main>
+        <section id="projects" class="project-grid" aria-live="polite"></section>
+    </main>
+
+    <footer class="site-footer">
+        <p>
+            Built for first-time contributors. Read
+            <a href="CONTRIBUTING.md">Contributing</a> •
+            <a href="CODE_OF_CONDUCT.md">Code of Conduct</a>
+        </p>
+    </footer>
+
+    <script src="assets/main.js" type="module"></script>
+</body>
+
+</html>

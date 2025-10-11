@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an idea
+labels: [enhancement, good first issue]
+body:
+  - type: input
+    id: project
+    attributes:
+      label: Project slug (e.g., snake, todo)
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details / Acceptance criteria
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: UI changes
+        - label: Logic changes
+        - label: Accessibility
+        - label: Tests (manual)
