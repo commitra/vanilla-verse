@@ -50,3 +50,6 @@ See `docs/DEPLOYMENT.md` to publish on GitHub Pages. This repository includes a 
 ## License
 
 This project is licensed under the MIT License — see `LICENSE` for details.
+
+## Credits
+- Hrishikesh Dalal (https://www.hrishikeshdalal.tech/)
