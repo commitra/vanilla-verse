@@ -4,7 +4,7 @@ Thanks for your interest in contributing! This project is designed for first-tim
 
 ## Ways to contribute
 - Pick a project from the hub (`index.html`) and open its folder in `projects/vanilla-verse`.
-- Read the local `README.md` and `main.js` for TODO markers.
+- Read the local `README.md` and `main.js` of projects for TODO markers.
 - Open an issue to ask questions or propose a change.
 
 ## Development setup
