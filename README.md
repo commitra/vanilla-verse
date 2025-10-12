@@ -23,7 +23,6 @@ Optional: with Live Server installed
 - `assets/` — Shared CSS/JS for the hub
 - `data/projects.json` — List of project entries (used by the hub)
 - `projects/` — Individual project folders (each with its own `index.html` and `main.js`)
-- `docs/` — Organization setup and deployment docs
 - `.github/` — Issue/PR templates and Pages deploy workflow
 
 ## Contributing
