@@ -1,38 +1,56 @@
 body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
-    margin: 0;
-    padding: 2rem;
-    display: grid;
-    place-items: center
+  font-family: system-ui;
+  background: #0f0f12;
+  color: #eef1f8;
+  margin: 0;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
 }
 
 main {
-    max-width: 560px;
-    width: 100%
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 80px);
-    gap: .5rem
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
 }
 
 .hole {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 1px solid #262631;
-    background: #17171c;
-    cursor: pointer
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid #262631;
+  background: #17171c;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s;
 }
 
 .hole.up {
-    background: #6ee7b7
+  background: #6ee7b7;
+}
+
+.hole:focus {
+  border-color: #6ee7b7;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 .notes {
-    color: #a6adbb;
-    font-size: .9rem
+  color: #a6adbb;
+  font-size: 0.9rem;
+  margin-top: 1rem;
 }
