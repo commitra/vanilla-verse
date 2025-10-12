@@ -1,20 +1,35 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Tic-Tac-Toe</title>
-    <link rel="stylesheet" href="./styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic-Tac-Toe</title>
+<link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <main>
-        <h1>Tic-Tac-Toe</h1>
-        <div id="board" class="board"></div>
-        <p class="notes">Add two-player, AI, and UI themes.</p>
-    </main>
-    <script type="module" src="./main.js"></script>
-</body>
+<main>
+    <h1>Tic-Tac-Toe</h1>
+    <div id="board" class="board"></div>
 
+    <div class="controls">
+        <button id="restartBtn">Restart</button>
+        <select id="modeSelect">
+            <option value="2P">2 Players</option>
+            <option value="AI">Play vs AI</option>
+        </select>
+        <select id="themeSelect">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+        </select>
+    </div>
+
+    <div class="scoreboard">
+        <p>X Wins: <span id="xScore">0</span></p>
+        <p>O Wins: <span id="oScore">0</span></p>
+        <p>Draws: <span id="drawScore">0</span></p>
+    </div>
+</main>
+
+<script src="main.js"></script>
+</body>
 </html>
