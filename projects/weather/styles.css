@@ -5,42 +5,163 @@ body {
     margin: 0;
     padding: 2rem;
     display: grid;
-    place-items: center
+    place-items: center;
+    min-height: 100vh;
 }
 
 main {
     max-width: 560px;
-    width: 100%
+    width: 100%;
+}
+
+h1 {
+    margin: 0 0 1.5rem;
+}
+
+.controls {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 input,
 button {
-    font: inherit
+    font: inherit;
 }
 
 input {
-    padding: .5rem .75rem;
-    border-radius: .5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
     border: 1px solid #262631;
     background: #17171c;
-    color: #eef1f8
+    color: #eef1f8;
+    flex: 1;
+}
+
+input::placeholder {
+    color: #6b7280;
 }
 
 button {
     background: #6ee7b7;
     color: #0b1020;
     border: none;
-    padding: .5rem .75rem;
-    border-radius: .5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
     font-weight: 600;
-    cursor: pointer
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #5dd6a5;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: #374151;
+    color: #eef1f8;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+}
+
+.btn-icon {
+    padding: 0.5rem;
+    min-width: 38px;
 }
 
 #out {
-    margin-top: 1rem
+    margin-top: 1.5rem;
+    min-height: 100px;
+}
+
+.weather-card {
+    background: #17171c;
+    border: 1px solid #262631;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.weather-city {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.weather-icon {
+    font-size: 3rem;
+}
+
+.weather-temp {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+}
+
+.weather-desc {
+    font-size: 1.125rem;
+    color: #a6adbb;
+    margin: 0 0 1rem;
+}
+
+.weather-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #262631;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.detail-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.detail-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.error {
+    background: #991b1b;
+    color: #fecaca;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.loading {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem;
 }
 
 .notes {
     color: #a6adbb;
-    font-size: .9rem
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+.cache-info {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
 }
