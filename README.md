@@ -17,8 +17,6 @@ Highlights
 Optional: with Live Server installed
 - Right-click `index.html` → “Open with Live Server”.
 
-More details: see `docs/Organization-Setup.md` and `docs/DEPLOYMENT.md`.
-
 ## Project structure
 
 - `index.html` — Central hub page listing all projects
