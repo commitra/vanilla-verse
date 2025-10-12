@@ -47,3 +47,4 @@ This project is licensed under the MIT License — see `LICENSE` for details.
 
 ## Credits
 - Hrishikesh Dalal (https://www.hrishikeshdalal.tech/)
+- Venisha Kalola (https://www.venishakalola.tech/)
