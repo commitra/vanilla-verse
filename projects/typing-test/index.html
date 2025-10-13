@@ -26,6 +26,32 @@
     <div class="stats">
       WPM: <span id="wpm">0</span> • Accuracy: <span id="acc">100</span>% • Time: <span id="time">60</span>s
     </div>
+
+    <!-- Leaderboard Section -->
+    <section class="leaderboard" aria-labelledby="leaderboard-title">
+      <h2 id="leaderboard-title">Leaderboard</h2>
+      
+      <div class="leaderboard-controls">
+        <button class="timeframe-btn active" data-timeframe="daily">Daily</button>
+        <button class="timeframe-btn" data-timeframe="weekly">Weekly</button>
+        <button class="timeframe-btn" data-timeframe="alltime">All Time</button>
+      </div>
+
+      <div class="leaderboard-content">
+        <div id="leaderboard-list" class="leaderboard-list" role="list" aria-label="Top performers list">
+          <!-- Leaderboard items will be populated here -->
+        </div>
+        <div id="leaderboard-loading" class="loading">Loading leaderboard...</div>
+        <div id="leaderboard-empty" class="empty-state" style="display: none;">
+          No scores yet. Be the first to set a record!
+        </div>
+      </div>
+
+      <!-- Current User Score Display -->
+      <div id="current-score" class="current-score" style="display: none;" aria-live="polite">
+        Your score: <span id="user-wpm">0</span> WPM • <span id="user-acc">0</span>% accuracy
+      </div>
+    </section>
   </main>
 
   <script type="module" src="main.js"></script>
