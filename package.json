@@ -1,0 +1,24 @@
+{
+  "name": "vanilla-verse",
+  "version": "1.0.0",
+  "description": "A community-friendly collection of small, fun, and instructive Vanilla JS projects. It includes a central hub page that links to a set of beginner-friendly project stubs designed for “good first issues” and first-time contributors.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohit-22/vanilla-verse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohit-22/vanilla-verse/issues"
+  },
+  "homepage": "https://github.com/mohit-22/vanilla-verse#readme",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

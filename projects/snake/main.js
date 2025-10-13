@@ -1,3 +1,5 @@
+import { ScoreManager } from "./score.js";
+
 // Minimal snake starter – designed for contributions.
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
@@ -8,8 +10,8 @@ function reset() {
     snake = [{ x: 8, y: 8 }];
     dir = { x: 1, y: 0 };
     food = spawnFood();
+    ScoreManager.reset(); // 🆕 reset score
 }
-
 function spawnFood() {
     return { x: Math.floor(Math.random() * (canvas.width / size)), y: Math.floor(Math.random() * (canvas.height / size)) };
 }
@@ -23,13 +25,16 @@ function tick() {
     // collision with body
     if (snake.some(s => s.x === head.x && s.y === head.y)) {
         stop();
+        ScoreManager.gameOver(); // 🆕 update best score
         draw();
         return; // game over
     }
 
+
     snake.unshift(head);
     if (head.x === food.x && head.y === food.y) {
         food = spawnFood();
+        ScoreManager.increment();
     } else {
         snake.pop();
     }
