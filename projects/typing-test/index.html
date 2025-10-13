@@ -1,22 +1,33 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Typing Test</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Typing Test</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <main>
-        <h1>Typing Test</h1>
-        <div id="text" class="text" aria-live="polite"></div><input id="input" placeholder="Start typing..."
-            autocomplete="off">
-        <div class="stats">WPM: <span id="wpm">0</span> • Accuracy: <span id="acc">100</span>%</div>
-        <p class="notes">Add difficulty, timer, and stats.</p>
-    </main>
-    <script type="module" src="./main.js"></script>
-</body>
+  <main>
+    <h1>Typing Test</h1>
 
+    <div class="controls">
+      Time: 
+      <select id="timeSelect">
+        <option value="30">30s</option>
+        <option value="60" selected>60s</option>
+        <option value="120">120s</option>
+      </select>
+      <button id="restartBtn">Restart</button>
+    </div>
+
+    <div id="text" class="text" aria-live="polite"></div>
+    <div id="caret" class="caret"></div>
+
+    <div class="stats">
+      WPM: <span id="wpm">0</span> • Accuracy: <span id="acc">100</span>% • Time: <span id="time">60</span>s
+    </div>
+  </main>
+
+  <script type="module" src="main.js"></script>
+</body>
 </html>
