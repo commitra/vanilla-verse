@@ -13,6 +13,13 @@ main {
     width: 100%
 }
 
+.quiz-header {
+  display: flex;
+  justify-content: space-between; /* Pushes items to opposite ends */
+  align-items: center;           /* Vertically aligns them in the middle */
+  margin-bottom: 1rem;           /* Adds some space below the header */
+}
+
 button {
     background: #6ee7b7;
     color: #0b1020;
@@ -27,4 +34,16 @@ button {
 .notes {
     color: #a6adbb;
     font-size: .9rem
+}
+
+.timer {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  color: #545454;
+}
+
+/* Optional: Add a class for when time is running out */
+.timer.warning {
+  color: #e86460; /* A reddish color */
 }
