@@ -1,40 +1,94 @@
 body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
-    margin: 0;
-    padding: 2rem;
-    display: grid;
-    place-items: center
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0f0f12;
+  color: #eef1f8;
+  margin: 0;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 main {
-    max-width: 760px;
-    width: 100%
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+  font-size: 3rem;
+  color: #00d0ff;
+  letter-spacing: 1px;
+}
+
+.controls {
+  margin-bottom: 1.5rem;
+}
+
+select, button {
+  background: #17171c;
+  border: 1px solid #262631;
+  color: #eef1f8;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
+button:hover {
+  background: #1f1f26;
 }
 
 .text {
-    background: #17171c;
-    border: 1px solid #262631;
-    border-radius: .5rem;
-    padding: .75rem;
-    margin-bottom: .5rem
+  position: relative;      /* caret relative to container */
+  display: block;
+  text-align: left;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  background: #17171c;
+  border: 1px solid #262631;
+  border-radius: 0.7rem;
+  padding: 1.5rem;
+  min-height: 10rem;
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
-input {
-    width: 100%;
-    padding: .5rem .75rem;
-    border-radius: .5rem;
-    border: 1px solid #262631;
-    background: #0f0f12;
-    color: #eef1f8
+.correct {
+  color: #4aff9a;
+}
+
+.wrong {
+  color: #ff5c5c;
+}
+
+.caret {
+  position: absolute;
+  width: 3px;
+  height: 2.5rem;
+  background: #00d0ff;
+  animation: blink 1s infinite;
+  display: none; /* hidden until typing starts */
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 .stats {
-    margin-top: .5rem
+  margin-top: 1.5rem;
+  color: #a6adbb;
+  font-size: 1.2rem;
 }
 
-.notes {
-    color: #a6adbb;
-    font-size: .9rem
+.stats span {
+  margin-right: 1rem;
 }
