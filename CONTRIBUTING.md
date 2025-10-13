@@ -1,6 +1,55 @@
 # Contributing to Vanilla Verse
 
-Thanks for your interest in contributing! This project is designed for first-time contributors.
+Welcome to Open Source! 🎉 This project is part of Hacktoberfest 2025. Here’s how you can contribute:
+
+# How to Contribute Step by Step
+
+Welcome! Follow these steps to contribute to Vanilla Verse:
+
+## 1. Fork the Repository
+Click "Fork" at the top right of this repo to create your own copy.
+
+## 2. Clone Your Fork
+Copy your fork’s URL and run:
+```sh
+git clone https://github.com/<your-username>/vanilla-verse.git
+```
+
+## 3. Make Changes
+Edit files or add new features as needed.
+
+## 4. Stage Your Changes
+Add your changes to git:
+```sh
+git add .
+```
+
+## 5. Commit Your Changes
+Write a clear commit message:
+```sh
+git commit -m "Describe your changes"
+```
+
+## 6. Push to Your Fork
+Send your changes to GitHub:
+```sh
+git push origin main
+```
+
+## 7. Open a Pull Request
+Go to your fork on GitHub and click "New Pull Request".
+
+## 8. Reference an Issue
+In your PR description, mention the related issue (e.g., `Closes #12`).
+
+## 9. Review and Collaborate
+Check other issues/PRs, review, or help if possible.
+
+---
+
+Thank you for contributing! This project is beginner-friendly and follows an Issue → Assign → PR workflow. For more details, see the sections below on code style, reporting issues, and our Code of Conduct.
+
+
 
 ## Ways to contribute
 - Pick a project from the hub (`index.html`) and open its folder in `projects/vanilla-verse`.
