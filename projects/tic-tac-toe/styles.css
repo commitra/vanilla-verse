@@ -1,36 +1,59 @@
 body {
-    font-family: system-ui;
+    font-family: Arial, sans-serif;
     background: #0f0f12;
     color: #eef1f8;
     margin: 0;
-    padding: 2rem;
-    display: grid;
-    place-items: center
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 main {
-    max-width: 560px;
-    width: 100%
+    text-align: center;
 }
 
 .board {
     display: grid;
-    grid-template-columns: repeat(3, 80px);
-    gap: .5rem
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    margin: 20px auto;
 }
 
 .cell {
-    width: 80px;
-    height: 80px;
-    border-radius: .5rem;
-    border: 1px solid #262631;
     background: #17171c;
-    color: #eef1f8;
-    font-size: 2rem;
-    cursor: pointer
+    border: 2px solid #262631;
+    border-radius: 8px;
+    font-size: 3rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
 }
 
-.notes {
-    color: #a6adbb;
-    font-size: .9rem
+.controls, .scoreboard {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+button, select {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+body.light {
+    background: #eef1f8;
+    color: #0f0f12;
+}
+
+body.light .cell {
+    background: #ffffff;
+    color: #0f0f12;
+    border: 1px solid #ccc;
 }

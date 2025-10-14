@@ -82,3 +82,19 @@ input[type="range"] {
     margin-top: 20px;
     line-height: 1.4;
 }
+    color: #a6adbb;
+    font-size: .9rem
+}
+
+#scoreBoard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #2a2a35;
+    color: #39ff14;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-shadow: 0 0 5px #00ff88;
+}

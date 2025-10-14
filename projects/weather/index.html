@@ -11,9 +11,16 @@
 <body>
     <main>
         <h1>Weather</h1>
-        <form id="form"><input id="city" placeholder="Enter city" required> <button>Get</button></form>
+        <form id="form">
+            <div class="controls">
+                <input id="city" placeholder="Enter city" required>
+                <button type="submit">Get</button>
+                <button type="button" class="btn-secondary btn-icon" id="geoBtn" title="Use my location">📍</button>
+                <button type="button" class="btn-secondary btn-icon" id="unitBtn" title="Toggle units">°C</button>
+            </div>
+        </form>
         <div id="out"></div>
-        <p class="notes">Use a public API; add icons, units, and caching.</p>
+        <p class="notes">Weather data cached for 30 minutes. Click 📍 for your location.</p>
     </main>
     <script type="module" src="./main.js"></script>
 </body>

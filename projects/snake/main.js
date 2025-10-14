@@ -19,7 +19,6 @@ function reset() {
     updateButtonText();
     draw();
 }
-
 function spawnFood() {
     return { 
         x: Math.floor(Math.random() * (canvas.width / size)), 
@@ -81,6 +80,7 @@ function tick() {
         gameOver();
         return;
     }
+
 
     snake.unshift(head);
     
