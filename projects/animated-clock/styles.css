@@ -10,7 +10,8 @@ body {
 
 main {
     max-width: 560px;
-    width: 100%
+    width: 100%;
+    text-align: center;
 }
 
 canvas {
@@ -19,7 +20,68 @@ canvas {
     border-radius: .5rem
 }
 
+.controls {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.controls label {
+    font-weight: 500;
+    color: #eef1f8;
+}
+
+.controls select {
+    background: #17171c;
+    border: 1px solid #262631;
+    border-radius: 0.375rem;
+    color: #eef1f8;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    min-width: 140px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.controls select:hover {
+    border-color: #93c5fd;
+}
+
+.controls select:focus {
+    outline: none;
+    border-color: #6ee7b7;
+    box-shadow: 0 0 0 2px rgba(110, 231, 183, 0.2);
+}
+
 .notes {
     color: #a6adbb;
-    font-size: .9rem
+    font-size: .9rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 1rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .controls select {
+        min-width: 200px;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    canvas {
+        width: 100%;
+        max-width: 240px;
+        height: auto;
+    }
 }
