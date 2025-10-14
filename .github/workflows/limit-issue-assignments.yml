@@ -1,0 +1,45 @@
+name: Limit Issue Assignments
+
+on:
+  issues:
+    types: [assigned]
+
+jobs:
+  enforce-issue-limit:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Count open issues assigned to the user
+      - name: Get assigned issues count
+        id: count_assigned
+        uses: octokit/request-action@v4
+        with:
+          route: GET /repos/${{ github.repository }}/issues
+          assignee: ${{ github.event.assignee.login }}
+          state: open
+
+      # Step 2: Check if user exceeds the limit
+      - name: Enforce maximum 2 issues per user
+        run: |
+          # Count number of issues assigned
+          count=$(echo '${{ steps.count_assigned.outputs.data }}' | jq length)
+          echo "Assigned issues: $count"
+          
+          if [ "$count" -gt 2 ]; then
+            echo "User exceeds 2 issues. Removing assignment and notifying..."
+            
+            # Remove the assignee from this issue
+            curl -s -X DELETE \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github+json" \
+              https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/assignees \
+              -d "{\"assignees\":[\"${{ github.event.assignee.login }}\"]}"
+            
+            # Comment on the issue to notify about the limit
+            curl -s -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github+json" \
+              -d "{\"body\":\"⚠️ @${{ github.event.assignee.login }} cannot be assigned more than 2 issues at a time.\"}" \
+              https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments
+          else
+            echo "User is within the limit."
+          fi
