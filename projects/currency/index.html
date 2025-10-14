@@ -46,6 +46,20 @@
 
     <div id="out" aria-live="polite" class="output"></div>
 
+     <div class="chart-section">
+      <h2>7-Day Exchange Rate Trend</h2>
+      <div class="chart-controls">
+        <label for="chartFrom">From:</label>
+        <select id="chartFrom"></select>
+        
+        <label for="chartTo">To:</label>
+        <select id="chartTo"></select>
+        
+        <button type="button" id="loadChart">Load Chart</button>
+      </div>
+      <div id="chartContainer"></div>
+    </div>
+
     <section id="rateEditor" class="rates hidden" aria-hidden="true">
       <h2>Rate Editor (base = USD)</h2>
       <p class="notes">Edit rates here and click Save. Values are saved to <code>localStorage</code> and used offline.</p>
@@ -55,11 +69,17 @@
           <button id="saveRates" type="submit" class="primary">Save</button>
           <button id="cancelRates" type="button">Cancel</button>
         </div>
+        
       </form>
     </section>
 
     <p class="notes">Notes: No external API. Contributors can add/override currencies via the rate editor or manually in <code>localStorage</code>.</p>
   </main>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  
+ 
+  <script src="./chart.js"></script>
 
   <script type="module" src="./main.js"></script>
 </body>

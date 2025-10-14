@@ -1,3 +1,4 @@
+
 :root {
   --bg: #0f0f12;
   --surface: #17171c;
@@ -97,7 +98,128 @@ button#swap {
 /* actions */
 .rates-actions { display:flex; gap:.5rem; margin-top:.75rem; }
 
+/* Chart Section Styles - Dark Theme */
+.chart-section {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+.chart-section h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--text);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid #262631;
+}
+
+.chart-controls label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.chart-controls select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #262631;
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+  min-width: 6.25rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.chart-controls select:hover {
+  border-color: rgba(110, 231, 183, 0.3);
+}
+
+.chart-controls select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(110, 231, 183, 0.1);
+}
+
+.chart-controls button {
+  padding: 0.5rem 0.8rem;
+  background: var(--accent);
+  color: #0b1020;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.chart-controls button:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+  color: var(--text);
+}
+
+.chart-controls button:active {
+  transform: translateY(0);
+}
+
+#chartContainer {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem;
+  border-radius: 8px;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #262631;
+}
+
+#chartContainer canvas {
+  max-height: 400px;
+}
+
+/* Loading state */
+#chartContainer p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
 /* Responsive */
+@media (max-width: 600px) {
+  .chart-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .chart-controls label {
+    margin-bottom: 0.25rem;
+  }
+  
+  .chart-controls select,
+  .chart-controls button {
+    width: 100%;
+  }
+  
+  #chartContainer {
+    padding: 0.75rem;
+    min-height: 300px;
+  }
+}
+
 @media (max-width: 520px) {
   .row.inline { flex-direction: column; align-items: stretch; }
   .rate-row { flex-direction: column; align-items: stretch; }
