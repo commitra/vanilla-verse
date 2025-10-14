@@ -11,9 +11,11 @@
 <body>
     <main>
         <h1>BMI Calculator</h1>
-        <form id="form"><input id="kg" type="number" step="0.1" placeholder="Weight (kg)" required> <input id="cm"
-                type="number" step="0.1" placeholder="Height (cm)" required> <button>Calculate</button></form>
-        <div id="out"></div>
+        <form id="form"><input id="kg" name="kg" type="number" step="0.1" placeholder="Weight (kg)" required>
+        <input id="cm" name="cm" type="number" step="0.1" placeholder="Height (cm)" required>
+      <button type="submit">Calculate</button>
+    </form>
+    <div id="out" aria-live="polite"></div>
         <p class="notes">Add validation and history with localStorage.</p>
     </main>
     <script type="module" src="./main.js"></script>
