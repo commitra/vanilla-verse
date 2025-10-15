@@ -9,11 +9,17 @@
 <body>
   <h1>Rock-Paper-Scissors Game</h1>
   <div id="rps-container">
-    <!-- TODO: Buttons for Rock, Paper, Scissors -->
-    <!-- TODO: Display user and computer choices -->
-    <!-- TODO: Show result (win/lose/draw) -->
-    <!-- TODO: Scoreboard for user and computer -->
-    <!-- TODO: Option to restart game -->
+    <div class="btn-group">
+      <button class="rps-btn" data-choice="rock">Rock</button>
+      <button class="rps-btn" data-choice="paper">Paper</button>
+      <button class="rps-btn" data-choice="scissors">Scissors</button>
+    </div>
+    <div id="display-choices"></div>
+    <div id="result"></div>
+    <div id="scoreboard">
+      <span id="user-score">0</span> : <span id="computer-score">0</span>
+    </div>
+    <button id="restart-btn">Restart</button>
   </div>
   <script src="main.js"></script>
 </body>
