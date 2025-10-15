@@ -26,6 +26,12 @@ input {
     color: #eef1f8
 }
 
+input[aria-invalid="true"],
+input.invalid {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 4px rgba(255,107,107,0.06);
+}
+
 button {
     background: #6ee7b7;
     color: #0b1020;
