@@ -77,5 +77,4 @@ function render() {
   });
 }
 
-// Initial call to start the quiz
 render();
