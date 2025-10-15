@@ -1,29 +1,27 @@
 /* Basic reset */
-* { box-sizing: border-box; }
+/* Page-level layout is handled by assets/styles.css; only tweak specifics here */
 html, body { height: 100%; }
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  background: #0f172a; /* slate-900 */
-  color: #e5e7eb;      /* gray-200 */
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: var(--bg);
+  color: var(--text);
 }
 
-h1 { margin: 24px 0 12px; font-size: 24px; font-weight: 700; color: #f8fafc; }
+h1 { margin: 24px 0 12px; font-size: 24px; font-weight: 700; color: var(--text); }
 
 #game-container {
   width: 100%;
   max-width: 420px;
-  background: #111827; /* gray-900 */
-  border: 1px solid #1f2937; /* gray-800 */
+  background: var(--card);
+  border: 1px solid #262631;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset;
 }
 
-#instructions { margin: 0 0 12px; color: #cbd5e1; /* slate-300 */ }
+#instructions { margin: 0 0 12px; color: var(--muted); }
 
 #controls {
   display: flex;
@@ -33,38 +31,38 @@ h1 { margin: 24px 0 12px; font-size: 24px; font-weight: 700; color: #f8fafc; }
 #guess-input {
   flex: 1 1 auto;
   padding: 10px 12px;
-  border: 1px solid #334155; /* slate-700 */
+  border: 1px solid #2a2a33;
   border-radius: 8px;
   font-size: 14px;
   outline: none;
-  background: #0b1220; /* deeper slate */
-  color: #e5e7eb;
+  background: #0e0e13;
+  color: var(--text);
 }
-#guess-input::placeholder { color: #94a3b8; }
-#guess-input:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,0.25); }
+#guess-input::placeholder { color: var(--muted); }
+#guess-input:focus { border-color: #93c5fd; box-shadow: 0 0 0 3px rgba(147,197,253,0.2); }
 
 button {
   padding: 10px 14px;
   border-radius: 8px;
-  border: 1px solid #1e3a8a; /* blue-900 */
-  background: #1d4ed8;       /* blue-700 */
-  color: #eaf2ff;
+  border: 1px solid #1e3a8a;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0b1020;
   font-weight: 600;
   cursor: pointer;
 }
-button:hover { background: #1e40af; }
-button:disabled { background: #475569; border-color: #334155; color: #cbd5e1; cursor: not-allowed; }
+button:hover { filter: brightness(1.05); }
+button:disabled { background: #1f1f27; border-color: #2a2a33; color: var(--muted); cursor: not-allowed; }
 
 #feedback { min-height: 22px; margin: 12px 0 8px; }
-#feedback[data-type="error"] { color: #f87171; /* red-400 */ }
-#feedback[data-type="low"], #feedback[data-type="high"] { color: #fbbf24; /* amber-400 */ }
-#feedback[data-type="success"] { color: #34d399; /* emerald-400 */ }
+#feedback[data-type="error"] { color: #f87171; }
+#feedback[data-type="low"], #feedback[data-type="high"] { color: #fbbf24; }
+#feedback[data-type="success"] { color: var(--accent); }
 
-#attempts { margin: 0 0 12px; color: #94a3b8; }
+#attempts { margin: 0 0 12px; color: var(--muted); }
 
 #restart-btn {
   width: 100%;
-  background: #059669; /* emerald-600 */
-  border-color: #065f46;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-color: #1e3a8a;
 }
-#restart-btn:hover { background: #047857; }
+#restart-btn:hover { filter: brightness(1.05); }

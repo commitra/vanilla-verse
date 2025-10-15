@@ -4,13 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Number Guessing Game</title>
+  <link rel="stylesheet" href="../../assets/styles.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Number Guessing Game</h1>
-  <div id="game-container">
+  <div id="game-container" class="card">
     <p id="instructions">I'm thinking of a number between 1 and 100. Can you guess it?</p>
-    <div id="controls">
+    <div id="controls" class="controls">
       <input id="guess-input" type="number" min="1" max="100" placeholder="Enter your guess" />
       <button id="guess-btn" type="button">Guess</button>
     </div>
