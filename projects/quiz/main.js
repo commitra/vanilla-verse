@@ -106,7 +106,6 @@ function render() {
   });
 }
 
-/** Initialize quiz */
 (async function init() {
   result.textContent = 'Loading questions...';
   await loadQuestions();
