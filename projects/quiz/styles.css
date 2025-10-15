@@ -1,49 +1,220 @@
+:root {
+    /* Base Colors - Light Theme */
+    --bg-color: #f0f4f8; /* Soft light gray for overall background */
+    --text-color: #2d3748; /* Dark blue-gray for main text (good contrast) */
+    --secondary-text-color: #718096; /* Medium gray for secondary info */
+
+    /* Primary Interactive Elements */
+    --primary-color: #4299e1; /* Vibrant blue for actions/highlights */
+
+    /* Buttons */
+    --button-bg: var(--primary-color);
+    --button-text: #ffffff; /* White text on primary buttons */
+
+    /* Borders & Separators */
+    --border-color: #e2e8f0; /* Light border */
+
+    /* Quiz Container & Options */
+    --quiz-bg: #ffffff; /* White background for the quiz card */
+    --option-bg: #edf2f7; /* Slightly off-white for answer options */
+    --option-hover-bg: #e2e8f0; /* Light gray on hover */
+    --option-selected-bg: var(--primary-color);
+    --option-selected-text: #ffffff;
+
+    /* Warning/Error */
+    --warning-color: #e53e3e; /* Strong red for warnings */
+}
+
+body[data-theme="dark"] {
+    /* Base Colors - Dark Theme */
+    --bg-color: #1a202c; /* Very dark blue-gray for overall background */
+    --text-color: #edf2f7; /* Off-white for main text */
+    --secondary-text-color: #a0aec0; /* Lighter gray for secondary info */
+
+    /* Primary Interactive Elements */
+    --primary-color: #63b3ed; /* Lighter, softer blue for actions/highlights */
+
+    /* Buttons */
+    --button-bg: var(--primary-color);
+    --button-text: #1a202c; /* Dark text on light buttons for contrast */
+
+    /* Borders & Separators */
+    --border-color: #4a5568; /* Darker, desaturated border */
+
+    /* Quiz Container & Options */
+    --quiz-bg: #2d3748; /* Darker gray for the quiz card */
+    --option-bg: #2d3748; /* Dark background for answer options */
+    --option-hover-bg: #4a5568; /* Slightly lighter on hover */
+    --option-selected-bg: var(--primary-color);
+    --option-selected-text: #1a202c; /* Dark text on light selected option */
+
+    /* Warning/Error */
+    --warning-color: #fc8181; /* Lighter red for warnings */
+}
+
 body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     padding: 2rem;
     display: grid;
-    place-items: center
+    place-items: center;
+    min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 main {
     max-width: 560px;
-    width: 100%
+    width: 100%;
+    background: var(--quiz-bg);
+    padding: 1.5rem 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid var(--border-color);
 }
 
 .quiz-header {
   display: flex;
-  justify-content: space-between; /* Pushes items to opposite ends */
-  align-items: center;           /* Vertically aligns them in the middle */
-  margin-bottom: 1rem;           /* Adds some space below the header */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
 }
 
 button {
-    background: #6ee7b7;
-    color: #0b1020;
+    background: var(--button-bg);
+    color: var(--button-text);
     border: none;
-    padding: .5rem .75rem;
+    padding: .75rem 1.25rem;
     border-radius: .5rem;
     font-weight: 600;
     cursor: pointer;
-    margin: .25rem
+    margin: .25rem;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+    filter: brightness(0.9);
 }
 
 .notes {
-    color: #a6adbb;
-    font-size: .9rem
+    color: var(--secondary-text-color);
+    font-size: .9rem;
+    margin-top: 1rem;
+    text-align: center;
 }
 
 .timer {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: bold;
   text-align: center;
-  color: #545454;
+  color: var(--secondary-text-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: color 0.3s ease;
 }
 
-/* Optional: Add a class for when time is running out */
 .timer.warning {
-  color: #e86460; /* A reddish color */
+  color: var(--warning-color);
+  animation: pulse-warning 1s infinite alternate;
+}
+
+@keyframes pulse-warning {
+  from { opacity: 1; }
+  to { opacity: 0.7; }
+}
+
+.question-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+.answer-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.answer-option {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background-color: var(--option-bg);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    color: var(--text-color);
+}
+
+.answer-option:hover {
+    background-color: var(--option-hover-bg);
+    border-color: var(--primary-color);
+}
+
+.answer-option.selected {
+    background-color: var(--option-selected-bg);
+    color: var(--option-selected-text);
+    border-color: var(--option-selected-bg);
+}
+
+.answer-option.selected:hover {
+    filter: brightness(1.05);
+}
+
+.answer-option input[type="radio"],
+.answer-option input[type="checkbox"] {
+    margin-right: 0.75rem;
+    min-width: 1em;
+    min-height: 1em;
+    accent-color: var(--primary-color);
+}
+
+@media (min-width: 480px) {
+    .answer-options.grid-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.75rem;
+    }
+}
+
+.theme-toggle-button {
+    background: var(--option-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.6rem 0.9rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle-button:hover {
+    background-color: var(--option-hover-bg);
+    filter: none;
+    transform: none;
+}
+
+.theme-toggle-button svg {
+    fill: currentColor;
+    width: 1.1em;
+    height: 1.1em;
 }
