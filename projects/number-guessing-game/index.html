@@ -9,11 +9,14 @@
 <body>
   <h1>Number Guessing Game</h1>
   <div id="game-container">
-    <!-- TODO: Input for user guess -->
-    <!-- TODO: Button to submit guess -->
-    <!-- TODO: Display feedback (too high, too low, correct) -->
-    <!-- TODO: Show number of attempts -->
-    <!-- TODO: Option to restart game -->
+    <p id="instructions">I'm thinking of a number between 1 and 100. Can you guess it?</p>
+    <div id="controls">
+      <input id="guess-input" type="number" min="1" max="100" placeholder="Enter your guess" />
+      <button id="guess-btn" type="button">Guess</button>
+    </div>
+    <p id="feedback" aria-live="polite"></p>
+    <p id="attempts">Attempts: <span id="attempt-count">0</span></p>
+    <button id="restart-btn" type="button">Restart</button>
   </div>
   <script src="main.js"></script>
 </body>
