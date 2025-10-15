@@ -175,5 +175,13 @@
         "category": "Mini Data",
         "categoryKey": "data",
         "difficulty": "medium"
-    }
+    },
+    {
+        "title": "Quiz",
+        "slug": "quiz",
+        "description": "A dynamic quiz app using Open Trivia API with a timer and scoring.",
+        "category": "Fun UI",
+        "categoryKey": "fun",
+        "difficulty": "intermediate"
+      }
 ]

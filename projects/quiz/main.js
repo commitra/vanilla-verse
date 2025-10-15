@@ -1,39 +1,62 @@
-const TIME_LIMIT = 15; // Total time for each question
+const TIME_LIMIT = 15; // seconds per question
 let timeLeft = TIME_LIMIT;
-let timerInterval = null; // This will store the interval ID
+let timerInterval = null;
 
-// Get the timer element from the DOM
 const timerElement = document.getElementById("time");
 
-const data = [{ q: '2 + 2 = ?', a: ['3', '4', '5'], c: 1 }, { q: 'Capital of France?', a: ['Berlin', 'Paris', 'Rome'], c: 1 }];
+let questions = []; // API-loaded questions
 let i = 0, score = 0;
+
 const q = document.getElementById('q'),
   answers = document.getElementById('answers'),
   result = document.getElementById('result');
 
-// Function to handle moving to the next question when time runs out
-function handleNextQuestion() {
-  i++;
-  render();
+/** Decode HTML entities from API */
+function decodeHTML(str) {
+  const txt = document.createElement('textarea');
+  txt.innerHTML = str;
+  return txt.value;
 }
 
-function startTimer() {
-  // Clear any existing timer before starting a new one
-  clearInterval(timerInterval);
-  
-  // Make sure the timer is visible at the start of a question
-  timerElement.parentElement.style.display = 'block';
+/** Shuffle array */
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
 
-  // Reset the time left for the new question
+/** Fetch questions from Open Trivia DB API */
+async function loadQuestions() {
+  try {
+    const res = await fetch('https://opentdb.com/api.php?amount=5&type=multiple');
+    const data = await res.json();
+    questions = data.results.map(q => ({
+      q: decodeHTML(q.question),
+      a: shuffle([decodeHTML(q.correct_answer), ...q.incorrect_answers.map(decodeHTML)]),
+      c: null, // correct answer index
+      correctAnswer: decodeHTML(q.correct_answer)
+    }));
+    // Compute correct answer index
+    questions.forEach(qObj => {
+      qObj.c = qObj.a.findIndex(ans => ans === qObj.correctAnswer);
+    });
+  } catch (err) {
+    console.error('Failed to load questions', err);
+    q.textContent = 'Failed to load questions 😢';
+    answers.innerHTML = '';
+  }
+}
+
+/** Start timer for each question */
+function startTimer() {
+  clearInterval(timerInterval);
+  timerElement.parentElement.style.display = 'block';
   timeLeft = TIME_LIMIT;
   timerElement.textContent = timeLeft;
-  timerElement.parentElement.classList.remove('warning'); // Remove warning color
+  timerElement.parentElement.classList.remove('warning');
 
   timerInterval = setInterval(() => {
     timeLeft--;
     timerElement.textContent = timeLeft;
 
-    // Add a visual warning when time is low
     if (timeLeft <= 5) {
       timerElement.parentElement.classList.add('warning');
     }
@@ -45,37 +68,46 @@ function startTimer() {
   }, 1000);
 }
 
+/** Move to next question */
+function handleNextQuestion() {
+  i++;
+  render();
+}
+
+/** Render current question */
 function render() {
-  if (i >= data.length) {
-    clearInterval(timerInterval); // Stop timer at the end
-    
-    // Hide the timer element
+  if (!questions.length) return;
+
+  if (i >= questions.length) {
+    clearInterval(timerInterval);
     timerElement.parentElement.style.display = 'none';
-    
-    q.textContent = 'Done!';
+    q.textContent = '🎉 Quiz Complete!';
     answers.innerHTML = '';
-    result.textContent = `Score: ${score}/${data.length}`;
+    result.textContent = `Score: ${score}/${questions.length}`;
     return;
   }
 
-  // Start the timer each time a new question is rendered
   startTimer();
 
-  const cur = data[i];
+  const cur = questions[i];
   q.textContent = cur.q;
   answers.innerHTML = '';
+  result.textContent = '';
+
   cur.a.forEach((ans, idx) => {
     const b = document.createElement('button');
     b.textContent = ans;
     b.addEventListener('click', () => {
       clearInterval(timerInterval);
       if (idx === cur.c) score++;
-      i++;
-      render();
+      handleNextQuestion();
     });
     answers.appendChild(b);
   });
 }
 
-// Initial call to start the quiz
-render();
+(async function init() {
+  result.textContent = 'Loading questions...';
+  await loadQuestions();
+  render();
+})();
