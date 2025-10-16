@@ -83,6 +83,21 @@ input[type="range"] {
     width: 120px;
     margin-left: 10px;
 }
+#mode {
+  background-color: #2b2b44;
+  color: #fff;
+  border: 2px solid  #00ff00;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  
+}
+
+.mode-container{
+    margin-left: 7.5rem;
+}
 
  
 .rules {
