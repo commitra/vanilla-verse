@@ -39,3 +39,11 @@ button.card.flipped {
     color: #a6adbb;
     font-size: .9rem
 }
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #a6adbb;
+}
