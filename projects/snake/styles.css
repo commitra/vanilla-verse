@@ -1,3 +1,4 @@
+/* BODY & MAIN */
 body {
     font-family: 'Arial', sans-serif;
     background: #0f0f23;
@@ -6,13 +7,21 @@ body {
     padding: 2rem;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
 }
 
-main {
+.game-container {
+    display: flex;
+    gap: 120px;
+    max-width: 900px;
+    width: 100%;
+}
+
+ 
+.game-area {
+    flex: 1;
     text-align: center;
-    max-width: 400px;
 }
 
 h1 {
@@ -45,7 +54,6 @@ canvas {
     margin: 20px 0;
     display: flex;
     justify-content: center;
-    align-items: center;
     gap: 20px;
 }
 
@@ -76,25 +84,87 @@ input[type="range"] {
     margin-left: 10px;
 }
 
-.notes {
-    color: #888;
-    font-size: 0.9rem;
-    margin-top: 20px;
-    line-height: 1.4;
-}
-    color: #a6adbb;
-    font-size: .9rem
+ 
+.rules {
+    flex: 1;
+    background: #1a1a2e;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #2d2d44;
+    margin-top: 0; 
 }
 
-#scoreBoard {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid #2a2a35;
-    color: #39ff14;
+ 
+@media (max-width: 768px) {
+    .game-container {
+        flex-direction: column; 
+        gap: 60px;
+        align-items: center;
+    }
+
+    .rules {
+        width: 100%;  
+        margin-top: 0; 
+    }
+
+    canvas {
+        width: 90%;  
+        height: auto;
+    }
+}
+
+ 
+.rules h2 {
+    color: #00ff00;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
     text-align: center;
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    text-shadow: 0 0 5px #00ff88;
+}
+
+.player-rule {
+    margin: 15px 0;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.playerA {
+    background: rgba(255, 255, 0, 0.1);
+    border: 1px solid #ffff00;
+}
+
+.playerB {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00ff00;
+}
+
+.player-rule h3 {
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+}
+
+.player-rule ul {
+    list-style: none;
+    padding-left: 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.player-rule ul li {
+    margin-bottom: 5px;
+}
+
+.player-rule ul li strong {
+    color: #ffff00;  
+}
+
+.playerB ul li strong {
+    color: #00ff00;  
+}
+
+.rules .notes {
+    margin-top: 12px;
+    font-size: 0.95rem;
+    color: #888;
+    line-height: 1.4;
+    text-align: center;
 }

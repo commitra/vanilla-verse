@@ -1,63 +1,60 @@
 // score.js
-// Handles score display + best score persistence (localStorage)
-
 export const ScoreManager = (function () {
-    const STORAGE_KEY = "snake_best_score_v1";
-    let score = 0;
-    let best = 0;
-    let el;
+    const STORAGE_KEY_SCORE = "snake_highest_score";
+    const STORAGE_KEY_PLAYER = "snake_highest_player";
+
+    let scoreA = 0, scoreB = 0;
+    let bestScore = 0, bestPlayer = "None";
+
+    const scoreAEl = document.getElementById("scoreA");
+    const scoreBEl = document.getElementById("scoreB");
+    const bestScoreEl = document.getElementById("bestScore");
+    const bestPlayerEl = document.getElementById("bestPlayer");
 
     function loadBest() {
-        try {
-            const val = localStorage.getItem(STORAGE_KEY);
-            best = val ? parseInt(val, 10) || 0 : 0;
-        } catch {
-            best = 0;
-        }
+        bestScore = parseInt(localStorage.getItem(STORAGE_KEY_SCORE)) || 0;
+        bestPlayer = localStorage.getItem(STORAGE_KEY_PLAYER) || "None";
+        updateDisplay();
     }
 
     function saveBest() {
-        try {
-            localStorage.setItem(STORAGE_KEY, String(best));
-        } catch { }
-    }
-
-    function createUI() {
-        el = document.createElement("div");
-        el.id = "scoreBoard";
-        el.setAttribute("aria-live", "polite");
-        el.setAttribute("role", "status");
-        el.textContent = `Score: ${score} • Best: ${best}`;
-        document.querySelector("main").insertBefore(el, document.getElementById("board"));
+        localStorage.setItem(STORAGE_KEY_SCORE, bestScore);
+        localStorage.setItem(STORAGE_KEY_PLAYER, bestPlayer);
     }
 
     function updateDisplay() {
-        if (el) el.textContent = `Score: ${score} • Best: ${best}`;
+        scoreAEl.textContent = scoreA;
+        scoreBEl.textContent = scoreB;
+        bestScoreEl.textContent = bestScore;
+        bestPlayerEl.textContent = bestPlayer;
     }
 
     function reset() {
-        score = 0;
+        scoreA = 0;
+        scoreB = 0;
         updateDisplay();
     }
 
-    function increment() {
-        score += 1;
+    function addScore(player) {
+        if (player === "A") scoreA += 1;
+        else if (player === "B") scoreB += 1;
         updateDisplay();
     }
 
-    function gameOver() {
-        if (score > best) {
-            best = score;
+    function gameOver(winner, finalScore) {
+        if (winner !== "Draw" && finalScore > bestScore) {
+            bestScore = finalScore;
+            bestPlayer = winner;
             saveBest();
         }
         updateDisplay();
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        loadBest();
-        createUI();
-        updateDisplay();
-    });
+    function getScores() {
+        return { scoreA, scoreB, bestScore, bestPlayer };
+    }
 
-    return { reset, increment, gameOver };
+    document.addEventListener("DOMContentLoaded", loadBest);
+
+    return { reset, addScore, gameOver, getScores };
 })();
