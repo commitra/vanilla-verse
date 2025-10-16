@@ -1,49 +1,79 @@
-body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
-    margin: 0;
-    padding: 2rem;
-    display: grid;
-    place-items: center
+:root{
+  --bg: #0e1220;            /* page background (dark) */
+  --card: #0f1724;          /* panel */
+  --text: #e6eef8;          /* main text */
+  --muted: #98a0b3;         /* secondary text */
+  --primary: #60a5fa;       /* primary accent */
+  --accent: #7c3aed;        /* accent */
+  --success: #34d399;
+  --danger: #fb7185;
+  --btn-text-dark: #061320;
 }
 
-main {
-    max-width: 560px;
-    width: 100%
+/* Light theme overrides applied only when data-theme="light" is set on <html> */
+[data-theme="light"]{
+  --bg: #f6f3ea;   /* soft cream */
+  --card: #ffffff;
+  --text: #0b1a2b;
+  --muted: #6b7280;
+  --primary: #3b82f6;
+  --accent: #7c3aed;
+  --success: #10b981;
+  --danger: #ef4444;
+  --btn-text-dark: #06283a;
 }
 
-.quiz-header {
-  display: flex;
-  justify-content: space-between; /* Pushes items to opposite ends */
-  align-items: center;           /* Vertically aligns them in the middle */
-  margin-bottom: 1rem;           /* Adds some space below the header */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.08), transparent), var(--bg);
+  color:var(--text);
+  padding:2rem;
+  display:grid;
+  place-items:center;
+  min-height:100vh;
 }
 
-button {
-    background: #6ee7b7;
-    color: #0b1020;
-    border: none;
-    padding: .5rem .75rem;
-    border-radius: .5rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin: .25rem
+/* Light-mode only page background (kept separate so dark mode won't change) */
+[data-theme="light"] body{
+  background: linear-gradient(180deg, rgba(246,243,234,1) 0%, rgba(237,245,255,1) 100%);
 }
 
-.notes {
-    color: #a6adbb;
-    font-size: .9rem
+main{
+  width:100%;
+  max-width:720px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:14px;
+  padding:1.5rem;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.03);
 }
 
-.timer {
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
-  color: #545454;
-}
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.controls{display:flex;gap:.5rem;align-items:center}
 
-/* Optional: Add a class for when time is running out */
-.timer.warning {
-  color: #e86460; /* A reddish color */
+#q{font-size:1.125rem;line-height:1.4;margin:0 0 1rem 0}
+
+#answers{display:flex;flex-direction:column;gap:.5rem}
+#answers button{display:block;text-align:left;padding:.85rem 1rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);color:var(--text);font-weight:600;cursor:pointer}
+#answers button:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(2,6,23,0.4)}
+#answers button:active{transform:translateY(0)}
+#answers button:disabled{opacity:.6;cursor:not-allowed}
+
+/* Selected and feedback states */
+#answers button.selected{outline:3px solid rgba(96,165,250,0.14)}
+#answers button.correct{background:linear-gradient(90deg, rgba(34,197,94,0.12), rgba(16,185,129,0.06));border-color:rgba(16,185,129,0.28);}
+#answers button.incorrect{background:linear-gradient(90deg, rgba(251,113,133,0.06), rgba(239,68,68,0.03));border-color:rgba(239,68,68,0.18)}
+
+.notes{color:var(--muted);font-size:.9rem;margin-top:1rem}
+
+button#theme-toggle{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:.45rem .6rem;border-radius:.5rem;font-size:1rem}
+
+.timer{font-weight:700;color:var(--muted);font-size:.95rem}
+.timer.warning{color:var(--danger)}
+
+@media (max-width:520px){
+  main{padding:1rem;border-radius:12px}
+  #q{font-size:1rem}
 }

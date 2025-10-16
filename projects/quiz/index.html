@@ -5,15 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Quiz</title>
-    <link rel="stylesheet" href="./styles.css">i
+    <link rel="stylesheet" href="./styles.css">
 </head>
 
 <body>
     <main>
         <div class="quiz-header">
             <h1>Quiz</h1>
-            <div class="timer">
-                Time Left: <span id="time">15</span>s
+            <div class="controls">
+                <button id="theme-toggle" aria-pressed="false" title="Toggle theme">🌙</button>
+                <div class="timer">
+                    Time Left: <span id="time">15</span>s
+                </div>
             </div>
         </div>
         <div id="q"></div>
