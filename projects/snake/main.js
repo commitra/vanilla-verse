@@ -3,6 +3,7 @@ import { ScoreManager } from "./score.js";
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 const size = 20;
+let gameMode = "normal";
 
 // ------------------ INITIALIZE SNAKES ------------------ //
 let snakeA = [{ x: 3, y: 3 }];
@@ -28,6 +29,7 @@ function reset() {
     gameRunning = true;
     gamePaused = false;
     updateButtonText();
+      gameMode = document.getElementById("mode").value;
     draw();
 }
 
@@ -41,8 +43,8 @@ function spawnFood() {
 function tick() {
     if (!gameRunning || gamePaused) return;
 
-    moveSnake(snakeA, dirA, "A");
-    moveSnake(snakeB, dirB, "B");
+    if(!moveSnake(snakeA, dirA, "A")) return;
+    if(!moveSnake(snakeB, dirB, "B")) return;
 
     if (checkCollision(snakeA) || checkCollision(snakeB) || checkSnakeCollision(snakeA, snakeB)) {
         let { scoreA, scoreB } = ScoreManager.getScores();
@@ -57,8 +59,30 @@ function tick() {
 function moveSnake(snake, dir, player) {
     const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
-    head.x = (head.x + canvas.width / size) % (canvas.width / size);
-    head.y = (head.y + canvas.height / size) % (canvas.height / size);
+    // head.x = (head.x + canvas.width / size) % (canvas.width / size);
+    // head.y = (head.y + canvas.height / size) % (canvas.height / size);
+    if (gameMode === "normal") {
+
+  head.x = (head.x + canvas.width / size) % (canvas.width / size);
+  head.y = (head.y + canvas.height / size) % (canvas.height / size);
+} else {
+
+  if (
+    head.x < 0 ||
+    head.x >= canvas.width / size ||
+    head.y < 0 ||
+    head.y >= canvas.height / size
+  ) {
+    const winner = player === "A" ? "Player B" : "Player A";
+     stop();                 
+    gameRunning = false;    
+    gamePaused = false;     
+    updateButtonText();  
+    gameOver(winner);
+    return false;
+  }
+}
+
 
     snake.unshift(head);
 
@@ -68,6 +92,8 @@ function moveSnake(snake, dir, player) {
     } else {
         snake.pop();
     }
+
+    return true;
 }
 
 function checkCollision(snake) {
@@ -112,6 +138,12 @@ function draw() {
     for (let y = 0; y < canvas.height; y += size) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
     }
+    if (gameMode === "boundary") {
+  ctx.strokeStyle = "#ff0000";
+  ctx.lineWidth = 3;
+  ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+}
+
 
     // Pause overlay
     if (gamePaused) {
@@ -182,7 +214,9 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ------------------ EVENT LISTENERS ------------------ //
-
+document.getElementById("mode").addEventListener("change", function () {
+  gameMode = this.value;
+});
 document.getElementById('startBtn').addEventListener('click', handleButtonClick);
 document.getElementById('speed').addEventListener('input', function () {
     if (gameRunning && !gamePaused) {
