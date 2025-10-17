@@ -10,6 +10,30 @@ let i = 0, score = 0;
 const q = document.getElementById('q'),
   answers = document.getElementById('answers'),
   result = document.getElementById('result');
+const themeToggle = document.getElementById('theme-toggle');
+const root = document.documentElement;
+
+// Safe localStorage helpers
+function safeGet(k){ try{ return localStorage.getItem(k) }catch(e){return null}}
+function safeSet(k,v){ try{ localStorage.setItem(k,v) }catch(e){}}
+
+function applyTheme(t){
+  const theme = t === 'light' ? 'light' : 'dark';
+  root.setAttribute('data-theme', theme);
+  if(themeToggle) themeToggle.textContent = theme === 'light' ? '☀️' : '🌙';
+}
+
+themeToggle?.addEventListener('click', ()=>{
+  const current = root.getAttribute('data-theme') || (safeGet('quiz-theme') || 'dark');
+  const next = current === 'light' ? 'dark' : 'light';
+  safeSet('quiz-theme', next);
+  applyTheme(next);
+});
+
+// initialize theme from storage or system preference
+const stored = safeGet('quiz-theme');
+const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+applyTheme(stored ? stored : (prefersLight ? 'light' : 'dark'));
 
 /** Decode HTML entities from API */
 function decodeHTML(str) {
@@ -97,10 +121,30 @@ function render() {
   cur.a.forEach((ans, idx) => {
     const b = document.createElement('button');
     b.textContent = ans;
+    b.className = 'answer-btn';
     b.addEventListener('click', () => {
+      // prevent double clicks
+      if (b.disabled) return;
       clearInterval(timerInterval);
-      if (idx === cur.c) score++;
-      handleNextQuestion();
+      // mark selected
+      Array.from(answers.children).forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected');
+      // mark correct/incorrect
+      if (idx === cur.c){
+        b.classList.add('correct');
+        score++;
+      } else {
+        b.classList.add('incorrect');
+        // reveal the correct one
+        const correctBtn = answers.children[cur.c];
+        if (correctBtn) correctBtn.classList.add('correct');
+      }
+      // disable all to avoid extra clicks
+      Array.from(answers.children).forEach(x=>x.disabled=true);
+      // short delay to show feedback
+      setTimeout(()=>{
+        handleNextQuestion();
+      }, 700);
     });
     answers.appendChild(b);
   });
