@@ -62,6 +62,27 @@ canvas {
     margin-top: 1rem;
 }
 
+.home-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.home-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.home-button:active {
+  transform: translateY(0);
+}
+
+
 @media (max-width: 480px) {
     body {
         padding: 1rem;

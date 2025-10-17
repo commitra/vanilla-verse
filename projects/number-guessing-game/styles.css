@@ -66,3 +66,22 @@ button:disabled { background: #1f1f27; border-color: #2a2a33; color: var(--muted
   border-color: #1e3a8a;
 }
 #restart-btn:hover { filter: brightness(1.05); }
+
+.home-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  justify-items: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.home-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}

@@ -73,7 +73,27 @@ button#theme-toggle{background:transparent;border:1px solid rgba(255,255,255,0.0
 .timer{font-weight:700;color:var(--muted);font-size:.95rem}
 .timer.warning{color:var(--danger)}
 
+.home-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  justify-items: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.home-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
 @media (max-width:520px){
   main{padding:1rem;border-radius:12px}
   #q{font-size:1rem}
 }
+

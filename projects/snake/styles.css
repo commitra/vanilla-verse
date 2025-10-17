@@ -18,6 +18,20 @@ body {
     width: 100%;
 }
 
+.home-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
  
 .game-area {
     flex: 1;
@@ -109,7 +123,24 @@ input[type="range"] {
     margin-top: 0; 
 }
 
- 
+ .home-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  justify-items: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.home-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
 @media (max-width: 768px) {
     .game-container {
         flex-direction: column; 
