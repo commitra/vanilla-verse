@@ -142,8 +142,7 @@
         "category": "Mini Data",
         "categoryKey": "data",
         "difficulty": "easy"
-    }
-    ,
+    },
     {
         "title": "Number Guessing Game",
         "slug": "number-guessing-game",
@@ -177,11 +176,11 @@
         "difficulty": "medium"
     },
     {
-        "title": "Quiz",
-        "slug": "quiz",
+        "title": "Dynamic Quiz App",
+        "slug": "dynamic-quiz",
         "description": "A dynamic quiz app using Open Trivia API with a timer and scoring.",
         "category": "Fun UI",
         "categoryKey": "fun",
         "difficulty": "intermediate"
-      }
+    }
 ]
