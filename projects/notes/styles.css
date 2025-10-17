@@ -37,13 +37,53 @@ main {
     align-self: flex-start
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+input,
+textarea {
+    background: var(--input-bg, #0e0e13);
+    border: 1px solid var(--border, #262631);
+    color: var(--text, #eef1f8);
+    border-radius: .5rem;
+    padding: .75rem;
+    font-family: inherit;
+    font-size: 1rem;
+    width: 100%;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-footer {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.form-footer input {
+    flex-grow: 1;
+}
+
 button {
-    background: #ef4444;
-    color: white;
+    background: var(--accent, #6ee7b7);
+    color: #0b1020;
     border: none;
-    border-radius: .4rem;
-    padding: .4rem .6rem;
-    cursor: pointer
+    border-radius: .5rem;
+    padding: .75rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: filter 0.2s;
+}
+
+button:hover {
+    filter: brightness(1.1);
 }
 
 .notes {
