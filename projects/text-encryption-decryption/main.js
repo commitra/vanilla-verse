@@ -1,5 +1,18 @@
 // Basic algorithms: Caesar, ROT13, Atbash
 
+// Handle Theme Toggle
+const themeButton = document.getElementById("themeToggle");
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+if (prefersDark) document.documentElement.setAttribute("data-theme", "dark");
+
+themeButton.addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme");
+  const next = current === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  themeButton.textContent = next === "dark" ? "🌙" : "☀️";
+});
+
 function normalizeShift(n) {
   // Normalize to range [0, 25]
   const mod = ((n % 26) + 26) % 26;
