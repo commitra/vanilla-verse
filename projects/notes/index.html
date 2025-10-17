@@ -9,13 +9,37 @@
 </head>
 
 <body>
-    <main>
-        <h1>Notes</h1>
-        <form id="form"><input id="title" placeholder="Title" required> <input id="tag" placeholder="Tag (optional)">
-            <button>Add</button></form>
-        <div id="notes" class="grid"></div>
-        <p class="notes">Add search, categories, dark/light mode.</p>
-    </main>
+    <main class="container">
+    <section class="left-panel">
+      <div class="header-row">
+        <h1>Create Note</h1>
+        <button id="themeToggle" class="toggle-btn">🌙</button>
+      </div>
+      <form id="form">
+        <input id="title" placeholder="Title" required />
+        <input id="tag" placeholder="Tag (optional)" />
+        <textarea id="content" placeholder="Write your content here..." rows="7" required></textarea>
+        <button>Add Note</button>
+      </form>
+    </section>
+
+    <section class="right-panel">
+      <div class="notes-header">
+        <h1>Your Notes</h1>
+        <input type="text" id="search" placeholder="Search notes..." />
+      </div>
+
+      <div class="filter-bar">
+        <label for="tagFilter">Filter by Tag:</label>
+        <select id="tagFilter">
+          <option value="">All</option>
+        </select>
+      </div>
+
+      <div id="notes" class="grid"></div>
+    </section>
+  </main>
+
     <script type="module" src="./main.js"></script>
 </body>
 
