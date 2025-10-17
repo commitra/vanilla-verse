@@ -1,21 +1,32 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Whack-a-Mole</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Whack-a-Mole</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
-
 <body>
-    <main>
-        <h1>Whack-a-Mole</h1>
-        <div id="grid" class="grid"></div>
-        <div class="controls"><button id="start">Start</button> <span id="score">0</span></div>
-        <p class="notes">Add levels, sounds, and effects.</p>
-    </main>
-    <script type="module" src="./main.js"></script>
-</body>
+  <main>
+    <h1>Whack-a-Mole</h1>
 
+    <div class="controls">
+      <label for="difficulty">Difficulty:</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <button id="start">Start</button>
+      <span id="timer">30s</span>
+      <span id="score">Score: 0</span>
+    </div>
+
+    <div id="grid" class="grid" role="grid" aria-label="Whack-a-Mole game area"></div>
+
+    <p class="notes">Features: Difficulty levels, timed rounds, sounds, and accessibility.</p>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
 </html>

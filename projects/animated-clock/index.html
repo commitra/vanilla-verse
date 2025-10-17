@@ -10,8 +10,27 @@
 
 <body>
     <main>
-        <h1>Animated Clock</h1><canvas id="clock" width="240" height="240"></canvas>
-        <p class="notes">Smooth animation with requestAnimationFrame.</p>
+        <h1>Animated Clock</h1>
+        <div class="controls">
+            <label for="timezone-select">Time Zone:</label>
+            <select id="timezone-select" aria-label="Select time zone">
+                <option value="local">Local Time</option>
+                <option value="UTC">UTC</option>
+                <option value="America/New_York">New York</option>
+                <option value="America/Los_Angeles">Los Angeles</option>
+                <option value="America/Chicago">Chicago</option>
+                <option value="Europe/London">London</option>
+                <option value="Europe/Paris">Paris</option>
+                <option value="Europe/Berlin">Berlin</option>
+                <option value="Asia/Tokyo">Tokyo</option>
+                <option value="Asia/Shanghai">Shanghai</option>
+                <option value="Asia/Kolkata">Mumbai</option>
+                <option value="Australia/Sydney">Sydney</option>
+                <option value="Pacific/Auckland">Auckland</option>
+            </select>
+        </div>
+        <canvas id="clock" width="240" height="240"></canvas>
+        <p class="notes">Smooth animation with requestAnimationFrame. Select a time zone to view different regional times.</p>
     </main>
     <script type="module" src="./main.js"></script>
 </body>

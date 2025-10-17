@@ -1,0 +1,144 @@
+:root {
+	--bg: #0b1020;
+	--card: #111933;
+	--text: #e6eaf3;
+	--muted: #9aa3b2;
+	--primary: #5b8cff;
+	--primary-700: #4878f2;
+	--border: #253153;
+	--success: #22c55e;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+	background: radial-gradient(1200px 1200px at 80% -10%, #1a2452 0%, transparent 40%), var(--bg);
+	color: var(--text);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 32px 16px 48px;
+}
+
+h1 {
+	font-size: 1.8rem;
+	font-weight: 700;
+	letter-spacing: 0.2px;
+	margin: 8px 0 20px;
+}
+
+#tool-container {
+	width: 100%;
+	max-width: 860px;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	padding: 20px;
+	box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.field-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 16px;
+}
+
+label {
+	font-size: 0.95rem;
+	color: var(--muted);
+}
+
+textarea {
+	width: 100%;
+	min-height: 120px;
+	resize: vertical;
+	background: #0e1630;
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	padding: 12px 12px;
+	line-height: 1.4;
+	font-size: 0.98rem;
+}
+
+.meta-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.options-row {
+	display: flex;
+	gap: 12px;
+	align-items: flex-end;
+	flex-wrap: wrap;
+	margin-bottom: 8px;
+}
+
+.option {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+select, input[type="number"] {
+	background: #0e1630;
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	padding: 10px 12px;
+	font-size: 0.95rem;
+}
+
+.actions {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	margin: 10px 0 18px;
+}
+
+.actions.compact {
+	margin-top: 6px;
+}
+
+.btn {
+	appearance: none;
+	border: 1px solid var(--border);
+	background: #101a36;
+	color: var(--text);
+	padding: 10px 14px;
+	border-radius: 10px;
+	cursor: pointer;
+	font-weight: 600;
+	transition: transform 0.06s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+	transform: translateY(-1px);
+	border-color: #31406f;
+}
+
+.btn.primary {
+	background: linear-gradient(180deg, var(--primary) 0%, var(--primary-700) 100%);
+	border: none;
+}
+
+.btn.ghost {
+	background: transparent;
+}
+
+#copyStatus {
+	color: var(--success);
+	margin-left: 6px;
+}
+
+@media (max-width: 600px) {
+	h1 { font-size: 1.4rem; }
+	#tool-container { padding: 14px; }
+	textarea { min-height: 100px; }
+}

@@ -10,11 +10,19 @@
 
 <body>
     <main>
-        <h1>Expense Tracker</h1>
-        <form id="form"><input id="desc" placeholder="Description" required> <input id="amount" type="number"
-                step="0.01" placeholder="Amount" required> <button>Add</button></form>
-        <ul id="list"></ul><canvas id="chart" width="300" height="150"></canvas>
-        <p class="notes">Add categories, charts, and filters.</p>
+       <h1>Expense Tracker</h1>
+
+    <form id="form">
+      <input id="desc" placeholder="Description" required />
+      <input id="amount" type="number" step="0.01" placeholder="Amount" required />
+      <button type="submit">Add</button>
+    </form>
+
+    <ul id="list"></ul>
+    <canvas id="chart" width="300" height="150"></canvas>
+
+    <button id="exportBtn">Export as CSV</button>
+    <p class="notes">Add categories, charts, and filters.</p>
     </main>
     <script type="module" src="./main.js"></script>
 </body>

@@ -2,21 +2,86 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Currency Converter</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Currency Converter (Offline)</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
-    <main>
-        <h1>Currency Converter (Offline)</h1>
-        <form id="form"><input id="amount" type="number" step="0.01" placeholder="Amount" required> <select
-                id="from"></select> → <select id="to"></select> <button>Convert</button></form>
-        <div id="out"></div>
-        <p class="notes">Add rate editor and local overrides (no external API).</p>
-    </main>
-    <script type="module" src="./main.js"></script>
+  <main>
+    <h1>Currency Converter (Offline)</h1>
+
+    <form id="form" aria-labelledby="converterLabel">
+      <div class="row">
+        <label for="amount">Amount</label>
+        <input id="amount" name="amount" type="number" inputmode="decimal" step="0.01" placeholder="0.00" required aria-required="true" />
+      </div>
+
+      <div class="row inline">
+        <div>
+          <label for="from">From</label>
+          <select id="from" name="from" aria-label="From currency"></select>
+        </div>
+
+        <button type="button" id="swap" title="Swap currencies" aria-label="Swap currencies">↔</button>
+
+        <div>
+          <label for="to">To</label>
+          <select id="to" name="to" aria-label="To currency"></select>
+        </div>
+
+        <button id="convert" class="primary" type="submit">Convert</button>
+      </div>
+
+      <div class="row small">
+        <label>
+          <input type="checkbox" id="auto" /> Auto-convert
+        </label>
+
+        <button type="button" id="editRates">Edit rates</button>
+        <button type="button" id="clearOverrides">Clear overrides</button>
+      </div>
+    </form>
+
+    <div id="out" aria-live="polite" class="output"></div>
+
+     <div class="chart-section">
+      <h2>7-Day Exchange Rate Trend</h2>
+      <div class="chart-controls">
+        <label for="chartFrom">From:</label>
+        <select id="chartFrom"></select>
+        
+        <label for="chartTo">To:</label>
+        <select id="chartTo"></select>
+        
+        <button type="button" id="loadChart">Load Chart</button>
+      </div>
+      <div id="chartContainer"></div>
+    </div>
+
+    <section id="rateEditor" class="rates hidden" aria-hidden="true">
+      <h2>Rate Editor (base = USD)</h2>
+      <p class="notes">Edit rates here and click Save. Values are saved to <code>localStorage</code> and used offline.</p>
+      <form id="ratesForm">
+        <div id="ratesList"></div>
+        <div class="rates-actions">
+          <button id="saveRates" type="submit" class="primary">Save</button>
+          <button id="cancelRates" type="button">Cancel</button>
+        </div>
+        
+      </form>
+    </section>
+
+    <p class="notes">Notes: No external API. Contributors can add/override currencies via the rate editor or manually in <code>localStorage</code>.</p>
+  </main>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  
+ 
+  <script src="./chart.js"></script>
+
+  <script type="module" src="./main.js"></script>
 </body>
 
 </html>

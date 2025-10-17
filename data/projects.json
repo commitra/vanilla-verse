@@ -143,4 +143,45 @@
         "categoryKey": "data",
         "difficulty": "easy"
     }
+    ,
+    {
+        "title": "Number Guessing Game",
+        "slug": "number-guessing-game",
+        "description": "Guess a random number with feedback and attempt tracking.",
+        "category": "Small Games",
+        "categoryKey": "games",
+        "difficulty": "easy"
+    },
+    {
+        "title": "Text Encryption / Decryption Tool",
+        "slug": "text-encryption-decryption",
+        "description": "Encrypt and decrypt text using simple algorithms.",
+        "category": "Productivity",
+        "categoryKey": "productivity",
+        "difficulty": "easy"
+    },
+    {
+        "title": "Rock-Paper-Scissors Game",
+        "slug": "rock-paper-scissors",
+        "description": "Play rock-paper-scissors against the computer with score tracking.",
+        "category": "Small Games",
+        "categoryKey": "games",
+        "difficulty": "easy"
+    },
+    {
+        "title": "QR Code Generator & Scanner",
+        "slug": "qr-code-generator-scanner",
+        "description": "Generate and scan QR codes from text or images.",
+        "category": "Mini Data",
+        "categoryKey": "data",
+        "difficulty": "medium"
+    },
+    {
+        "title": "Quiz",
+        "slug": "quiz",
+        "description": "A dynamic quiz app using Open Trivia API with a timer and scoring.",
+        "category": "Fun UI",
+        "categoryKey": "fun",
+        "difficulty": "intermediate"
+      }
 ]

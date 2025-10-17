@@ -1,1 +1,2 @@
 body{font-family:system-ui;background:#0f0f12;color:#eef1f8;margin:0;padding:2rem;display:grid;place-items:center}main{max-width:760px;width:100%}form{display:flex;gap:.5rem;flex-wrap:wrap}input,button{font:inherit}input{padding:.5rem .75rem;border-radius:.5rem;border:1px solid #262631;background:#17171c;color:#eef1f8}button{background:#6ee7b7;color:#0b1020;border:none;padding:.5rem .75rem;border-radius:.5rem;font-weight:600;cursor:pointer}ul{list-style:none;padding:0;margin:1rem 0}.notes{color:#a6adbb;font-size:.9rem}
+

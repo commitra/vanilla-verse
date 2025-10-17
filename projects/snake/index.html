@@ -10,12 +10,51 @@
 
 <body>
     <main>
-        <h1>Snake Game</h1><canvas id="board" width="320" height="320" aria-label="Snake game board"
-            role="img"></canvas>
-        <div class="controls"><button id="startBtn">Start</button><label>Speed <input id="speed" type="range" min="1"
-                    max="10" value="5"></label></div>
-        <p class="notes">Use arrow keys. Contribute by adding: levels, obstacles, or touch controls.</p>
-    </main>
+    <h1>Snake Game</h1>
+    
+    <div class="game-container">
+         
+        <div class="game-left">
+            <div id="scoreboard">
+                <div>Player A 🟡: <span id="scoreA">0</span></div>
+                <div>Player B 🟢: <span id="scoreB">0</span></div>
+                <div>Best Score: <span id="bestScore">0</span> (<span id="bestPlayer">None</span>)</div>
+            </div>
+
+            <canvas id="board" width="320" height="320" aria-label="Snake game board" role="img"></canvas>
+
+            <div class="controls">
+                <button id="startBtn">Start</button>
+                <label>Speed <input id="speed" type="range" min="1" max="10" value="5"></label>
+            </div>
+        </div>
+
+      
+        <section class="rules game-right" style="margin-top: -70px;">
+            <h2>Game Rules</h2>
+            <div class="player-rule playerA">
+                <h3>Player A 🟡</h3>
+                <ul>
+                    <li><strong>Arrow Up:</strong> Move Up</li>
+                    <li><strong>Arrow Down:</strong> Move Down</li>
+                    <li><strong>Arrow Left:</strong> Move Left</li>
+                    <li><strong>Arrow Right:</strong> Move Right</li>
+                </ul>
+            </div>
+            <div class="player-rule playerB">
+                <h3>Player B 🟢</h3>
+                <ul>
+                    <li><strong>W:</strong> Move Up</li>
+                    <li><strong>S:</strong> Move Down</li>
+                    <li><strong>A:</strong> Move Left</li>
+                    <li><strong>D:</strong> Move Right</li>
+                </ul>
+            </div>
+            <p class="notes">Avoid hitting yourself or the other player. Eat food to increase your score. The game ends when a collision occurs.</p>
+        </section>
+    </div>
+</main>
+
     <script type="module" src="./main.js"></script>
 </body>
 
