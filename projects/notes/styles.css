@@ -1,52 +1,100 @@
 body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
-    margin: 0;
-    padding: 2rem;
-    display: grid;
-    place-items: center
+	font-family: Arial, Helvetica, sans-serif;
+	background: #0f0f12;
+	color: #eef1f8;
+	margin: 0;
+	padding: 2rem;
+	display: grid;
+	place-items: center;
 }
 
 main {
-    max-width: 760px;
-    width: 100%
+	max-width: 760px;
+	/* max-width: 600px; */
+	width: 100%;
+}
+
+form {
+	border: 1px solid #24242c;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 1.5rem;
+	padding: 1rem;
+	border-radius: 0.5rem;
+}
+
+form input {
+	padding: 0.5rem;
+	border: 1px solid #24242c;
+	border-radius: 0.4rem;
+	background: #1e1e24;
+	color: #eef1f8;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: .75rem
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 0.75rem;
+	margin-bottom: 1em;
 }
 
 .card {
-    background: #17171c;
-    border: 1px solid #262631;
-    border-radius: .5rem;
-    padding: .75rem;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem
+	background: #17171c;
+	border: 1px solid #262631;
+	border-radius: 0.5rem;
+	padding: 0.75rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 0.5rem;
 }
 
 .tag {
-    background: #6ee7b7;
-    color: #0b1020;
-    padding: .2rem .4rem;
-    border-radius: .3rem;
-    align-self: flex-start
+	background: #00ddb5;
+	color: #0b1020;
+	padding: 0.2rem 0.4rem;
+	border-radius: 0.3rem;
+	align-self: flex-start;
+	text-transform: lowercase;
+}
+
+p {
+	margin: 0;
+	text-align: center;
 }
 
 button {
-    background: #ef4444;
-    color: white;
-    border: none;
-    border-radius: .4rem;
-    padding: .4rem .6rem;
-    cursor: pointer
+	background: #ef4444;
+	text-transform: uppercase;
+	color: #0b1020;
+	border: none;
+	border-radius: 0.4rem;
+	padding: 0.4rem 0.6rem;
+	cursor: pointer;
+	font-size: 1rem;
+	font-weight: bold;
+}
+
+form button {
+	border: 1px solid #ef4444;
+	background: none;
+	color: #ef4444;
+	/* max-width: 25%; */
+}
+
+form button:hover {
+	background: #ef4444;
+	color: #0b1020;
 }
 
 .notes {
-    color: #a6adbb;
-    font-size: .9rem
+	color: #a6adbb;
+	font-size: 0.9rem;
+}
+
+h3 {
+	margin: 0;
+	text-transform: uppercase;
+	font-size: 2rem;
 }
