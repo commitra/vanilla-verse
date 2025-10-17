@@ -130,22 +130,22 @@ ul {
     margin: 1rem 0;
 }
 
-/* FIXED: Todo Item Alignment */
+/* Improved: Todo Item Alignment */
 li {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 1rem;
+    padding: 0.75rem 0.5rem;
     border-bottom: 1px solid var(--item-border);
     transition: background-color 0.2s;
-    min-height: 60px;
+    min-height: 52px;
 }
 
 li:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* FIXED: Label alignment */
+/* Improved: Label alignment */
 label {
     display: flex;
     align-items: center;
@@ -153,10 +153,10 @@ label {
     cursor: pointer;
     flex: 1;
     margin: 0;
-    padding: 4px 0;
+    padding: 2px 0;
 }
 
-/* FIXED: Checkbox alignment */
+/* Improved: Checkbox alignment */
 input[type="checkbox"] {
     width: 1.2rem;
     height: 1.2rem;
@@ -165,7 +165,7 @@ input[type="checkbox"] {
     flex-shrink: 0;
 }
 
-/* FIXED: Text alignment */
+/* Improved: Text alignment */
 label span {
     flex: 1;
     word-break: break-word;
@@ -178,7 +178,7 @@ li.done label span {
     color: var(--completed-text);
 }
 
-/* FIXED: Delete button alignment */
+/* Improved: Delete button alignment */
 .del {
     background: #ef4444;
     color: white;
