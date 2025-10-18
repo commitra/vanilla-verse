@@ -99,6 +99,82 @@ body {
     gap: 20px;
 }
 
+/* Gender Selection Styles */
+.gender-selection {
+    margin-bottom: 8px;
+}
+
+.gender-label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.3px;
+}
+
+.gender-options {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.gender-option {
+    flex: 1;
+    min-width: 0;
+}
+
+.gender-radio {
+    display: none;
+}
+
+.gender-radio-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    user-select: none;
+}
+
+.gender-radio-label:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.gender-radio:checked + .gender-radio-label {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-color: #10b981;
+    color: white;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.gender-icon {
+    font-size: 16px;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.gender-text {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.gender-radio:focus + .gender-radio-label {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+}
+
 .input-row {
     display: flex;
     gap: 20px;
@@ -659,5 +735,61 @@ body {
         font-size: 13px;
         white-space: normal;
         padding: 0 5px;
+    }
+
+    .gender-options {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .gender-radio-label {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .gender-icon {
+        font-size: 14px;
+    }
+
+    .gender-text {
+        font-size: 13px;
+    }
+}
+
+/* Additional accessibility improvements */
+.gender-radio-label:focus-within {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+}
+
+/* Improve focus visibility for keyboard navigation */
+.gender-radio:focus + .gender-radio-label {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+/* Better contrast for gender icons */
+.gender-icon {
+    filter: contrast(1.2);
+}
+
+/* Ensure proper spacing on very small screens */
+@media (max-width: 360px) {
+    .gender-options {
+        gap: 6px;
+    }
+    
+    .gender-radio-label {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    
+    .gender-text {
+        font-size: 12px;
+    }
+    
+    .gender-icon {
+        font-size: 12px;
     }
 }
