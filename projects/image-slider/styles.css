@@ -1,42 +1,117 @@
 body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
-    margin: 0;
-    padding: 2rem;
-    display: grid;
-    place-items: center
+  font-family: system-ui;
+  background: #0f0f12;
+  color: #eef1f8;
+  margin: 0;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
 }
 
 main {
-    max-width: 760px;
-    width: 100%
+  max-width: 550px;
+  width: 100%;
+  text-align: center;
 }
 
 .slider {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: .5rem;
-    align-items: center
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.slide-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #262631;
 }
 
 img {
-    max-width: 100%;
-    border-radius: .5rem;
-    border: 1px solid #262631
+  max-width: 100%;
+  display: block;
 }
 
-button {
-    background: #6ee7b7;
-    color: #0b1020;
-    border: none;
-    padding: .5rem .75rem;
-    border-radius: .5rem;
-    font-weight: 600;
-    cursor: pointer
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.slider:hover .caption {
+  opacity: 1;
+}
+button.nav-btn {
+  background: #6ee7b7;
+  color: #0b1020;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+button.nav-btn:hover {
+  background: #5dd6a5;
+}
+
+.indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #374151;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.indicator.active {
+  background: #6ee7b7;
+}
+
+.indicator:hover {
+  background: #4b5563;
+}
+
+.indicator.active:hover {
+  background: #5dd6a5;
 }
 
 .notes {
-    color: #a6adbb;
-    font-size: .9rem
+  color: #a6adbb;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent-2, #93c5fd);
+  outline-offset: 2px;
+}
+
+.indicator:focus-visible {
+  outline: 2px solid var(--accent-2, #93c5fd);
+  outline-offset: 2px;
 }
