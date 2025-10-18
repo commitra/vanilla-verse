@@ -5,6 +5,24 @@ const grid = document.getElementById('grid');
 const timeEl = document.querySelector('.time');
 const bestEl = document.querySelector('.best');
 
+const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+      
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-mode');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+        
+            const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+        });
+
+
 const emojis = ['🍎', '🍌', '🍇', '🍓', '🍒', '🍍', '🍊', '🍉'];
 let deck = shuffle([...emojis, ...emojis]).map((v, i) => ({ id: i, v, flipped: false, matched: false }));
 let first = null, second = null, lock = false;
@@ -107,3 +125,5 @@ function loadBestTime() {
 
 loadBestTime();
 render();
+
+

@@ -1,19 +1,13 @@
 const input = document.getElementById('input');
 const preview = document.getElementById('preview');
-const themeToggle = document.getElementById('themeToggle');
 const exportHtml = document.getElementById('exportHtml');
+const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
-// Theme management (matching home page system)
+// Apply saved theme
 const currentTheme = localStorage.getItem('theme') || 'light';
 if (currentTheme === 'dark') {
     body.classList.add('dark-mode');
-}
-
-function toggleTheme() {
-    body.classList.toggle('dark-mode');
-    const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
-    localStorage.setItem('theme', theme);
 }
 
 // Markdown parsing
@@ -36,26 +30,16 @@ function exportAsHtml() {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exported Markdown</title>
-    <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            line-height: 1.6;
-        }
-        h2 { color: #333; }
-        h3 { color: #555; }
-        strong { font-weight: bold; }
-        em { font-style: italic; }
-        li { margin: 0.25rem 0; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exported Markdown</title>
+<style>
+body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; line-height: 1.6; }
+h2 { color: #333; } h3 { color: #555; } strong { font-weight: bold; } em { font-style: italic; } li { margin: 0.25rem 0; }
+</style>
 </head>
 <body>
-    ${preview.innerHTML}
+${preview.innerHTML}
 </body>
 </html>`;
     
@@ -72,9 +56,13 @@ function exportAsHtml() {
 
 // Event listeners
 input.addEventListener('input', render);
-themeToggle.addEventListener('click', toggleTheme);
 exportHtml.addEventListener('click', exportAsHtml);
 
-// Initialize
-applyTheme(currentTheme);
+themeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+    localStorage.setItem('theme', theme);
+});
+
+// Initial render
 render();
