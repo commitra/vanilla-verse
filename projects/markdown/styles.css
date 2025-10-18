@@ -1,38 +1,215 @@
-body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
+:root {
+    --bg: #0f0f12;
+    --card: #17171c;
+    --text: #eef1f8;
+    --muted: #a6adbb;
+    --accent: #6ee7b7;
+    --accent-2: #93c5fd;
+    --bg-gradient-start: #0b0b0e;
+    --bg-gradient-end: #121217;
+    --border: #262631;
+    --input-bg: #0e0e13;
+}
+
+body:not(.dark-mode) {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --bg-gradient-start: #f0f4f8;
+    --bg-gradient-end: #e2e8f0;
+    --border: #e5e7eb;
+    --input-bg: #ffffff;
+}
+
+body.dark-mode {
+    --bg: #0f0f12;
+    --card: #17171c;
+    --text: #eef1f8;
+    --muted: #a6adbb;
+    --bg-gradient-start: #0b0b0e;
+    --bg-gradient-end: #121217;
+    --border: #262631;
+    --input-bg: #0e0e13;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
     margin: 0;
+    height: 100%;
+}
+
+body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+    background: linear-gradient(180deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    color: var(--text);
+    transition: background 0.3s ease, color 0.3s ease;
     padding: 2rem;
     display: grid;
-    place-items: center
+    place-items: center;
 }
 
 main {
     max-width: 960px;
     width: 100%;
     display: grid;
-    gap: .75rem
+    gap: 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: .75rem;
+    padding: 2rem;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .02) inset;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: var(--text);
+}
+
+.controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn {
+    padding: .5rem .75rem;
+    border-radius: .5rem;
+    border: 1px solid var(--border);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #0b1020;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.theme-toggle {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    color: var(--text);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:hover {
+    transform: rotate(15deg) scale(1.1);
+    border-color: var(--accent);
+    box-shadow: 0 6px 16px rgba(110, 231, 183, 0.2);
+}
+
+.theme-toggle svg {
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle .sun-icon {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+.theme-toggle .moon-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+body:not(.dark-mode) .theme-toggle .sun-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+body:not(.dark-mode) .theme-toggle .moon-icon {
+    opacity: 0;
+    transform: rotate(-90deg);
 }
 
 textarea {
     width: 100%;
-    background: #17171c;
-    color: #eef1f8;
-    border: 1px solid #262631;
+    background: var(--input-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
     border-radius: .5rem;
-    padding: .5rem
+    padding: .75rem;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: vertical;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(110, 231, 183, 0.2);
 }
 
 .preview {
-    background: #17171c;
-    border: 1px solid #262631;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
     border-radius: .5rem;
-    padding: .5rem;
-    min-height: 200px
+    padding: .75rem;
+    min-height: 200px;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    line-height: 1.6;
+}
+
+.preview h2 {
+    color: var(--text);
+    margin: 0 0 0.5rem 0;
+}
+
+.preview h3 {
+    color: var(--text);
+    margin: 0 0 0.5rem 0;
+}
+
+.preview strong {
+    font-weight: bold;
+}
+
+.preview em {
+    font-style: italic;
+}
+
+.preview li {
+    margin: 0.25rem 0;
 }
 
 .notes {
-    color: #a6adbb;
-    font-size: .9rem
+    color: var(--muted);
+    font-size: .9rem;
+    text-align: center;
+    margin: 0;
 }
