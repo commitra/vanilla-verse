@@ -3,15 +3,18 @@ class BMICalculator {
         this.isMetric = true;
         this.history = this.loadHistory();
         this.chart = null;
+        this.selectedGender = this.loadGenderPreference();
         this.validationState = {
             weight: false,
-            height: false
+            height: false,
+            gender: false
         };
         this.initializeElements();
         this.bindEvents();
         this.updatePlaceholders();
         this.updateHistoryControls();
         this.renderHistory();
+        this.setGenderPreference();
     }
 
     initializeElements() {
@@ -20,6 +23,8 @@ class BMICalculator {
         this.heightInput = document.getElementById('heightInput');
         this.weightError = document.getElementById('weightError');
         this.heightError = document.getElementById('heightError');
+        this.genderError = document.getElementById('genderError');
+        this.genderRadios = document.querySelectorAll('input[name="gender"]');
         this.result = document.getElementById('result');
         this.bmiDisplay = document.getElementById('bmiDisplay');
         this.bmiValue = document.getElementById('bmiValue');
@@ -55,6 +60,11 @@ class BMICalculator {
 
         this.weightInput.addEventListener('input', () => this.validateField('weight'));
         this.heightInput.addEventListener('input', () => this.validateField('height'));
+        
+        // Gender selection events
+        this.genderRadios.forEach(radio => {
+            radio.addEventListener('change', () => this.handleGenderChange());
+        });
     }
 
     incrementValue(fieldType, step) {
@@ -92,13 +102,50 @@ class BMICalculator {
         this.updateSubmitButton();
     }
 
+    handleGenderChange() {
+        const selectedRadio = document.querySelector('input[name="gender"]:checked');
+        if (selectedRadio) {
+            this.selectedGender = selectedRadio.value;
+            this.saveGenderPreference();
+            this.validateField('gender');
+        }
+    }
+
+    loadGenderPreference() {
+        try {
+            return localStorage.getItem('bmiGender') || '';
+        } catch (error) {
+            console.error('Error loading gender preference:', error);
+            return '';
+        }
+    }
+
+    saveGenderPreference() {
+        try {
+            localStorage.setItem('bmiGender', this.selectedGender);
+        } catch (error) {
+            console.error('Error saving gender preference:', error);
+        }
+    }
+
+    setGenderPreference() {
+        if (this.selectedGender) {
+            const radio = document.querySelector(`input[name="gender"][value="${this.selectedGender}"]`);
+            if (radio) {
+                radio.checked = true;
+                this.validateField('gender');
+            }
+        }
+    }
+
     handleSubmit(e) {
         e.preventDefault();
 
         const weightValid = this.validateField('weight', true);
         const heightValid = this.validateField('height', true);
+        const genderValid = this.validateField('gender', true);
 
-        if (!weightValid || !heightValid) {
+        if (!weightValid || !heightValid || !genderValid) {
             this.focusFirstInvalid();
             return;
         }
@@ -114,6 +161,10 @@ class BMICalculator {
     }
 
     validateField(fieldType, forceShowError = false) {
+        if (fieldType === 'gender') {
+            return this.validateGender(forceShowError);
+        }
+
         const input = fieldType === 'weight' ? this.weightInput : this.heightInput;
         const errorElement = fieldType === 'weight' ? this.weightError : this.heightError;
         const value = input.value.trim();
@@ -157,6 +208,27 @@ class BMICalculator {
         } else {
             return this.validateHeight(numValue, input, errorElement);
         }
+    }
+
+    validateGender(forceShowError = false) {
+        const selectedGender = document.querySelector('input[name="gender"]:checked');
+        
+        this.genderError.classList.remove('show');
+        this.genderError.textContent = '';
+
+        if (!selectedGender) {
+            if (forceShowError) {
+                this.genderError.textContent = 'Please select your gender.';
+                this.genderError.classList.add('show');
+            }
+            this.validationState.gender = false;
+            this.updateSubmitButton();
+            return false;
+        }
+
+        this.validationState.gender = true;
+        this.updateSubmitButton();
+        return true;
     }
 
     validateWeight(weight, input, errorElement) {
@@ -249,15 +321,17 @@ class BMICalculator {
         this.heightInput.classList.remove('error', 'success');
         this.weightError.classList.remove('show');
         this.heightError.classList.remove('show');
+        this.genderError.classList.remove('show');
         this.weightError.textContent = '';
         this.heightError.textContent = '';
+        this.genderError.textContent = '';
         this.weightInput.setAttribute('aria-invalid', 'false');
         this.heightInput.setAttribute('aria-invalid', 'false');
-        this.validationState = { weight: false, height: false };
+        this.validationState = { weight: false, height: false, gender: false };
     }
 
     updateSubmitButton() {
-        const isValid = this.validationState.weight && this.validationState.height;
+        const isValid = this.validationState.weight && this.validationState.height && this.validationState.gender;
         this.submitBtn.disabled = !isValid;
     }
 
@@ -276,6 +350,8 @@ class BMICalculator {
     }
 
     getBMICategory(bmi) {
+        const gender = this.selectedGender;
+        
         const categories = [
             {
                 name: 'Severely Underweight',
@@ -283,7 +359,7 @@ class BMICalculator {
                 class: 'bmi-severe-underweight',
                 historyClass: 'severe-underweight',
                 range: 'BMI < 16.0',
-                advice: 'This is very low. Please consult a healthcare professional.'
+                advice: this.getGenderSpecificAdvice('severely-underweight', gender, bmi)
             },
             {
                 name: 'Underweight',
@@ -291,7 +367,7 @@ class BMICalculator {
                 class: 'bmi-underweight',
                 historyClass: 'underweight',
                 range: '16.0 ≤ BMI < 18.5',
-                advice: 'Consider a balanced, calorie-rich diet and speak to a clinician if concerned.'
+                advice: this.getGenderSpecificAdvice('underweight', gender, bmi)
             },
             {
                 name: 'Normal Weight',
@@ -299,7 +375,7 @@ class BMICalculator {
                 class: 'bmi-healthy',
                 historyClass: 'healthy',
                 range: '18.5 ≤ BMI < 25.0',
-                advice: 'Great. Maintain a balanced diet and regular activity.'
+                advice: this.getGenderSpecificAdvice('normal', gender, bmi)
             },
             {
                 name: 'Overweight',
@@ -307,7 +383,7 @@ class BMICalculator {
                 class: 'bmi-overweight',
                 historyClass: 'overweight',
                 range: '25.0 ≤ BMI < 30.0',
-                advice: 'Consider lifestyle changes (diet/activity). Small changes help.'
+                advice: this.getGenderSpecificAdvice('overweight', gender, bmi)
             },
             {
                 name: 'Obese',
@@ -315,7 +391,7 @@ class BMICalculator {
                 class: 'bmi-obese',
                 historyClass: 'obese',
                 range: '30.0 ≤ BMI < 35.0',
-                advice: 'Higher health risk. Speak to a healthcare provider for guidance.'
+                advice: this.getGenderSpecificAdvice('obese', gender, bmi)
             },
             {
                 name: 'Extremely Obese',
@@ -323,20 +399,70 @@ class BMICalculator {
                 class: 'bmi-extreme',
                 historyClass: 'extreme',
                 range: 'BMI ≥ 35.0',
-                advice: 'Significant health risk. Please consult a healthcare professional.'
+                advice: this.getGenderSpecificAdvice('extremely-obese', gender, bmi)
             }
         ];
 
         return categories.find(c => bmi >= c.min && bmi < c.max);
     }
 
+    getGenderSpecificAdvice(category, gender, bmi) {
+        const healthTips = {
+            'severely-underweight': {
+                male: 'This is very low for men. Please consult a healthcare professional. Consider increasing calorie intake with nutrient-dense foods.',
+                female: 'This is very low for women. Please consult a healthcare professional. Consider increasing calorie intake with nutrient-dense foods.',
+                other: 'This BMI is very low. Please consult a healthcare professional. Consider increasing calorie intake with nutrient-dense foods.'
+            },
+            'underweight': {
+                male: 'Consider a balanced, calorie-rich diet with lean proteins. Men may benefit from strength training to build healthy muscle mass.',
+                female: 'Consider a balanced, calorie-rich diet with iron-rich foods. Women may benefit from weight-bearing exercises and adequate calcium intake.',
+                other: 'Consider a balanced, calorie-rich diet and speak to a clinician if concerned. Focus on nutrient-dense foods and regular activity.'
+            },
+            'normal': {
+                male: 'Excellent! Maintain a balanced diet with adequate protein and regular exercise. Men should focus on cardiovascular and strength training.',
+                female: 'Excellent! Maintain a balanced diet with iron, calcium, and folate. Women benefit from regular weight-bearing exercises.',
+                other: 'Great! Maintain a balanced diet and regular activity. Focus on whole foods and consistent exercise routine.'
+            },
+            'overweight': {
+                male: 'Consider lifestyle changes focusing on portion control and regular exercise. Men may benefit from HIIT workouts and reduced processed foods.',
+                female: 'Consider lifestyle changes with emphasis on balanced nutrition and regular activity. Women should focus on sustainable dietary changes.',
+                other: 'Consider lifestyle changes (diet/activity). Small, consistent changes help. Focus on whole foods and regular movement.'
+            },
+            'obese': {
+                male: 'Higher health risk for men. Speak to a healthcare provider for guidance. Consider structured weight management programs.',
+                female: 'Higher health risk for women. Speak to a healthcare provider for guidance. Consider hormone-related factors and structured programs.',
+                other: 'Higher health risk. Speak to a healthcare provider for guidance. Consider comprehensive lifestyle modifications.'
+            },
+            'extremely-obese': {
+                male: 'Significant health risk for men. Please consult a healthcare professional immediately for comprehensive treatment options.',
+                female: 'Significant health risk for women. Please consult a healthcare professional immediately for comprehensive treatment options.',
+                other: 'Significant health risk. Please consult a healthcare professional immediately for comprehensive treatment options.'
+            }
+        };
+
+        return healthTips[category][gender] || healthTips[category]['other'];
+    }
+
     displayResult(bmi, category) {
         this.bmiValue.textContent = bmi.toFixed(1);
-        this.bmiCategory.textContent = category.name;
+        
+        // Add gender icon to category name
+        const genderIcon = this.getGenderIcon();
+        this.bmiCategory.innerHTML = `${genderIcon} ${category.name}`;
+        
         this.bmiRange.textContent = category.range;
         this.bmiAdvice.textContent = category.advice;
         this.bmiDisplay.className = `bmi-display ${category.class}`;
         this.result.classList.add('show');
+    }
+
+    getGenderIcon() {
+        const icons = {
+            'male': '♂',
+            'female': '♀',
+            'other': '⚧'
+        };
+        return icons[this.selectedGender] || '';
     }
 
     saveToHistory(weight, height, bmi, category) {
@@ -348,7 +474,8 @@ class BMICalculator {
             bmi: bmi.toFixed(1),
             category: category.name,
             categoryClass: category.historyClass,
-            unit: this.isMetric ? 'metric' : 'imperial'
+            unit: this.isMetric ? 'metric' : 'imperial',
+            gender: this.selectedGender
         };
 
         this.history.unshift(entry);
