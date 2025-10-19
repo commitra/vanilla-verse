@@ -1,20 +1,30 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Image Slider</title>
-    <link rel="stylesheet" href="./styles.css">
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Image Slider</title>
+        <link rel="stylesheet" href="./styles.css">
+    </head>
 
-<body>
-    <main>
-        <h1>Image Slider</h1>
-        <div class="slider"><button id="prev">◀</button><img id="img" alt="Slide"><button id="next">▶</button></div>
-        <p class="notes">Add autoplay, responsive, accessibility.</p>
-    </main>
-    <script type="module" src="./main.js"></script>
-</body>
+    <body>
+        <main>
+            <h1>Image Slider</h1>
+            <div class="slider" role="region" aria-label="Image Slider"
+                aria-roledescription="carousel">
+                <button id="prev" class="nav-btn"
+                    aria-label="Previous Slide">◀</button>
+                <div class="slide-container" aria-live="polite">
+                    <img id="img" alt="Slide"> <p id="caption"
+                        class="caption"></p> </div>
+                <button id="next" class="nav-btn"
+                    aria-label="Next Slide">▶</button>
+            </div>
+            <div id="indicators" class="indicators" role="tablist"
+                aria-label="Slide selectors"></div>
+        </main>
+        <script type="module" src="./main.js"></script>
+    </body>
 
 </html>
