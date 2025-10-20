@@ -1,49 +1,148 @@
 body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
-    margin: 0;
-    padding: 2rem;
-    display: grid;
-    place-items: center
+  font-family: system-ui;
+  margin: 0;
+  padding: 1rem 2rem;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
 }
 
-main {
-    max-width: 760px;
-    width: 100%
+header h1 {
+  margin: 0.2rem 0 0.5rem 0;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.controls button,
+.controls select {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.controls button:hover,
+.controls select:hover {
+  background: var(--button-hover);
+}
+
+.game-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.grid-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(4, 80px);
-    gap: .5rem
+  display: grid;
+  gap: 0.5rem;
+  grid-auto-flow: row;
+  justify-content: center;
+  justify-items: center;
 }
 
 button.card {
-    width: 80px;
-    height: 80px;
-    border-radius: .5rem;
-    border: 1px solid #262631;
-    background: #17171c;
-    color: #eef1f8;
-    font-size: 1.5rem;
-    cursor: pointer
+  width: var(--card-size, 80px);
+  height: var(--card-size, 80px);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--card-text);
+  font-size: calc(var(--card-size, 80px) / 2);
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
 }
 
 button.card.flipped {
-    background: #6ee7b7;
-    color: #0b1020
+  background: var(--card-flipped-bg);
+  color: var(--card-flipped-text);
 }
 
-.notes {
-    color: #a6adbb;
-    font-size: .9rem
+.scoreboard {
+  text-align: left;
+  min-width: 180px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.scoreboard h3 {
+  margin-bottom: 0.5rem;
 }
 
 .stats {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-    color: #a6adbb;
+  display: flex;
+  justify-content: space-between; 
+  gap: 2rem; 
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  max-width: 400px; 
+  margin-left: auto;
+  margin-right: auto; 
+}
+
+body.theme-dark {
+  --bg:#0f0f12;
+  --text:#eef1f8;
+  --text-muted:#a6adbb;
+  --card-bg:#17171c;
+  --card-text:#eef1f8;
+  --card-flipped-bg:#6ee7b7;
+  --card-flipped-text:#0b1020;
+  --border:#262631;
+  --button-bg:#1f1f25;
+  --button-text:#eef1f8;
+  --button-hover:#33333a;
+  background:var(--bg);
+  color:var(--text);
+}
+
+body.theme-light {
+  --bg:#f5f6fa;
+  --text:#20222a;
+  --text-muted:#555;
+  --card-bg:#ffffff;
+  --card-text:#20222a;
+  --card-flipped-bg:#89f0a0;
+  --card-flipped-text:#000;
+  --border:#ccc;
+  --button-bg:#e6e7eb;
+  --button-text:#20222a;
+  --button-hover:#d2d3d9;
+  background:var(--bg);
+  color:var(--text);
+}
+
+body.theme-neon {
+  --bg:#0b0020;
+  --text:#f5f5ff;
+  --text-muted:#a783ff;
+  --card-bg:#1b0138;
+  --card-text:#b3aaff;
+  --card-flipped-bg:#c800ff;
+  --card-flipped-text:#fff;
+  --border:#6400c8;
+  --button-bg:#280047;
+  --button-text:#f5f5ff;
+  --button-hover:#3b0071;
+  background:var(--bg);
+  color:var(--text);
 }
