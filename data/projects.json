@@ -191,5 +191,13 @@
         "category": "Small Games",
         "categoryKey": "games",
         "difficulty": "intermediate"
+      },
+      {
+        "title": "Password Generator",
+        "slug": "password-generator",
+        "description": "Generate secure passwords with customizable options.",
+        "category": "Productivity", 
+        "categoryKey": "productivity",
+        "difficulty": "easy"
       }
 ]
