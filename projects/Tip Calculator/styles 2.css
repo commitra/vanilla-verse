@@ -1,0 +1,229 @@
+:root {
+  /*  Light Theme */
+  --bg: #f9fafb;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --text: #111827;
+  --border: #e5e7eb;
+}
+
+body.dark-mode {  
+/* dark mode */
+  --bg: #0f172a;
+  --card: #1e293b;
+  --muted: #9ca3af;
+  --accent: #60a5fa;
+  --text: #f1f5f9;
+  --border: #334155;
+}
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+* {
+  box-sizing: border-box;
+  transition: background 0.4s ease, color 0.4s ease, border-color 0.3s ease;
+}
+
+
+.container {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+
+
+  width: 32vw;
+  max-width: 100%;
+  min-width: 320px;
+
+  margin-top: 0.1rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.6rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.tip-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.tip-btn {
+  flex: 1 1 30%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tip-btn:hover {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.tip-btn.active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+
+.results {
+  margin-top: 2rem;
+  background: rgba(0, 0, 0, 0.03);
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+body.dark-mode .results {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.results h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text);
+}
+
+.results span {
+  font-weight: bold;
+  color: var(--accent);
+}
+
+/* Theme toggle */
+.theme-toggle {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  color: var(--text);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.theme-toggle .sun-icon {
+  display: none;
+}
+
+body.dark-mode .theme-toggle .sun-icon {
+  display: block;
+}
+
+body.dark-mode .theme-toggle .moon-icon {
+  display: none;
+}
+
+/*  Responsive  */
+@media (max-width: 768px) {
+  body {
+    padding: 1.5rem;
+  }
+
+  .container {
+    margin-top: 1rem;
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tip-buttons {
+    flex-direction: column;
+  }
+
+  .tip-btn {
+    flex: 1 1 100%;
+  }
+
+  .container {
+    padding: 1.25rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+/* Remove (arrows that appear for input type number ( to inc and dec value) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
