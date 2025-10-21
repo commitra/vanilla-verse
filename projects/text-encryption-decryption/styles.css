@@ -142,3 +142,91 @@ select, input[type="number"] {
 	#tool-container { padding: 14px; }
 	textarea { min-height: 100px; }
 }
+
+.theme-toggle {
+    background: var(--card);
+    border: 2px solid var(--border, #262631);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    color: var(--text);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:hover {
+    transform: rotate(15deg) scale(1.1);
+    border-color: var(--accent);
+    box-shadow: 0 6px 16px rgba(110, 231, 183, 0.2);
+}
+
+.theme-toggle svg {
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle .sun-icon {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+.theme-toggle .moon-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+body:not(.dark-mode) .theme-toggle .sun-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+body:not(.dark-mode) .theme-toggle .moon-icon {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+/* ------------------------------------
+   DARK MODE THEME
+------------------------------------ */
+body.dark-mode {
+  background: #eef1f8;
+  color: #0f0f12;
+}
+
+body.dark-mode canvas {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+
+body.dark-mode .controls label {
+  color: #0f0f12;
+}
+
+body.dark-mode .controls select {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f0f12;
+}
+
+body.dark-mode .notes {
+  color: #4b5563;
+}
+
+/* Toggle button colors for dark mode */
+body.dark-mode .theme-toggle {
+  background: #e2e8f0;
+  border-color: #a1a1aa;
+  color: #0f0f12;
+}
+
+body.dark-mode .theme-toggle:hover {
+  border-color: #2563eb;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+}

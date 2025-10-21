@@ -362,6 +362,8 @@ body {
     text-align: center;
 }
 
+
+
 .bmi-display {
     padding: 16px 20px;
     padding-top: 8px;
@@ -736,60 +738,3 @@ body {
         white-space: normal;
         padding: 0 5px;
     }
-
-    .gender-options {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .gender-radio-label {
-        padding: 10px 12px;
-        font-size: 13px;
-    }
-
-    .gender-icon {
-        font-size: 14px;
-    }
-
-    .gender-text {
-        font-size: 13px;
-    }
-}
-
-/* Additional accessibility improvements */
-.gender-radio-label:focus-within {
-    outline: 2px solid #10b981;
-    outline-offset: 2px;
-}
-
-/* Improve focus visibility for keyboard navigation */
-.gender-radio:focus + .gender-radio-label {
-    outline: 2px solid #10b981;
-    outline-offset: 2px;
-    background: rgba(16, 185, 129, 0.1);
-}
-
-/* Better contrast for gender icons */
-.gender-icon {
-    filter: contrast(1.2);
-}
-
-/* Ensure proper spacing on very small screens */
-@media (max-width: 360px) {
-    .gender-options {
-        gap: 6px;
-    }
-    
-    .gender-radio-label {
-        padding: 8px 10px;
-        font-size: 12px;
-    }
-    
-    .gender-text {
-        font-size: 12px;
-    }
-    
-    .gender-icon {
-        font-size: 12px;
-    }
-}
