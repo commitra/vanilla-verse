@@ -34,6 +34,7 @@ main {
 img {
   max-width: 100%;
   display: block;
+  transition: opacity 300ms ease-in-out;
 }
 
 .caption {

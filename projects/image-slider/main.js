@@ -14,6 +14,9 @@ const slides = [
 ];
 
 
+// Feature toggle: enable/disable auto sliding
+const autoSlide = true; // set to false to disable autoplay and hover pause
+
 let i = 0;
 const img = document.getElementById("img");
 const captionEl = document.getElementById("caption");
@@ -22,9 +25,20 @@ let autoplayInterval = null;
 const autoplayDelay = 3000;
 
 function render() {
-  img.src = slides[i].src;
-  img.alt = slides[i].caption || `Slide ${i + 1}`;
-  captionEl.textContent = slides[i].caption || "";
+  // fade-out current image, then fade-in on load of the next
+  img.style.opacity = 0;
+
+  const current = slides[i];
+  const handleLoad = () => {
+    img.removeEventListener("load", handleLoad);
+    // fade back in after the image has loaded
+    img.style.opacity = 1;
+  };
+  img.addEventListener("load", handleLoad);
+
+  img.src = current.src;
+  img.alt = current.caption || `Slide ${i + 1}`;
+  captionEl.textContent = current.caption || "";
 
   const indicators = indicatorsContainer.children;
   for (let j = 0; j < indicators.length; j++) {
@@ -35,7 +49,7 @@ function render() {
 function goToSlide(index) {
   i = index;
   render();
-  resetAutoplay();
+  if (autoSlide) resetAutoplay();
 }
 
 function nextSlide() {
@@ -49,16 +63,22 @@ function prevSlide() {
 }
 
 function startAutoplay() {
+  if (!autoSlide) return;
   if (autoplayInterval) clearInterval(autoplayInterval);
   autoplayInterval = setInterval(nextSlide, autoplayDelay);
+  const liveRegion = document.querySelector(".slide-container");
+  if (liveRegion) liveRegion.setAttribute("aria-live", "polite");
 }
 
 function stopAutoplay() {
   clearInterval(autoplayInterval);
   autoplayInterval = null;
+  const liveRegion = document.querySelector(".slide-container");
+  if (liveRegion) liveRegion.setAttribute("aria-live", "off");
 }
 
 function resetAutoplay() {
+  if (!autoSlide) return;
   stopAutoplay();
   startAutoplay();
 }
@@ -66,10 +86,10 @@ function resetAutoplay() {
 function handleKeyDown(e) {
   if (e.key === "ArrowLeft") {
     prevSlide();
-    resetAutoplay();
+    if (autoSlide) resetAutoplay();
   } else if (e.key === "ArrowRight") {
     nextSlide();
-    resetAutoplay();
+    if (autoSlide) resetAutoplay();
   }
 }
 
@@ -88,11 +108,11 @@ function handleTouchEnd(e) {
 function handleSwipe() {
   if (touchEndX < touchStartX - 50) {
     nextSlide();
-    resetAutoplay();
+    if (autoSlide) resetAutoplay();
   }
   if (touchEndX > touchStartX + 50) {
     prevSlide();
-    resetAutoplay();
+    if (autoSlide) resetAutoplay();
   }
 }
 
@@ -110,25 +130,27 @@ function initSlider() {
 
   document.getElementById("prev").addEventListener("click", () => {
     prevSlide();
-    resetAutoplay();
+    if (autoSlide) resetAutoplay();
   });
   document.getElementById("next").addEventListener("click", () => {
     nextSlide();
-    resetAutoplay();
+    if (autoSlide) resetAutoplay();
   });
 
   const sliderElement = document.querySelector(".slider");
-  sliderElement.addEventListener("mouseenter", stopAutoplay);
-  sliderElement.addEventListener("mouseleave", startAutoplay);
-  sliderElement.addEventListener("focusin", stopAutoplay);
-  sliderElement.addEventListener("focusout", startAutoplay);
+  if (autoSlide) {
+    sliderElement.addEventListener("mouseenter", stopAutoplay);
+    sliderElement.addEventListener("mouseleave", startAutoplay);
+    sliderElement.addEventListener("focusin", stopAutoplay);
+    sliderElement.addEventListener("focusout", startAutoplay);
+  }
 
   document.addEventListener("keydown", handleKeyDown);
 
   img.addEventListener("touchstart", handleTouchStart, false);
   img.addEventListener("touchend", handleTouchEnd, false);
 
-  startAutoplay();
+  if (autoSlide) startAutoplay();
 }
 
 initSlider();
