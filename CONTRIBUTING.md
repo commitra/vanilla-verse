@@ -31,7 +31,7 @@ Welcome! This guide will help you make your first contribution. No experience ne
 - Save your work and run:
     ```bash
     git add .
-    git commit -m "Describe your change here"
+    git commit -m "Describe your change here
     git push
     ```
 
