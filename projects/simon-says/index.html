@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simon Says — Vanilla JS</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Simon Says</h1>
+
+    <section class="game">
+      <div class="board" id="board" aria-label="Simon game board">
+        <button class="pad pad-green" data-color="green" id="pad-green" aria-label="Green pad"></button>
+        <button class="pad pad-red" data-color="red" id="pad-red" aria-label="Red pad"></button>
+        <button class="pad pad-yellow" data-color="yellow" id="pad-yellow" aria-label="Yellow pad"></button>
+        <button class="pad pad-blue" data-color="blue" id="pad-blue" aria-label="Blue pad"></button>
+      </div>
+
+      <div class="controls">
+        <div class="status">
+          <div>Level: <span id="level">0</span></div>
+          <div id="message" aria-live="polite"></div>
+        </div>
+
+        <div class="buttons">
+          <button id="startBtn">Start</button>
+          <button id="restartBtn">Restart</button>
+        </div>
+
+        <div class="options">
+          <!-- TODO: contributors can add toggles for strict mode, difficulty, theme -->
+          <label>
+            <input type="checkbox" id="soundToggle" checked />
+            Sound
+          </label>
+          <label>
+            <input type="checkbox" id="showSequence" checked />
+            Show sequence visually
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer">
+      <small>Open-source friendly — find TODO comments in <code>script.js</code></small>
+      <div class="contributors-note">
+        <p>
+          <strong>Want to contribute?</strong> Add sounds, make mobile-friendly gestures, or add a leaderboard.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
