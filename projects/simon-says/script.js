@@ -109,4 +109,173 @@ async function playbackSequence() {
 
 // helper wait
 function wait(ms) {
-  return new
+  return new Promise((res) => setTimeout(res, ms));
+}
+
+function addRandomColorToSequence() {
+  const idx = Math.floor(Math.random() * COLORS.length);
+  state.sequence.push(COLORS[idx]);
+  state.level = state.sequence.length;
+  levelEl.textContent = state.level;
+}
+
+// Start a new game
+function startGame() {
+  if (state.running) return;
+  state.sequence = [];
+  state.playerIndex = 0;
+  state.level = 0;
+  state.running = true;
+  levelEl.textContent = 0;
+  messageEl.textContent = 'Game started!';
+  nextRound();
+}
+
+// Restart (clear state)
+function restartGame() {
+  state.running = false;
+  state.playingBack = false;
+  state.sequence = [];
+  state.playerIndex = 0;
+  state.level = 0;
+  levelEl.textContent = 0;
+  messageEl.textContent = 'Game reset.';
+}
+
+// Move to next round: add color and playback
+async function nextRound() {
+  if (!state.running) return;
+  addRandomColorToSequence();
+  // allow a short pause before playback
+  await wait(500);
+  await playbackSequence();
+}
+
+// Player input handler
+async function handlePlayerInput(color) {
+  if (!state.running || state.playingBack) return;
+  // play feedback
+  highlightPad(color, 220);
+  await playSound(color, 220);
+
+  const expected = state.sequence[state.playerIndex];
+  if (color === expected) {
+    state.playerIndex++;
+    // If player completed sequence
+    if (state.playerIndex >= state.sequence.length) {
+      messageEl.textContent = 'Correct! Next round...';
+      await wait(600);
+      nextRound();
+    } else {
+      messageEl.textContent = `Good (${state.playerIndex}/${state.sequence.length})`;
+    }
+  } else {
+    // wrong
+    messageEl.textContent = 'Wrong! Try again.';
+    // TODO: Add "strict" mode: if strict, end game; else replay sequence
+    // For now, replay sequence after a short delay
+    await wait(800);
+    // Optionally: vibrate on supported devices
+    try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
+    await playbackSequence();
+  }
+}
+
+// Attach click / keyboard handlers to pads
+function initPadListeners() {
+  // click
+  Object.entries(pads).forEach(([color, el]) => {
+    el.addEventListener('click', () => {
+      handlePlayerInput(color);
+    });
+  });
+
+  // keyboard shortcuts: G, R, Y, B (or arrows)
+  document.addEventListener('keydown', (e) => {
+    if (state.playingBack) return; // ignore keys while sequence plays
+    const keyMap = {
+      g: 'green',
+      r: 'red',
+      y: 'yellow',
+      b: 'blue',
+      ArrowUp: 'green',
+      ArrowLeft: 'red',
+      ArrowRight: 'blue',
+      ArrowDown: 'yellow',
+    };
+    const key = e.key;
+    if (keyMap[key]) {
+      handlePlayerInput(keyMap[key]);
+    } else if (key === 's') {
+      // convenience: press "s" to start
+      startGame();
+    } else if (key === 'Escape') {
+      restartGame();
+    }
+  });
+}
+
+// UI bindings
+startBtn.addEventListener('click', startGame);
+restartBtn.addEventListener('click', restartGame);
+soundToggle.addEventListener('change', (e) => {
+  state.soundEnabled = e.target.checked;
+});
+showSequenceToggle.addEventListener('change', (e) => {
+  state.showSequenceVisual = e.target.checked;
+});
+
+// initial setup
+initPadListeners();
+
+// expose some functions for debugging / tests (optional)
+window.__simon = {
+  state,
+  startGame,
+  restartGame,
+  nextRound,
+  addRandomColorToSequence,
+  // TODO: add testing helpers, seedable RNG for deterministic tests
+};
+
+/* ------------------------------------------------------------------
+  TODOs / Contribution ideas (clearly marked for open-source contributors)
+--------------------------------------------------------------------
+1) Sounds:
+   - Add real audio files to `audioFiles` and implement file preloading.
+   - Optionally use WebAudio for richer sounds, ADSR envelopes, effects.
+
+2) Strict mode & difficulty:
+   - Add a "Strict Mode" toggle: on wrong move, game over.
+   - Difficulty levels: change playback speed or show fewer visual cues.
+
+3) Mobile / Touch improvements:
+   - Add touch gestures and bigger tappable areas.
+   - Add haptic feedback (vibration) support with graceful fallback.
+
+4) Persistence & Leaderboard:
+   - Store high score in localStorage.
+   - Add server-backed leaderboard (API) — add hooks in script to POST scores.
+
+5) Accessibility:
+   - Add aria-live descriptions for sequence playback and results.
+   - Improve keyboard navigation, focus management, and color-blind mode.
+
+6) Tests & CI:
+   - Provide unit tests (Jest/Playwright) and GitHub Actions for test run & lint.
+
+7) Visual Themes:
+   - Allow contributors to add themes (neon, retro, seasonal).
+   - Make theme files importable CSS module or JSON-config driven.
+
+8) Animations:
+   - Add smoother animations, CSS transitions or small particles.
+   - Allow contributors to add optional confetti on win.
+
+9) Code cleanup & modularization:
+   - Break script into modules (state, ui, audio, storage) for clarity.
+
+10) Internationalization:
+   - Add locale strings and support for multiple languages.
+
+------------------------------------------------------------------ */
