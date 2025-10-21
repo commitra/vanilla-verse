@@ -1,95 +1,162 @@
 body {
-    font-family: system-ui;
-    background: #0f0f12;
-    color: #eef1f8;
-    margin: 0;
-    padding: 2rem;
-    display: grid;
-    place-items: center
+  font-family: system-ui;
+  background: #0f0f12;
+  color: #eef1f8;
+  margin: 0;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
 }
 
 main {
-    max-width: 760px;
-    width: 100%
+  max-width: 550px;
+  width: 100%;
+  text-align: center;
 }
 
 .slider {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: .5rem;
-    align-items: center
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.slide-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #262631;
 }
 
 img {
-    max-width: 100%;
-    border-radius: .5rem;
-    border: 1px solid #262631
+  max-width: 100%;
+  display: block;
 }
 
-button {
-    background: #6ee7b7;
-    color: #0b1020;
-    border: none;
-    padding: .5rem .75rem;
-    border-radius: .5rem;
-    font-weight: 600;
-    cursor: pointer
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.slider:hover .caption {
+  opacity: 1;
+}
+
+button.nav-btn {
+  background: #6ee7b7;
+  color: #0b1020;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+button.nav-btn:hover {
+  background: #5dd6a5;
+}
+
+.indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #374151;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.indicator.active {
+  background: #6ee7b7;
+}
+
+.indicator:hover {
+  background: #4b5563;
+}
+
+.indicator.active:hover {
+  background: #5dd6a5;
 }
 
 .notes {
-    color: #a6adbb;
-    font-size: .9rem
+  color: #a6adbb;
+  font-size: .9rem;
 }
 
+/* THEME TOGGLE BUTTON */
 .theme-toggle {
-    background: var(--card);
-    border: 2px solid var(--border, #262631);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 1000;
-    color: var(--text);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: var(--card);
+  border: 2px solid var(--border, #262631);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  color: var(--text);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .theme-toggle:hover {
-    transform: rotate(15deg) scale(1.1);
-    border-color: var(--accent);
-    box-shadow: 0 6px 16px rgba(110, 231, 183, 0.2);
+  transform: rotate(15deg) scale(1.1);
+  border-color: var(--accent);
+  box-shadow: 0 6px 16px rgba(110, 231, 183, 0.2);
 }
 
 .theme-toggle svg {
-    position: absolute;
-    transition: all 0.3s ease;
+  position: absolute;
+  transition: all 0.3s ease;
 }
 
 .theme-toggle .sun-icon {
-    opacity: 0;
-    transform: rotate(90deg);
+  opacity: 0;
+  transform: rotate(90deg);
 }
 
 .theme-toggle .moon-icon {
-    opacity: 1;
-    transform: rotate(0deg);
+  opacity: 1;
+  transform: rotate(0deg);
 }
 
 body:not(.dark-mode) .theme-toggle .sun-icon {
-    opacity: 1;
-    transform: rotate(0deg);
+  opacity: 1;
+  transform: rotate(0deg);
 }
 
 body:not(.dark-mode) .theme-toggle .moon-icon {
-    opacity: 0;
-    transform: rotate(-90deg);
+  opacity: 0;
+  transform: rotate(-90deg);
 }
+
 /* ------------------------------------
    DARK MODE THEME
 ------------------------------------ */
@@ -98,26 +165,10 @@ body.dark-mode {
   color: #0f0f12;
 }
 
-body.dark-mode canvas {
-  background: #ffffff;
-  border-color: #cbd5e1;
-}
-
-body.dark-mode .controls label {
-  color: #0f0f12;
-}
-
-body.dark-mode .controls select {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  color: #0f0f12;
-}
-
 body.dark-mode .notes {
   color: #4b5563;
 }
 
-/* Toggle button colors for dark mode */
 body.dark-mode .theme-toggle {
   background: #e2e8f0;
   border-color: #a1a1aa;

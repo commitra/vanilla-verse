@@ -46,6 +46,35 @@
 
             <!-- Calculator Form -->
             <form id="bmiForm" class="form" novalidate>
+                <!-- Gender Selection -->
+                <div class="gender-selection">
+                    <label class="gender-label">Gender</label>
+                    <div class="gender-options">
+                        <div class="gender-option">
+                            <input type="radio" id="genderMale" name="gender" value="male" class="gender-radio">
+                            <label for="genderMale" class="gender-radio-label">
+                                <span class="gender-icon">♂</span>
+                                <span class="gender-text">Male</span>
+                            </label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="genderFemale" name="gender" value="female" class="gender-radio">
+                            <label for="genderFemale" class="gender-radio-label">
+                                <span class="gender-icon">♀</span>
+                                <span class="gender-text">Female</span>
+                            </label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="genderOther" name="gender" value="other" class="gender-radio">
+                            <label for="genderOther" class="gender-radio-label">
+                                <span class="gender-icon">⚧</span>
+                                <span class="gender-text">Prefer not to say</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="genderError" class="field-error" role="alert"></div>
+                </div>
+
                 <div class="input-row">
                     <div class="input-group">
                         <label for="weightInput" class="input-label">Weight</label>

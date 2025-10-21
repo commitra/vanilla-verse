@@ -1,0 +1,146 @@
+:root {
+  --bg: #0f0f12;
+  --card: #0b1220;
+  --muted: #9aa6b2;
+  --accent: #60a5fa;
+  --danger: #fb7185;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #0f0f12 0%, #000000 100%);
+  color: #e6eef6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 720px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+p.lead {
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.panel {
+  background: rgba(255,255,255,0.02);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.output {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.password {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  border: 0;
+  padding: 0.5rem;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.05);
+  color: #dff1ff;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  cursor: pointer;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  border: 0;
+  background: var(--accent);
+  color: #07203b;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--accent);
+}
+
+.strength {
+  height: 10px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 0.75rem;
+}
+
+.strength > i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+  transition: width 0.3s ease;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+input[type="checkbox"], input[type="number"] {
+  accent-color: var(--accent);
+}
+
+input[type="number"] {
+  width: 80px;
+  text-align: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: inherit;
+  padding: 0.4rem;
+  border-radius: 6px;
+}
+
+.small, .note {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.row, .row-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1rem;
+}

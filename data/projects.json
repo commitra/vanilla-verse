@@ -183,5 +183,21 @@
         "category": "Fun UI",
         "categoryKey": "fun",
         "difficulty": "intermediate"
+      },
+      {
+        "title": "2048",
+        "slug": "game-2048",
+        "description": "Simple game with powers of 2.",
+        "category": "Small Games",
+        "categoryKey": "games",
+        "difficulty": "intermediate"
+      },
+      {
+        "title": "Password Generator",
+        "slug": "password-generator",
+        "description": "Generate secure passwords with customizable options.",
+        "category": "Productivity", 
+        "categoryKey": "productivity",
+        "difficulty": "easy"
       }
 ]
