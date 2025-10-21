@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Pomodoro Timer</title>
+    <title>Pomodoro</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
 
@@ -12,33 +12,10 @@
     <main>
         <h1>Pomodoro Timer</h1>
         <div class="timer"><span id="time">25:00</span></div>
-        <div class="controls">
-            <button id="start">Start</button>
-            <button id="reset">Reset</button>
-        </div>
+        <div class="controls"><button id="start">Start</button> <button id="reset">Reset</button></div>
         <p class="notes">Add custom intervals, notifications, and stats.</p>
-
-        <!-- Link timer to current task -->
-        <div class="current-task">
-            <label for="current-task-select">Working on:</label>
-            <select id="current-task-select">
-                <option value="">-- Select task --</option>
-            </select>
-        </div>
-
-        <!-- TASK PANEL -->
-        <section class="task-panel">
-            <h2>Tasks</h2>
-            <form id="task-form">
-                <input type="text" id="task-name" placeholder="Task name" required>
-                <input type="text" id="task-desc" placeholder="Description (optional)">
-                <button type="submit">Add Task</button>
-            </form>
-            <ul id="task-list"></ul>
-        </section>
     </main>
-
-    <script src="./main.js"></script>
+    <script type="module" src="./main.js"></script>
 </body>
 
 </html>
