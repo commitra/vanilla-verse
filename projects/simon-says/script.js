@@ -12,6 +12,8 @@ const state = {
   playingBack: false,
   soundEnabled: true,
   showSequenceVisual: true,
+  strictMode: false,
+  difficulty: 'medium',
 };
 
 // DOM refs
@@ -27,6 +29,8 @@ const levelEl = document.getElementById('level');
 const messageEl = document.getElementById('message');
 const soundToggle = document.getElementById('soundToggle');
 const showSequenceToggle = document.getElementById('showSequence');
+const strictModeToggle = document.getElementById('strictModeToggle');
+const difficultySelect = document.getElementById('difficultySelect');
 
 // simple beep generator using WebAudio (used if no audio files provided)
 let audioCtx;
@@ -88,17 +92,25 @@ function highlightPad(color, ms = 350) {
   setTimeout(() => el.classList.remove('active'), ms);
 }
 
+// Difficulty configurations
+const DIFFICULTY_CONFIG = {
+  easy: { playbackSpeed: 500, gap: 400, showVisual: true },
+  medium: { playbackSpeed: 350, gap: 300, showVisual: true },
+  hard: { playbackSpeed: 200, gap: 200, showVisual: false },
+};
+
 // Play back the current sequence to the player
 async function playbackSequence() {
   state.playingBack = true;
   messageEl.textContent = 'Watch the sequence...';
-  // Small gap between items
-  const gap = 300;
+  const config = DIFFICULTY_CONFIG[state.difficulty];
+  const gap = config.gap;
 
   for (let i = 0; i < state.sequence.length; i++) {
     const color = state.sequence[i];
-    if (state.showSequenceVisual) highlightPad(color, 300);
-    await playSound(color, 300);
+    const showVisual = config.showVisual && state.showSequenceVisual;
+    if (showVisual) highlightPad(color, config.playbackSpeed);
+    await playSound(color, config.playbackSpeed);
     await wait(gap);
   }
 
@@ -171,13 +183,18 @@ async function handlePlayerInput(color) {
     }
   } else {
     // wrong
-    messageEl.textContent = 'Wrong! Try again.';
-    // TODO: Add "strict" mode: if strict, end game; else replay sequence
-    // For now, replay sequence after a short delay
-    await wait(800);
-    // Optionally: vibrate on supported devices
-    try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
-    await playbackSequence();
+    if (state.strictMode) {
+      messageEl.textContent = 'Wrong! Game over.';
+      state.running = false;
+      // Optionally: vibrate on supported devices
+      try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
+    } else {
+      messageEl.textContent = 'Wrong! Try again.';
+      await wait(800);
+      // Optionally: vibrate on supported devices
+      try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
+      await playbackSequence();
+    }
   }
 }
 
@@ -223,6 +240,12 @@ soundToggle.addEventListener('change', (e) => {
 });
 showSequenceToggle.addEventListener('change', (e) => {
   state.showSequenceVisual = e.target.checked;
+});
+strictModeToggle.addEventListener('change', (e) => {
+  state.strictMode = e.target.checked;
+});
+difficultySelect.addEventListener('change', (e) => {
+  state.difficulty = e.target.value;
 });
 
 // initial setup

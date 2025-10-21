@@ -30,16 +30,28 @@
         </div>
 
         <div class="options">
-          <!-- TODO: contributors can add toggles for strict mode, difficulty, theme -->
-          <label>
-            <input type="checkbox" id="soundToggle" checked />
-            Sound
-          </label>
-          <label>
-            <input type="checkbox" id="showSequence" checked />
-            Show sequence visually
-          </label>
-        </div>
+           <!-- TODO: contributors can add toggles for strict mode, difficulty, theme -->
+           <label>
+             <input type="checkbox" id="soundToggle" checked />
+             Sound
+           </label>
+           <label>
+             <input type="checkbox" id="showSequence" checked />
+             Show sequence visually
+           </label>
+           <label>
+             <input type="checkbox" id="strictModeToggle" />
+             Strict Mode
+           </label>
+           <label>
+             Difficulty:
+             <select id="difficultySelect">
+               <option value="easy">Easy</option>
+               <option value="medium" selected>Medium</option>
+               <option value="hard">Hard</option>
+             </select>
+           </label>
+         </div>
       </div>
     </section>
 
