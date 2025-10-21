@@ -7,7 +7,7 @@
     --accent-2: #93c5fd
 }
 
- 
+
 body:not(.dark-mode) {
     --bg: #f8f9fa;
     --card: #ffffff;
@@ -19,7 +19,7 @@ body:not(.dark-mode) {
     --input-bg: #ffffff;
 }
 
- 
+
 body.dark-mode {
     --bg: #0f0f12;
     --card: #17171c;
@@ -82,7 +82,7 @@ body {
     transition: background 0.3s ease, border-color 0.3s ease;
 }
 
- 
+
 .theme-toggle {
     background: var(--card);
     border: 2px solid var(--border, #262631);
@@ -100,6 +100,7 @@ body {
     z-index: 1000;
     color: var(--text);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* display: none; */
 }
 
 .theme-toggle:hover {

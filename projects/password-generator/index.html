@@ -1,53 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Password Generator</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<body>
-  <div class="card">
-    <h1> Random Password Generator</h1>
-    <p class="lead">Generate strong and secure passwords instantly.</p>
+  <body>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+      <svg
+        class="sun-icon"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="5" />
+        <line x1="12" y1="1" x2="12" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="23" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="1" y1="12" x2="3" y2="12" />
+        <line x1="21" y1="12" x2="23" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+      </svg>
+      <svg
+        class="moon-icon"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    </button>
+    <div class="card">
+      <h1>Random Password Generator</h1>
+      <p class="lead">Generate strong and secure passwords instantly.</p>
 
-    <div class="panel">
-      <div class="output">
-        <input id="password" class="password" type="text" readonly placeholder="Click generate..." />
-        <div class="controls">
-          <button id="copyBtn" class="btn ghost" disabled>Copy</button>
-          <button id="shuffleBtn" class="btn ghost">Shuffle</button>
-        </div>
-      </div>
-
-      <div class="strength">
-        <i id="strengthBar"></i>
-      </div>
-      <p id="strengthText" class="small">Strength: —</p>
-    </div>
-
-    <div class="row">
       <div class="panel">
-        <label>
-          Length:
-          <input type="number" id="length" value="16" min="4" max="256" />
-        </label>
-        <div class="controls">
-          <label><input type="checkbox" id="lower" checked> Lowercase</label>
-          <label><input type="checkbox" id="upper" checked> Uppercase</label>
-          <label><input type="checkbox" id="numbers" checked> Numbers</label>
-          <label><input type="checkbox" id="symbols" checked> Symbols</label>
+        <div class="output">
+          <input
+            id="password"
+            class="password"
+            type="text"
+            readonly
+            placeholder="Click generate..."
+          />
+          <div class="controls">
+            <button id="copyBtn" class="btn ghost" disabled>Copy</button>
+            <button id="shuffleBtn" class="btn ghost">Shuffle</button>
+          </div>
         </div>
+
+        <div class="strength">
+          <i id="strengthBar"></i>
+        </div>
+        <p id="strengthText" class="small">Strength: —</p>
+      </div>
+
+      <div class="row">
+        <div class="panel">
+          <label>
+            Length:
+            <input type="number" id="length" value="16" min="4" max="256" />
+          </label>
+          <div class="controls">
+            <label
+              ><input type="checkbox" id="lower" checked /> Lowercase</label
+            >
+            <label
+              ><input type="checkbox" id="upper" checked /> Uppercase</label
+            >
+            <label
+              ><input type="checkbox" id="numbers" checked /> Numbers</label
+            >
+            <label
+              ><input type="checkbox" id="symbols" checked /> Symbols</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row-bottom">
+        <button id="generate" class="btn">Generate</button>
+        <button id="regen" class="btn ghost">Regenerate</button>
       </div>
     </div>
 
-    <div class="row-bottom">
-      <button id="generate" class="btn">Generate</button>
-      <button id="regen" class="btn ghost">Regenerate</button>
-    </div>
-  </div>
-
-  <script src="main.js"></script>
-</body>
+    <script src="main.js"></script>
+  </body>
 </html>
