@@ -33,13 +33,11 @@ const strictToggle = document.getElementById('strictToggle');
 const difficultySelect = document.getElementById('difficultySelect');
 const difficultyHintEl = document.getElementById('difficultyHint');
 
-// simple beep generator using WebAudio (used if no audio files provided)
 let audioCtx;
 function ensureAudioCtx(){
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 }
 
-// Map colors to frequencies (for simple tones)
 const TONE_FREQ = {
   green: 523.25, // C5
   red: 392.00,   // G4
@@ -290,45 +288,3 @@ function applyDifficultySideEffects() {
     if (difficultyHintEl) difficultyHintEl.textContent = 'Hard plays faster and may reduce visual cues.';
   }
 }
-
-/* ------------------------------------------------------------------
-  TODOs / Contribution ideas (clearly marked for open-source contributors)
---------------------------------------------------------------------
-1) Sounds:
-   - Add real audio files to `audioFiles` and implement file preloading.
-   - Optionally use WebAudio for richer sounds, ADSR envelopes, effects.
-
-2) Strict mode & difficulty:
-   - Add a "Strict Mode" toggle: on wrong move, game over.
-   - Difficulty levels: change playback speed or show fewer visual cues.
-
-3) Mobile / Touch improvements:
-   - Add touch gestures and bigger tappable areas.
-   - Add haptic feedback (vibration) support with graceful fallback.
-
-4) Persistence & Leaderboard:
-   - Store high score in localStorage.
-   - Add server-backed leaderboard (API) — add hooks in script to POST scores.
-
-5) Accessibility:
-   - Add aria-live descriptions for sequence playback and results.
-   - Improve keyboard navigation, focus management, and color-blind mode.
-
-6) Tests & CI:
-   - Provide unit tests (Jest/Playwright) and GitHub Actions for test run & lint.
-
-7) Visual Themes:
-   - Allow contributors to add themes (neon, retro, seasonal).
-   - Make theme files importable CSS module or JSON-config driven.
-
-8) Animations:
-   - Add smoother animations, CSS transitions or small particles.
-   - Allow contributors to add optional confetti on win.
-
-9) Code cleanup & modularization:
-   - Break script into modules (state, ui, audio, storage) for clarity.
-
-10) Internationalization:
-   - Add locale strings and support for multiple languages.
-
------------------------------------------------------------------- */
