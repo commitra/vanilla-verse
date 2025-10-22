@@ -207,5 +207,13 @@
         "category": "Small Games", 
         "categoryKey": "games",
         "difficulty": "easy"
+      },
+      {
+        "title": "Contributors Page",
+        "slug": "contributor",
+        "description": "See the contributions of people",
+        "category": "contributor", 
+        "categoryKey": "contributor",
+        "difficulty": "easy"
       }
 ]
