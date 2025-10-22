@@ -12,6 +12,8 @@ const state = {
   playingBack: false,
   soundEnabled: true,
   showSequenceVisual: true,
+  strictMode: false,
+  difficulty: 'normal', // 'easy' | 'normal' | 'hard'
 };
 
 // DOM refs
@@ -27,6 +29,9 @@ const levelEl = document.getElementById('level');
 const messageEl = document.getElementById('message');
 const soundToggle = document.getElementById('soundToggle');
 const showSequenceToggle = document.getElementById('showSequence');
+const strictToggle = document.getElementById('strictToggle');
+const difficultySelect = document.getElementById('difficultySelect');
+const difficultyHintEl = document.getElementById('difficultyHint');
 
 // simple beep generator using WebAudio (used if no audio files provided)
 let audioCtx;
@@ -92,14 +97,14 @@ function highlightPad(color, ms = 350) {
 async function playbackSequence() {
   state.playingBack = true;
   messageEl.textContent = 'Watch the sequence...';
-  // Small gap between items
-  const gap = 300;
+  const cfg = getDifficultyConfig();
 
   for (let i = 0; i < state.sequence.length; i++) {
     const color = state.sequence[i];
-    if (state.showSequenceVisual) highlightPad(color, 300);
-    await playSound(color, 300);
-    await wait(gap);
+    const showVisual = state.showSequenceVisual && cfg.visualDuringPlayback;
+    if (showVisual) highlightPad(color, cfg.highlightMs);
+    await playSound(color, cfg.stepMs);
+    await wait(cfg.gapMs);
   }
 
   state.playingBack = false;
@@ -154,9 +159,10 @@ async function nextRound() {
 // Player input handler
 async function handlePlayerInput(color) {
   if (!state.running || state.playingBack) return;
+  const cfg = getDifficultyConfig();
   // play feedback
-  highlightPad(color, 220);
-  await playSound(color, 220);
+  highlightPad(color, cfg.inputFeedbackMs);
+  await playSound(color, cfg.inputFeedbackMs);
 
   const expected = state.sequence[state.playerIndex];
   if (color === expected) {
@@ -171,13 +177,17 @@ async function handlePlayerInput(color) {
     }
   } else {
     // wrong
-    messageEl.textContent = 'Wrong! Try again.';
-    // TODO: Add "strict" mode: if strict, end game; else replay sequence
-    // For now, replay sequence after a short delay
-    await wait(800);
-    // Optionally: vibrate on supported devices
-    try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
-    await playbackSequence();
+    if (state.strictMode) {
+      messageEl.textContent = 'Wrong! Game over. Press Start to play again.';
+      state.running = false;
+      // Optionally: vibrate on supported devices
+      try { if (navigator.vibrate) navigator.vibrate(300); } catch (e) {}
+    } else {
+      messageEl.textContent = 'Wrong! Try again.';
+      await wait(800);
+      try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
+      await playbackSequence();
+    }
   }
 }
 
@@ -224,9 +234,17 @@ soundToggle.addEventListener('change', (e) => {
 showSequenceToggle.addEventListener('change', (e) => {
   state.showSequenceVisual = e.target.checked;
 });
+strictToggle?.addEventListener('change', (e) => {
+  state.strictMode = e.target.checked;
+});
+difficultySelect?.addEventListener('change', (e) => {
+  state.difficulty = e.target.value;
+  applyDifficultySideEffects();
+});
 
 // initial setup
 initPadListeners();
+applyDifficultySideEffects();
 
 // expose some functions for debugging / tests (optional)
 window.__simon = {
@@ -237,6 +255,41 @@ window.__simon = {
   addRandomColorToSequence,
   // TODO: add testing helpers, seedable RNG for deterministic tests
 };
+
+// Difficulty configuration and helpers
+function getDifficultyConfig() {
+  switch (state.difficulty) {
+    case 'easy':
+      return { stepMs: 420, gapMs: 320, highlightMs: 380, inputFeedbackMs: 260, visualDuringPlayback: true };
+    case 'hard':
+      return { stepMs: 180, gapMs: 200, highlightMs: 160, inputFeedbackMs: 160, visualDuringPlayback: false };
+    case 'normal':
+    default:
+      return { stepMs: 300, gapMs: 300, highlightMs: 300, inputFeedbackMs: 220, visualDuringPlayback: true };
+  }
+}
+
+function applyDifficultySideEffects() {
+  const isHard = state.difficulty === 'hard';
+  if (isHard) {
+    // Reduce or disable visual cues on hard
+    state.showSequenceVisual = false;
+    if (showSequenceToggle) {
+      showSequenceToggle.checked = false;
+      showSequenceToggle.disabled = true;
+      showSequenceToggle.parentElement?.classList.add('disabled');
+    }
+    if (difficultyHintEl) difficultyHintEl.textContent = 'Hard plays faster and hides playback visuals.';
+  } else {
+    if (showSequenceToggle) {
+      showSequenceToggle.disabled = false;
+      showSequenceToggle.parentElement?.classList.remove('disabled');
+      // Respect current checkbox for visuals
+      state.showSequenceVisual = showSequenceToggle.checked;
+    }
+    if (difficultyHintEl) difficultyHintEl.textContent = 'Hard plays faster and may reduce visual cues.';
+  }
+}
 
 /* ------------------------------------------------------------------
   TODOs / Contribution ideas (clearly marked for open-source contributors)
