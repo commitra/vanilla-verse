@@ -13,6 +13,7 @@ const state = {
   soundEnabled: true,
   showSequenceVisual: true,
   strictMode: false,
+  difficulty: 'medium',
   difficulty: 'normal', // 'easy' | 'normal' | 'hard'
 };
 
@@ -29,6 +30,8 @@ const levelEl = document.getElementById('level');
 const messageEl = document.getElementById('message');
 const soundToggle = document.getElementById('soundToggle');
 const showSequenceToggle = document.getElementById('showSequence');
+const strictModeToggle = document.getElementById('strictModeToggle');
+const difficultySelect = document.getElementById('difficultySelect');
 const strictToggle = document.getElementById('strictToggle');
 const difficultySelect = document.getElementById('difficultySelect');
 const difficultyHintEl = document.getElementById('difficultyHint');
@@ -91,10 +94,26 @@ function highlightPad(color, ms = 350) {
   setTimeout(() => el.classList.remove('active'), ms);
 }
 
+// Difficulty configurations
+const DIFFICULTY_CONFIG = {
+  easy: { playbackSpeed: 500, gap: 400, showVisual: true },
+  medium: { playbackSpeed: 350, gap: 300, showVisual: true },
+  hard: { playbackSpeed: 200, gap: 200, showVisual: false },
+};
+
 // Play back the current sequence to the player
 async function playbackSequence() {
   state.playingBack = true;
   messageEl.textContent = 'Watch the sequence...';
+  const config = DIFFICULTY_CONFIG[state.difficulty];
+  const gap = config.gap;
+
+  for (let i = 0; i < state.sequence.length; i++) {
+    const color = state.sequence[i];
+    const showVisual = config.showVisual && state.showSequenceVisual;
+    if (showVisual) highlightPad(color, config.playbackSpeed);
+    await playSound(color, config.playbackSpeed);
+    await wait(gap);
   const cfg = getDifficultyConfig();
 
   for (let i = 0; i < state.sequence.length; i++) {
@@ -176,6 +195,14 @@ async function handlePlayerInput(color) {
   } else {
     // wrong
     if (state.strictMode) {
+      messageEl.textContent = 'Wrong! Game over.';
+      state.running = false;
+      // Optionally: vibrate on supported devices
+      try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
+    } else {
+      messageEl.textContent = 'Wrong! Try again.';
+      await wait(800);
+      // Optionally: vibrate on supported devices
       messageEl.textContent = 'Wrong! Game over. Press Start to play again.';
       state.running = false;
       // Optionally: vibrate on supported devices
@@ -232,6 +259,11 @@ soundToggle.addEventListener('change', (e) => {
 showSequenceToggle.addEventListener('change', (e) => {
   state.showSequenceVisual = e.target.checked;
 });
+strictModeToggle.addEventListener('change', (e) => {
+  state.strictMode = e.target.checked;
+});
+difficultySelect.addEventListener('change', (e) => {
+  state.difficulty = e.target.value;
 strictToggle?.addEventListener('change', (e) => {
   state.strictMode = e.target.checked;
 });
