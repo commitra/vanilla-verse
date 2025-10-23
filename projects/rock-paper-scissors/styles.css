@@ -6,6 +6,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: background 300ms ease;
 }
 
 h1 {
@@ -25,6 +26,12 @@ h1 {
   width: 90vw;
   margin: 1.4em auto 0 auto;
   text-align: center;
+}
+
+.phase {
+  color: #3a4a7a;
+  font-size: 0.98em;
+  margin-bottom: 0.9em;
 }
 
 .btn-group {
@@ -54,6 +61,64 @@ h1 {
   color: #2744ae;
   outline: none;
 }
+
+.primary {
+  background: #5078f0;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 0.6em 0 0.2em 0;
+  box-shadow: 0 2px 6px #e6ebff;
+  transition: background 0.18s ease, transform 0.04s ease;
+}
+.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.primary:hover:not(:disabled),
+.primary:focus:not(:disabled) {
+  background: #3c60cf;
+}
+
+.secondary {
+  background: #eef3ff;
+  color: #2c3e88;
+  border: 1px solid #dbe3ff;
+  border-radius: 10px;
+  padding: 0.55em 1.1em;
+  font-size: 0.98em;
+  cursor: pointer;
+}
+.secondary.hidden { display: none; }
+
+.controls { margin-top: 0.8em; display: flex; gap: 0.6em; justify-content: center; }
+
+.stack { display: flex; flex-direction: column; align-items: center; }
+.small-gap { gap: 0.3em; }
+.label { color: #5a6aaa; font-size: 0.9em; }
+
+.chip-row { display: flex; gap: 0.5em; justify-content: center; flex-wrap: wrap; min-height: 2.4em; }
+.chip {
+  background: #f6f8ff;
+  color: #2744ae;
+  border: 2px solid #dbeafe;
+  border-radius: 999px;
+  padding: 0.35em 0.9em;
+  font-size: 0.95em;
+  cursor: default;
+}
+.chip.removable { cursor: pointer; }
+.chip.selectable { cursor: pointer; transition: transform 0.06s ease, border-color 0.15s ease, background 0.15s ease; }
+.chip.selectable:hover { transform: translateY(-1px); background: #eef4ff; border-color: #b7ccff; }
+.chip.selected { background: #e0eaff; border-color: #7da9f2; }
+
+.hidden { display: none; }
+
+.muted { color: #6b7ea8; min-height: 1.2em; margin-top: 0.4em; }
+.final-choices { font-weight: 600; margin-top: 0.3em; color: #2e4276; min-height: 1.2em; }
 
 #display-choices {
   font-size: 1.09em;
@@ -95,6 +160,17 @@ h1 {
 #restart-btn:focus {
   background: #2445a2;
   outline: none;
+}
+
+/* Subtle background vibe shifts on outcome */
+body.win-bg {
+  background: radial-gradient(1200px 600px at 50% -10%, #e6ffef 10%, transparent 60%), linear-gradient(120deg, #e0e7ff, #f5f5fa 60%);
+}
+body.lose-bg {
+  background: radial-gradient(1200px 600px at 50% -10%, #ffe6e6 10%, transparent 60%), linear-gradient(120deg, #e0e7ff, #f5f5fa 60%);
+}
+body.draw-bg {
+  background: radial-gradient(1200px 600px at 50% -10%, #e6f0ff 10%, transparent 60%), linear-gradient(120deg, #e0e7ff, #f5f5fa 60%);
 }
 
 @media (max-width: 480px) {

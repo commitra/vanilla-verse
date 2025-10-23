@@ -82,21 +82,7 @@ button:hover {
 }
 
 .caret {
-  position: absolute;
-  width: 2px;
-  height: 2.5rem;
-  background: #ffffff !important; /* White color for better visibility */
-  border-radius: 1px;
-  animation: blink 1s infinite;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: none;
-  z-index: 1000; /* Very high z-index to ensure it's above everything */
-  top: 0;
-  left: 0;
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8); /* White glow effect */
-  border: none;
+  display: none;
 }
 
 @keyframes blink {

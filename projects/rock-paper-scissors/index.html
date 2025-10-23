@@ -3,23 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rock-Paper-Scissors Game</title>
+  <title>Rock-Paper-Scissors Minus One</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Rock-Paper-Scissors Game</h1>
+  <h1>Rock-Paper-Scissors — Minus One</h1>
   <div id="rps-container">
-    <div class="btn-group">
+    <div id="phase" class="phase">Step 1 — Pick any two symbols</div>
+
+    <div class="btn-group" aria-label="Select two symbols">
       <button class="rps-btn" data-choice="rock">Rock</button>
       <button class="rps-btn" data-choice="paper">Paper</button>
       <button class="rps-btn" data-choice="scissors">Scissors</button>
     </div>
-    <div id="display-choices"></div>
+
+    <div class="stack small-gap">
+      <div class="label">Your two:</div>
+      <div id="selected-two" class="chip-row" aria-live="polite"></div>
+    </div>
+
+    <button id="lock-btn" class="primary" disabled>Lock In</button>
+
+    <div id="computer-reveal" class="hidden stack small-gap" aria-live="polite">
+      <div class="label">Computer's two:</div>
+      <div id="computer-two" class="chip-row"></div>
+    </div>
+
+    <div id="minus-one" class="hidden stack small-gap">
+      <div class="label">Step 2 — Minus One: choose one to keep</div>
+      <div id="final-choice-options" class="chip-row"></div>
+      <button id="finalize-btn" class="primary" disabled>Finalize</button>
+    </div>
+
+    <div id="display-choices" class="muted"></div>
+    <div id="final-choices" class="final-choices"></div>
     <div id="result"></div>
+
     <div id="scoreboard">
       <span id="user-score">0</span> : <span id="computer-score">0</span>
     </div>
-    <button id="restart-btn">Restart</button>
+
+    <div class="controls">
+      <button id="next-round-btn" class="secondary hidden">Next Round</button>
+      <button id="restart-btn">Reset Score</button>
+    </div>
   </div>
   <script src="main.js"></script>
 </body>
