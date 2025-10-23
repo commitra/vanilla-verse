@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contributors — vanilla-verse</title>
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="Contributors page for commitra/vanilla-verse — avatars, contributions, links." />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="title-block">
+        <h1 class="title">Contributors</h1>
+        <p class="subtitle">Thanks to everyone who contributes to <strong>commitra/vanilla-verse</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="control-row">
+          <input id="search" type="search" placeholder="Search contributors..." aria-label="Search contributors" />
+          <select id="sort" aria-label="Sort contributors">
+            <option value="contributions-desc">Top contributors</option>
+            <option value="contributions-asc">Least contributions</option>
+            <option value="name-asc">Name A → Z</option>
+            <option value="name-desc">Name Z → A</option>
+          </select>
+        </div>
+        <div class="meta">
+          <small id="count">Loading...</small>
+        </div>
+      </div>
+    </header>
+
+    <section id="grid" class="grid" aria-live="polite">
+      <!-- Cards injected here -->
+    </section>
+
+    <footer class="foot">
+      <p>
+        Powered by GitHub API — <a href="https://github.com/commitra/vanilla-verse" target="_blank" rel="noopener">commitra/vanilla-verse</a>
+      </p>
+      <p class="hint">Tip: If you hit rate limits, add a personal token in <code>contributors.js</code> (see comment).</p>
+    </footer>
+  </main>
+
+  <script src="script.js" type="module"></script>
+</body>
+</html>

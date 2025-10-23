@@ -15,7 +15,6 @@ updateThemeIcon();
 
 form.addEventListener('submit', e => {
   e.preventDefault();
-
   const newNote = {
     id: crypto.randomUUID(),
     title: title.value.trim(),
@@ -24,7 +23,6 @@ form.addEventListener('submit', e => {
     created: Date.now(),
     pinned: false
   };
-
   notes.unshift(newNote);
   saveNotes();
   title.value = '';
@@ -40,11 +38,10 @@ function saveNotes() {
 
 function render(filterText = '', tagFilterValue = '') {
   grid.innerHTML = '';
-
   let filteredNotes = notes.filter(n =>
     (n.title.toLowerCase().includes(filterText.toLowerCase()) ||
-      (n.tag && n.tag.toLowerCase().includes(filterText.toLowerCase())) ||
-      n.content.toLowerCase().includes(filterText.toLowerCase()))
+    (n.tag && n.tag.toLowerCase().includes(filterText.toLowerCase())) ||
+    n.content.toLowerCase().includes(filterText.toLowerCase()))
   );
 
   if (tagFilterValue) {
@@ -52,7 +49,7 @@ function render(filterText = '', tagFilterValue = '') {
   }
 
   if (filteredNotes.length === 0) {
-    grid.innerHTML = `<p style="text-align:center; color:#a6adbb;">No notes found.</p>`;
+    grid.innerHTML = `<p style="text-align: center; opacity: 0.6;">No notes found.</p>`;
     return;
   }
 
@@ -62,14 +59,13 @@ function render(filterText = '', tagFilterValue = '') {
     const card = document.createElement('article');
     card.className = 'card';
     const date = new Date(n.created).toLocaleString();
-
     card.innerHTML = `
       <div class="card-header">
         <h3>${n.title}</h3>
         <button class="pin">${n.pinned ? '📌' : '📍'}</button>
       </div>
       ${n.tag ? `<span class="tag">${n.tag}</span>` : ''}
-      <p class="content">${n.content}</p>
+      <p>${n.content}</p>
       <div class="note-footer">
         <small>${date}</small>
         <button class="del">Delete</button>
@@ -95,7 +91,7 @@ function render(filterText = '', tagFilterValue = '') {
 
 function populateTags() {
   const tags = [...new Set(notes.filter(n => n.tag).map(n => n.tag))];
-  tagFilter.innerHTML = `<option value="">All</option>`;
+  tagFilter.innerHTML = `<option value="">All Tags</option>`;
   tags.forEach(t => {
     const opt = document.createElement('option');
     opt.value = t;
@@ -120,5 +116,3 @@ function updateThemeIcon() {
 
 render();
 populateTags();
-
-// TODOs: persist to localStorage; full-text search; list by tag; theme toggle

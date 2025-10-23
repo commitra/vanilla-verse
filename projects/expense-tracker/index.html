@@ -1,30 +1,87 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Expense Tracker</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
-    <main>
-       <h1>Expense Tracker</h1>
+  <header>
+    <h1>Expense Tracker</h1>
+  </header>
 
-    <form id="form">
-      <input id="desc" placeholder="Description" required />
-      <input id="amount" type="number" step="0.01" placeholder="Amount" required />
-      <button type="submit">Add</button>
-    </form>
+  <div class="graphs-section">
+    <div class="chart-box">
+      <h2>Monthly Expenses</h2>
+      <canvas id="monthlyChart"></canvas>
+    </div>
+    <div class="chart-box">
+      <h2>Category Distribution</h2>
+      <canvas id="categoryChart"></canvas>
+    </div>
+  </div>
 
-    <ul id="list"></ul>
-    <canvas id="chart" width="300" height="150"></canvas>
+  <div class="container">
+    <!-- LEFT: Add Expense Form -->
+    <div class="left-panel">
+      <h2>Add Expense</h2>
+      <form id="expenseForm">
+        <label>Description:</label>
+        <input type="text" id="title" required>
 
-    <button id="exportBtn">Export as CSV</button>
-    <p class="notes">Add categories, charts, and filters.</p>
-    </main>
-    <script type="module" src="./main.js"></script>
+        <label>Amount (₹):</label>
+        <input type="number" id="amount" required>
+
+        <label>Category:</label>
+        <select id="category" required>
+          <option value="Food">Food</option>
+          <option value="Transport">Transport</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Bills">Bills</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label>Date:</label>
+        <input type="date" id="date" required>
+
+        <button type="submit">Save Expense</button>
+      </form>
+    </div>
+
+    <!-- RIGHT: Expense Table -->
+    <div class="right-panel">
+      <div class="table-header">
+        <h2>Expenses</h2>
+        <div class="filter">
+          <label for="categoryFilter">Sort by Category:</label>
+          <select id="categoryFilter">
+            <option value="all">All</option>
+          </select>
+        </div>
+      </div>
+
+      <button id="exportBtn">Export as CSV</button>
+
+      <table id="expenseTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Amount (₹)</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="5" style="text-align:center;">No data entered</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
 </body>
-
 </html>
