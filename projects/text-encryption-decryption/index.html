@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Encryption / Decryption Tool</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text Encryption Decryption Tool</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Text Encryption / Decryption Tool</h1>
-  <div id="tool-container">
+  <header class="header">
+    <h1>Text Encryption Decryption Tool</h1>
+    <button id="themeToggle" aria-label="Toggle theme">🌙</button>
+  </header>
+
+  <main id="tool-container" class="tool-container">
     <div class="field-group">
       <label for="inputText">Input text</label>
       <textarea id="inputText" placeholder="Type or paste your text here..."></textarea>
@@ -21,7 +25,7 @@
       <div class="option">
         <label for="algorithm">Algorithm</label>
         <select id="algorithm" aria-label="Encryption algorithm">
-          <option value="caesar" selected>Caesar cipher</option>
+          <option value="caesar" selected>Caesar Cipher</option>
           <option value="rot13">ROT13</option>
           <option value="atbash">Atbash</option>
         </select>
@@ -46,7 +50,8 @@
         <small id="copyStatus" role="status" aria-live="polite"></small>
       </div>
     </div>
-  </div>
+  </main>
+
   <script src="main.js"></script>
 </body>
 </html>
