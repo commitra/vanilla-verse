@@ -168,11 +168,19 @@ function appendWords(count = 10) {
     space.dataset.word = textArray.length - 1;
     textEl.appendChild(space);
   }
+  
+  // Ensure caret is visible after words are added
+  setTimeout(() => {
+    caret.style.display = "block";
+    caret.style.opacity = "1";
+    updateCaret();
+  }, 10);
 }
 
 // FIXED: Update caret position
 function updateCaret() {
   const spans = textEl.querySelectorAll("span");
+  
   if (index >= spans.length) {
     caret.style.display = "none";
     return;
@@ -244,7 +252,6 @@ function resetTest() {
   timeLeft = parseInt(timeSelect.value);
   timeEl.textContent = timeLeft;
 
-  caret.style.display = "none";
   currentScoreEl.style.display = "none";
 
   textArray = [];
@@ -256,6 +263,9 @@ function resetTest() {
   }, 10);
 
   document.addEventListener("keydown", handleTyping);
+  
+  // Make sure caret is visible when user clicks on text area
+  textEl.addEventListener("click", forceCaretVisible);
 }
 
 function handleTyping(e) {
@@ -265,7 +275,9 @@ function handleTyping(e) {
     startTimer();
     typingStarted = true;
     start = Date.now();
+    // Caret should already be visible, but ensure it's shown
     caret.style.display = "block";
+    caret.style.opacity = "1";
   }
 
   const spans = textEl.querySelectorAll("span");
