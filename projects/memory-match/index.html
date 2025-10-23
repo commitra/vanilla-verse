@@ -1,26 +1,50 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Memory Match</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Memory Match</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
+<body class="theme-dark">
+  <header>
+    <h1>Memory Match</h1>
+  </header>
 
-<body>
-    <main>
-        <h1>Memory Match</h1>
-        
-        <div class="stats">
-            <div class="time">Time: 00:00</div>
-            <div class="best">Best: --:--</div>
-        </div>
+  <section class="controls">
+    <button id="restartBtn">🔄 Restart</button>
+    <button id="soundBtn">🔇 Sound</button>
+    <select id="themeSelect" aria-label="Select Theme">
+      <option value="theme-dark" selected>Dark 🌙</option>
+      <option value="theme-light">Light ☀️</option>
+      <option value="theme-neon">Neon 💜</option>
+    </select>
+    <select id="levelSelect" aria-label="Select Level">
+      <option value="4">Easy (4 pairs)</option>
+      <option value="6">Medium (6 pairs)</option>
+      <option value="8" selected>Hard (8 pairs)</option>
+      <option value="10">Expert (10 pairs)</option>
+      <option value="12">Very Hard (12 pairs)</option>
+      <option value="16">Legendary (16 pairs)</option>
+    </select>
+  </section>
 
-        <div id="grid" class="grid" aria-live="polite"></div>
-        <p class="notes">Contribute themes, sound effects, timer, or difficulty levels.</p>
-    </main>
-    <script type="module" src="./main.js"></script>
+  <section class="game-wrapper">
+    <div class="grid-container">
+      <div id="grid" class="grid" aria-live="polite"></div>
+    </div>
+
+    <aside class="scoreboard">
+      <h3>Top 5 Fastest Games</h3>
+      <ol id="scoreList"></ol>
+    </aside>
+  </section>
+
+  <footer class="stats">
+    <div class="time">Time: 00:00</div>
+    <div class="best">Best: --:--</div>
+  </footer>
+
+  <script type="module" src="./main.js"></script>
 </body>
-
 </html>

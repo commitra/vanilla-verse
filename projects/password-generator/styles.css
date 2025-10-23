@@ -1,9 +1,21 @@
 :root {
+  --bg: #ffffff;
+  --card: #f4f4f4;
+  --muted: #555f6b;
+  --accent: #2563eb;
+  --danger: #dc2626;
+  --text: #0f0f12;
+  --border: #d0d7de;
+}
+
+body.dark-mode {
   --bg: #0f0f12;
   --card: #0b1220;
   --muted: #9aa6b2;
   --accent: #60a5fa;
   --danger: #fb7185;
+  --text: #e6eef6;
+  --border: #262631;
 }
 
 html, body {
@@ -13,22 +25,28 @@ html, body {
 
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: linear-gradient(180deg, #0f0f12 0%, #000000 100%);
-  color: #e6eef6;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+* {
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 
 .card {
   width: 100%;
   max-width: 720px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.2);
   text-align: center;
 }
 
@@ -37,13 +55,16 @@ h1 {
   font-size: 1.25rem;
 }
 
-p.lead {
+p.lead,
+.small,
+.note {
   color: var(--muted);
-  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
 }
 
 .panel {
-  background: rgba(255,255,255,0.02);
+  background: rgba(0, 0, 0, 0.05);
   padding: 1rem;
   border-radius: 8px;
 }
@@ -57,11 +78,11 @@ p.lead {
 
 .password {
   font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
-  border: 0;
+  border: 1px solid var(--border);
   padding: 0.5rem;
   border-radius: 6px;
-  background: rgba(255,255,255,0.05);
-  color: #dff1ff;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text);
   font-size: 1rem;
   text-align: center;
 }
@@ -79,9 +100,14 @@ p.lead {
   border-radius: 8px;
   border: 0;
   background: var(--accent);
-  color: #07203b;
+  color: #ffffff;
   font-weight: 600;
   transition: 0.2s;
+}
+
+body.dark-mode .btn {
+  background: var(--accent);
+  color: #0f0f12;
 }
 
 .btn:hover {
@@ -90,13 +116,13 @@ p.lead {
 
 .btn.ghost {
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
   color: var(--accent);
 }
 
 .strength {
   height: 10px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(0, 0, 0, 0.06);
   border-radius: 6px;
   overflow: hidden;
   margin-top: 0.75rem;
@@ -117,24 +143,19 @@ label {
   justify-content: center;
 }
 
-input[type="checkbox"], input[type="number"] {
+input[type="checkbox"],
+input[type="number"] {
   accent-color: var(--accent);
 }
 
 input[type="number"] {
   width: 80px;
   text-align: center;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: inherit;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text);
   padding: 0.4rem;
   border-radius: 6px;
-}
-
-.small, .note {
-  color: var(--muted);
-  font-size: 0.85rem;
-  margin-top: 0.75rem;
 }
 
 .row, .row-bottom {
@@ -143,4 +164,35 @@ input[type="number"] {
   gap: 0.75rem;
   justify-content: center;
   margin-top: 1rem;
+}
+
+.theme-toggle {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  color: var(--text);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle .sun-icon {
+  display: none;
+}
+
+body.dark-mode .theme-toggle .sun-icon {
+  display: block;
+}
+
+body.dark-mode .theme-toggle .moon-icon {
+  display: none;
 }

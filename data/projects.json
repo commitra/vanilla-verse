@@ -199,5 +199,21 @@
         "category": "Productivity", 
         "categoryKey": "productivity",
         "difficulty": "easy"
+      },
+       {
+        "title": "Simon Says",
+        "slug": "simon-says",
+        "description": "Play Simon Says",
+        "category": "Small Games", 
+        "categoryKey": "games",
+        "difficulty": "easy"
+      },
+      {
+        "title": "Contributors Page",
+        "slug": "contributor",
+        "description": "See the contributions of people",
+        "category": "contributor", 
+        "categoryKey": "contributor",
+        "difficulty": "easy"
       }
 ]
