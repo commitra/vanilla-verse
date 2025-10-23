@@ -76,12 +76,7 @@ button:hover {
 }
 
 .caret {
-  position: absolute;
-  width: 3px;
-  height: 2.5rem;
-  background: #00d0ff;
-  animation: blink 1s infinite;
-  display: none; /* hidden until typing starts */
+  display: none;
 }
 
 @keyframes blink {
