@@ -95,6 +95,10 @@ function displayWeather(data, cityName) {
                     <span class="detail-label">Pressure</span>
                     <span class="detail-value">${cur.pressure} mb</span>
                 </div>
+                <div class="detail-item">
+                    <span class="detail-label">Precipitation</span>
+                    <span class="detail-value">${cur.precipMM} mm</span>
+            </div>
             </div>
             <div class="cache-info">Last updated: ${cacheTime}</div>
         </div>
