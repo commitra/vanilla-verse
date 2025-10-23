@@ -1,46 +1,37 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes App</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <main class="container">
-    <section class="left-panel">
-      <div class="header-row">
-        <h1>Create Note</h1>
-        <button id="themeToggle" class="toggle-btn">🌙</button>
-      </div>
-      <form id="form">
-        <input id="title" placeholder="Title" required />
-        <input id="tag" placeholder="Tag (optional)" />
-        <textarea id="content" placeholder="Write your content here..." rows="7" required></textarea>
-        <button>Add Note</button>
-      </form>
-    </section>
-
-    <section class="right-panel">
-      <div class="notes-header">
-        <h1>Your Notes</h1>
-        <input type="text" id="search" placeholder="Search notes..." />
-      </div>
-
-      <div class="filter-bar">
-        <label for="tagFilter">Filter by Tag:</label>
-        <select id="tagFilter">
-          <option value="">All</option>
-        </select>
-      </div>
-
-      <div id="notes" class="grid"></div>
-    </section>
-  </main>
-
-    <script type="module" src="./main.js"></script>
+    <div class="container">
+        <div class="left-panel">
+            <div class="header-row">
+                <h1>Create Note</h1>
+                <button class="toggle-btn" id="themeToggle">🌙</button>
+            </div>
+            <form id="form">
+                <input type="text" id="title" placeholder="Title" required>
+                <input type="text" id="tag" placeholder="Tag (optional)">
+                <textarea id="content" placeholder="Write your note..." required></textarea>
+                <button type="submit">Add Note</button>
+            </form>
+        </div>
+        <div class="right-panel">
+            <h1>My Notes</h1>
+            <div class="notes-header">
+                <input type="text" id="search" placeholder="Search notes...">
+            </div>
+            <div class="filter-bar">
+                <label>Filter by tag:</label>
+                <select id="tagFilter"></select>
+            </div>
+            <div class="grid" id="notes"></div>
+        </div>
+    </div>
+    <script src="main.js"></script>
 </body>
-
 </html>

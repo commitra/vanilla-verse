@@ -30,6 +30,28 @@
         </div>
 
         <div class="options">
+           <!-- TODO: contributors can add toggles for strict mode, difficulty, theme -->
+           <label>
+             <input type="checkbox" id="soundToggle" checked />
+             Sound
+           </label>
+           <label>
+             <input type="checkbox" id="showSequence" checked />
+             Show sequence visually
+           </label>
+           <label>
+             <input type="checkbox" id="strictModeToggle" />
+             Strict Mode
+           </label>
+           <label>
+             Difficulty:
+             <select id="difficultySelect">
+               <option value="easy">Easy</option>
+               <option value="medium" selected>Medium</option>
+               <option value="hard">Hard</option>
+             </select>
+           </label>
+         </div>
           <!-- TODO: contributors can add toggles for strict mode, difficulty, theme -->
           <label>
             <input type="checkbox" id="soundToggle" checked />
@@ -39,6 +61,19 @@
             <input type="checkbox" id="showSequence" checked />
             Show sequence visually
           </label>
+          <label>
+            <input type="checkbox" id="strictToggle" />
+            Strict mode (game over on mistake)
+          </label>
+          <label class="select-wrap" for="difficultySelect">
+            Difficulty
+            <select id="difficultySelect" aria-label="Difficulty">
+              <option value="easy">Easy</option>
+              <option value="normal" selected>Normal</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+          <small class="options-hint" id="difficultyHint">Hard plays faster and may reduce visual cues.</small>
         </div>
       </div>
     </section>

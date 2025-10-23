@@ -12,6 +12,9 @@ const state = {
   playingBack: false,
   soundEnabled: true,
   showSequenceVisual: true,
+  strictMode: false,
+  difficulty: 'medium',
+  difficulty: 'normal', // 'easy' | 'normal' | 'hard'
 };
 
 // DOM refs
@@ -27,14 +30,17 @@ const levelEl = document.getElementById('level');
 const messageEl = document.getElementById('message');
 const soundToggle = document.getElementById('soundToggle');
 const showSequenceToggle = document.getElementById('showSequence');
+const strictModeToggle = document.getElementById('strictModeToggle');
+const difficultySelect = document.getElementById('difficultySelect');
+const strictToggle = document.getElementById('strictToggle');
+const difficultySelect = document.getElementById('difficultySelect');
+const difficultyHintEl = document.getElementById('difficultyHint');
 
-// simple beep generator using WebAudio (used if no audio files provided)
 let audioCtx;
 function ensureAudioCtx(){
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 }
 
-// Map colors to frequencies (for simple tones)
 const TONE_FREQ = {
   green: 523.25, // C5
   red: 392.00,   // G4
@@ -88,18 +94,34 @@ function highlightPad(color, ms = 350) {
   setTimeout(() => el.classList.remove('active'), ms);
 }
 
+// Difficulty configurations
+const DIFFICULTY_CONFIG = {
+  easy: { playbackSpeed: 500, gap: 400, showVisual: true },
+  medium: { playbackSpeed: 350, gap: 300, showVisual: true },
+  hard: { playbackSpeed: 200, gap: 200, showVisual: false },
+};
+
 // Play back the current sequence to the player
 async function playbackSequence() {
   state.playingBack = true;
   messageEl.textContent = 'Watch the sequence...';
-  // Small gap between items
-  const gap = 300;
+  const config = DIFFICULTY_CONFIG[state.difficulty];
+  const gap = config.gap;
 
   for (let i = 0; i < state.sequence.length; i++) {
     const color = state.sequence[i];
-    if (state.showSequenceVisual) highlightPad(color, 300);
-    await playSound(color, 300);
+    const showVisual = config.showVisual && state.showSequenceVisual;
+    if (showVisual) highlightPad(color, config.playbackSpeed);
+    await playSound(color, config.playbackSpeed);
     await wait(gap);
+  const cfg = getDifficultyConfig();
+
+  for (let i = 0; i < state.sequence.length; i++) {
+    const color = state.sequence[i];
+    const showVisual = state.showSequenceVisual && cfg.visualDuringPlayback;
+    if (showVisual) highlightPad(color, cfg.highlightMs);
+    await playSound(color, cfg.stepMs);
+    await wait(cfg.gapMs);
   }
 
   state.playingBack = false;
@@ -154,9 +176,10 @@ async function nextRound() {
 // Player input handler
 async function handlePlayerInput(color) {
   if (!state.running || state.playingBack) return;
+  const cfg = getDifficultyConfig();
   // play feedback
-  highlightPad(color, 220);
-  await playSound(color, 220);
+  highlightPad(color, cfg.inputFeedbackMs);
+  await playSound(color, cfg.inputFeedbackMs);
 
   const expected = state.sequence[state.playerIndex];
   if (color === expected) {
@@ -171,13 +194,25 @@ async function handlePlayerInput(color) {
     }
   } else {
     // wrong
-    messageEl.textContent = 'Wrong! Try again.';
-    // TODO: Add "strict" mode: if strict, end game; else replay sequence
-    // For now, replay sequence after a short delay
-    await wait(800);
-    // Optionally: vibrate on supported devices
-    try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
-    await playbackSequence();
+    if (state.strictMode) {
+      messageEl.textContent = 'Wrong! Game over.';
+      state.running = false;
+      // Optionally: vibrate on supported devices
+      try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
+    } else {
+      messageEl.textContent = 'Wrong! Try again.';
+      await wait(800);
+      // Optionally: vibrate on supported devices
+      messageEl.textContent = 'Wrong! Game over. Press Start to play again.';
+      state.running = false;
+      // Optionally: vibrate on supported devices
+      try { if (navigator.vibrate) navigator.vibrate(300); } catch (e) {}
+    } else {
+      messageEl.textContent = 'Wrong! Try again.';
+      await wait(800);
+      try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {}
+      await playbackSequence();
+    }
   }
 }
 
@@ -224,9 +259,22 @@ soundToggle.addEventListener('change', (e) => {
 showSequenceToggle.addEventListener('change', (e) => {
   state.showSequenceVisual = e.target.checked;
 });
+strictModeToggle.addEventListener('change', (e) => {
+  state.strictMode = e.target.checked;
+});
+difficultySelect.addEventListener('change', (e) => {
+  state.difficulty = e.target.value;
+strictToggle?.addEventListener('change', (e) => {
+  state.strictMode = e.target.checked;
+});
+difficultySelect?.addEventListener('change', (e) => {
+  state.difficulty = e.target.value;
+  applyDifficultySideEffects();
+});
 
 // initial setup
 initPadListeners();
+applyDifficultySideEffects();
 
 // expose some functions for debugging / tests (optional)
 window.__simon = {
@@ -238,44 +286,37 @@ window.__simon = {
   // TODO: add testing helpers, seedable RNG for deterministic tests
 };
 
-/* ------------------------------------------------------------------
-  TODOs / Contribution ideas (clearly marked for open-source contributors)
---------------------------------------------------------------------
-1) Sounds:
-   - Add real audio files to `audioFiles` and implement file preloading.
-   - Optionally use WebAudio for richer sounds, ADSR envelopes, effects.
+// Difficulty configuration and helpers
+function getDifficultyConfig() {
+  switch (state.difficulty) {
+    case 'easy':
+      return { stepMs: 420, gapMs: 320, highlightMs: 380, inputFeedbackMs: 260, visualDuringPlayback: true };
+    case 'hard':
+      return { stepMs: 180, gapMs: 200, highlightMs: 160, inputFeedbackMs: 160, visualDuringPlayback: false };
+    case 'normal':
+    default:
+      return { stepMs: 300, gapMs: 300, highlightMs: 300, inputFeedbackMs: 220, visualDuringPlayback: true };
+  }
+}
 
-2) Strict mode & difficulty:
-   - Add a "Strict Mode" toggle: on wrong move, game over.
-   - Difficulty levels: change playback speed or show fewer visual cues.
-
-3) Mobile / Touch improvements:
-   - Add touch gestures and bigger tappable areas.
-   - Add haptic feedback (vibration) support with graceful fallback.
-
-4) Persistence & Leaderboard:
-   - Store high score in localStorage.
-   - Add server-backed leaderboard (API) — add hooks in script to POST scores.
-
-5) Accessibility:
-   - Add aria-live descriptions for sequence playback and results.
-   - Improve keyboard navigation, focus management, and color-blind mode.
-
-6) Tests & CI:
-   - Provide unit tests (Jest/Playwright) and GitHub Actions for test run & lint.
-
-7) Visual Themes:
-   - Allow contributors to add themes (neon, retro, seasonal).
-   - Make theme files importable CSS module or JSON-config driven.
-
-8) Animations:
-   - Add smoother animations, CSS transitions or small particles.
-   - Allow contributors to add optional confetti on win.
-
-9) Code cleanup & modularization:
-   - Break script into modules (state, ui, audio, storage) for clarity.
-
-10) Internationalization:
-   - Add locale strings and support for multiple languages.
-
------------------------------------------------------------------- */
+function applyDifficultySideEffects() {
+  const isHard = state.difficulty === 'hard';
+  if (isHard) {
+    // Reduce or disable visual cues on hard
+    state.showSequenceVisual = false;
+    if (showSequenceToggle) {
+      showSequenceToggle.checked = false;
+      showSequenceToggle.disabled = true;
+      showSequenceToggle.parentElement?.classList.add('disabled');
+    }
+    if (difficultyHintEl) difficultyHintEl.textContent = 'Hard plays faster and hides playback visuals.';
+  } else {
+    if (showSequenceToggle) {
+      showSequenceToggle.disabled = false;
+      showSequenceToggle.parentElement?.classList.remove('disabled');
+      // Respect current checkbox for visuals
+      state.showSequenceVisual = showSequenceToggle.checked;
+    }
+    if (difficultyHintEl) difficultyHintEl.textContent = 'Hard plays faster and may reduce visual cues.';
+  }
+}
