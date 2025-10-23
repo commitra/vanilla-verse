@@ -1,4 +1,4 @@
-body {
+ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #0f0f12;
   color: #eef1f8;
@@ -7,9 +7,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Changed from center to flex-start */
-  min-height: 100vh; /* Changed from height to min-height */
-  overflow-y: auto; /* Enable scrolling if needed */
+  justify-content: flex-start;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 main {
@@ -18,20 +18,28 @@ main {
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* Reduced gap */
+  gap: 1.5rem;
   padding: 1rem 0;
 }
 
 h1 {
-  margin-bottom: 0.5rem; /* Reduced margin */
-  font-size: 2.5rem; /* Slightly smaller on mobile */
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
   color: #00d0ff;
   letter-spacing: 1px;
-  order: -1; /* Ensure it stays at top */
 }
 
 .controls {
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background: #151519;
+  border-radius: 0.6rem;
+  border: 1px solid #2a2a35;
 }
 
 select, button {
@@ -49,22 +57,32 @@ button:hover {
   background: #1f1f26;
 }
 
+/* TEXT CONTAINER - CRITICAL FOR CARET */
+.text-container {
+  position: relative;
+  width: 100%;
+}
+
 .text {
-  position: relative;      /* caret relative to container */
+  position: relative;
   display: block;
   text-align: left;
   font-size: 2rem;
   line-height: 2.5rem;
-  background: #17171c;
-  border: 1px solid #262631;
+  background: #151519;
+  border: 2px solid #2a2a35;
   border-radius: 0.7rem;
-  padding: 1.5rem;
-  min-height: 10rem;
+  padding: 1.8rem;
+  min-height: 12rem;
   width: 100%;
   box-sizing: border-box;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.5);
+}
+
+.text span {
+  position: relative;
 }
 
 .correct {
@@ -75,13 +93,16 @@ button:hover {
   color: #ff5c5c;
 }
 
+/* CARET - POSITIONED RELATIVE TO TEXT CONTAINER */
 .caret {
   position: absolute;
   width: 3px;
-  height: 2.5rem;
   background: #00d0ff;
   animation: blink 1s infinite;
-  display: none; /* hidden until typing starts */
+  pointer-events: none;
+  z-index: 10;
+  left: 1.8rem;
+  top: 1.8rem;
 }
 
 @keyframes blink {
@@ -90,195 +111,30 @@ button:hover {
 }
 
 .stats {
-  margin-top: 1.5rem;
-  color: #a6adbb;
+  margin-top: 0.5rem;
+  color: #b8c1d1;
   font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.8rem;
+  background: #151519;
+  border-radius: 0.6rem;
+  border: 1px solid #2a2a35;
 }
 
 .stats span {
   margin-right: 1rem;
+  color: #f0f3ff;
 }
 
-/* Leaderboard Styles - Improved Contrast & Alignment */
 .leaderboard {
-  margin-top: 1rem; /* Reduced margin */
-  padding: 1.5rem; /* Slightly reduced padding */
+  margin-top: 1rem;
+  padding: 1.5rem;
   background: #151519;
   border: 1px solid #2a2a35;
   border-radius: 0.7rem;
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
-}
-
-/* Reduce text area height slightly */
-.text {
-  position: relative;
-  display: block;
-  text-align: left;
-  font-size: 1.8rem; /* Slightly smaller font */
-  line-height: 2.2rem; /* Reduced line height */
-  background: #151519;
-  border: 2px solid #2a2a35;
-  border-radius: 0.7rem;
-  padding: 1.5rem; /* Reduced padding */
-  min-height: 8rem; /* Reduced min-height */
-  width: 100%;
-  box-sizing: border-box;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  box-shadow: 0 6px 25px rgba(0,0,0,0.5);
-}
-
-/* Compact the stats and controls */
-.stats {
-  margin-top: 0.5rem; /* Reduced margin */
-  color: #b8c1d1;
-  font-size: 1.2rem; /* Slightly smaller */
-  font-weight: 500;
-  padding: 0.8rem; /* Reduced padding */
-  background: #151519;
-  border-radius: 0.6rem;
-  border: 1px solid #2a2a35;
-}
-
-.controls {
-  margin-bottom: 0.5rem; /* Reduced margin */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding: 0.8rem; /* Reduced padding */
-  background: #151519;
-  border-radius: 0.6rem;
-  border: 1px solid #2a2a35;
-}
-
-/* Make leaderboard items more compact */
-.leaderboard-item {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto;
-  align-items: center;
-  gap: 1rem; /* Reduced gap */
-  padding: 0.9rem 1.1rem; /* Reduced padding */
-  background: #1a1a21;
-  border-radius: 0.6rem;
-  border: 1px solid #2d2d3a;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.avatar {
-  width: 2.2rem; /* Slightly smaller */
-  height: 2.2rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #00e0ff, #0099ff);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.8rem; /* Smaller font */
-  color: #0a0a0f;
-  box-shadow: 0 2px 8px rgba(0, 224, 255, 0.3);
-}
-
-.username {
-  font-weight: 600;
-  color: #f0f3ff;
-  font-size: 0.95rem; /* Slightly smaller */
-}
-
-.wpm-score, .accuracy-score {
-  font-size: 0.95rem; /* Slightly smaller */
-  padding: 0.3rem 0.6rem; /* Reduced padding */
-}
-
-/* Mobile optimizations */
-@media (max-width: 768px) {
-  body {
-    padding: 0.5rem;
-    justify-content: flex-start;
-  }
-  
-  main {
-    gap: 1rem; /* Even smaller gap on mobile */
-    padding: 0.5rem 0;
-  }
-  
-  h1 {
-    font-size: 2rem; /* Smaller on mobile */
-    margin-bottom: 0.25rem;
-  }
-  
-  .leaderboard {
-    margin-top: 0.5rem;
-    padding: 1rem;
-  }
-  
-  .leaderboard h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .text {
-    font-size: 1.5rem;
-    line-height: 1.8rem;
-    padding: 1rem;
-    min-height: 6rem;
-  }
-  
-  .stats, .controls {
-    font-size: 1rem;
-    padding: 0.6rem;
-  }
-  
-  .leaderboard-item {
-    padding: 0.7rem 0.9rem;
-    gap: 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  h1 {
-    font-size: 1.8rem;
-  }
-  
-  .leaderboard {
-    padding: 0.8rem;
-  }
-  
-  .leaderboard h2 {
-    font-size: 1.3rem;
-  }
-  
-  /* Stack the layout more aggressively on very small screens */
-  main {
-    gap: 0.8rem;
-  }
-}
-
-/* Ensure the page is scrollable if content overflows */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Add a subtle fade to indicate scrollability */
-body::after {
-  content: '';
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: linear-gradient(transparent, #0f0f12);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-body.scrollable::after {
-  opacity: 1;
 }
 
 .leaderboard h2 {
@@ -491,78 +347,80 @@ body.scrollable::after {
   50% { transform: scale(1.02); }
 }
 
-/* Enhanced main container alignment */
-main {
-  max-width: 950px;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Improved stats alignment */
-.stats {
-  margin-top: 1.2rem;
-  color: #b8c1d1;
-  font-size: 1.3rem;
-  font-weight: 500;
-  padding: 1rem;
-  background: #151519;
-  border-radius: 0.6rem;
-  border: 1px solid #2a2a35;
+body::after {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, #0f0f12);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.stats span {
-  margin-right: 1.2rem;
-  color: #f0f3ff;
+body.scrollable::after {
+  opacity: 1;
 }
 
-/* Enhanced controls alignment */
-.controls {
-  margin-bottom: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding: 1rem;
-  background: #151519;
-  border-radius: 0.6rem;
-  border: 1px solid #2a2a35;
-}
-
-/* Improved text area contrast */
-.text {
-  position: relative;
-  display: block;
-  text-align: left;
-  font-size: 2rem;
-  line-height: 2.5rem;
-  background: #151519;
-  border: 2px solid #2a2a35;
-  border-radius: 0.7rem;
-  padding: 1.8rem;
-  min-height: 12rem;
-  width: 100%;
-  box-sizing: border-box;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  box-shadow: 0 6px 25px rgba(0,0,0,0.5);
-}
-
-/* Enhanced responsive design */
 @media (max-width: 768px) {
+  body {
+    padding: 0.5rem;
+  }
+  
+  main {
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .text {
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+    padding: 1rem;
+    min-height: 6rem;
+  }
+  
+  .caret {
+    left: 1rem;
+    top: 1rem;
+  }
+  
+  .stats, .controls {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+  
+  .leaderboard {
+    margin-top: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .leaderboard h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
   .leaderboard-item {
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
     gap: 0.8rem;
+    padding: 0.7rem 0.9rem;
   }
   
   .score-info {
     grid-column: 1 / -1;
     justify-content: flex-start;
-    margin-left: 3.7rem; /* Align with username */
+    margin-left: 3.7rem;
   }
   
   .timestamp {
@@ -570,10 +428,6 @@ main {
     text-align: left;
     margin-left: 3.7rem;
     margin-top: 0.5rem;
-  }
-  
-  .leaderboard-controls {
-    gap: 0.5rem;
   }
   
   .timeframe-btn {
@@ -593,14 +447,20 @@ main {
 }
 
 @media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+  
   .leaderboard {
-    padding: 1.2rem;
-    margin-top: 2rem;
+    padding: 0.8rem;
   }
   
   .leaderboard h2 {
-    font-size: 1.6rem;
-    margin-bottom: 1.2rem;
+    font-size: 1.3rem;
+  }
+  
+  main {
+    gap: 0.8rem;
   }
   
   .score-info {
@@ -627,26 +487,5 @@ main {
   .current-score {
     padding: 1rem;
     font-size: 1rem;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .leaderboard {
-    border-color: #ffffff;
-    background: #000000;
-  }
-  
-  .leaderboard-item {
-    border-color: #ffffff;
-    background: #111111;
-  }
-  
-  .username, .wpm-score, .accuracy-score {
-    color: #ffffff;
-  }
-  
-  .timestamp {
-    color: #cccccc;
   }
 }

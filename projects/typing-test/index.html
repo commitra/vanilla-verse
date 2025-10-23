@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -17,11 +17,13 @@
         <option value="60" selected>60s</option>
         <option value="120">120s</option>
       </select>
-      <button id="restartBtn">Restart</button>
+      <button type="button" id="restartBtn">Restart</button>
     </div>
 
-    <div id="text" class="text" aria-live="polite"></div>
-    <div id="caret" class="caret"></div>
+    <div class="text-container">
+      <div id="text" class="text" aria-live="polite"></div>
+      <div id="caret" class="caret"></div>
+    </div>
 
     <div class="stats">
       WPM: <span id="wpm">0</span> • Accuracy: <span id="acc">100</span>% • Time: <span id="time">60</span>s

@@ -46,7 +46,6 @@ function saveScore(wpm, accuracy) {
   
   userScores.push(score);
   
-  // Keep only last 100 scores to prevent storage bloat
   if (userScores.length > 100) {
     userScores = userScores.slice(-100);
   }
@@ -55,7 +54,6 @@ function saveScore(wpm, accuracy) {
   return score;
 }
 
-// Generate anonymous username for privacy
 function generateAnonymousUsername() {
   const animals = ['Penguin', 'Fox', 'Dolphin', 'Tiger', 'Eagle', 'Wolf', 'Owl', 'Lion', 'Bear', 'Hawk'];
   const adjectives = ['Quick', 'Clever', 'Swift', 'Smart', 'Brave', 'Wise', 'Sharp', 'Nimble', 'Alert', 'Keen'];
@@ -64,7 +62,6 @@ function generateAnonymousUsername() {
   return `${adjective}${animal}${Math.floor(Math.random() * 1000)}`;
 }
 
-// Get scores for specific timeframe
 function getScoresByTimeframe(timeframe) {
   const now = Date.now();
   const dayInMs = 24 * 60 * 60 * 1000;
@@ -87,13 +84,11 @@ function getScoresByTimeframe(timeframe) {
   });
 }
 
-// Display leaderboard
 function displayLeaderboard(timeframe = 'daily') {
   leaderboardLoading.style.display = 'block';
   leaderboardEmpty.style.display = 'none';
   leaderboardList.innerHTML = '';
   
-  // Simulate loading for better UX
   setTimeout(() => {
     const scores = getScoresByTimeframe(timeframe);
     const topScores = scores
@@ -114,7 +109,6 @@ function displayLeaderboard(timeframe = 'daily') {
   }, 500);
 }
 
-// Create leaderboard item element
 function createLeaderboardItem(score, rank) {
   const item = document.createElement('div');
   item.className = `leaderboard-item rank-${rank}`;
@@ -138,7 +132,6 @@ function createLeaderboardItem(score, rank) {
   return item;
 }
 
-// Show current user score
 function showCurrentScore(wpm, accuracy, isHighScore = false) {
   userWpmEl.textContent = wpm;
   userAccEl.textContent = accuracy;
@@ -152,7 +145,6 @@ function showCurrentScore(wpm, accuracy, isHighScore = false) {
   }
 }
 
-// Check if score is high score
 function isHighScore(wpm, timeframe) {
   const scores = getScoresByTimeframe(timeframe);
   if (scores.length === 0) return true;
@@ -161,7 +153,6 @@ function isHighScore(wpm, timeframe) {
   return wpm > topScore;
 }
 
-// Generate words and append as spans
 function appendWords(count = 10) {
   for (let i = 0; i < count; i++) {
     const word = words[Math.floor(Math.random() * words.length)];
@@ -179,21 +170,38 @@ function appendWords(count = 10) {
   }
 }
 
-// Update caret position relative to text container
+// FIXED: Update caret position
 function updateCaret() {
   const spans = textEl.querySelectorAll("span");
   if (index >= spans.length) {
     caret.style.display = "none";
     return;
   }
+  
   const span = spans[index];
-  caret.style.left = `${span.offsetLeft}px`;
-  caret.style.top = `${span.offsetTop}px`;
+  const textStyles = window.getComputedStyle(textEl);
+  const paddingLeft = parseFloat(textStyles.paddingLeft);
+  const paddingTop = parseFloat(textStyles.paddingTop);
+  
+  // Calculate position relative to the text element's content area
+  let left = paddingLeft;
+  let top = paddingTop;
+  
+  for (let i = 0; i < index; i++) {
+    const s = spans[i];
+    if (s.offsetTop === span.offsetTop) {
+      left += s.offsetWidth;
+    }
+  }
+  
+  top = span.offsetTop - spans[0].offsetTop + paddingTop;
+  
+  caret.style.left = `${left}px`;
+  caret.style.top = `${top}px`;
   caret.style.height = `${span.offsetHeight}px`;
   caret.style.display = "block";
 }
 
-// Start timer on first keystroke
 function startTimer() {
   if (timerInterval) return;
   timerInterval = setInterval(() => {
@@ -206,17 +214,14 @@ function startTimer() {
   }, 1000);
 }
 
-// End test
 function endTest() {
   document.removeEventListener("keydown", handleTyping);
   caret.style.display = "none";
   
-  // Calculate final scores
   const minutes = (Date.now() - start) / 60000;
   const wpm = Math.round((index / 5) / Math.max(minutes, 0.001));
   const acc = Math.round((correct / Math.max(index, 1)) * 100);
   
-  // Save score and update leaderboard
   const savedScore = saveScore(wpm, acc);
   const highScore = isHighScore(wpm, currentTimeframe);
   
@@ -224,7 +229,6 @@ function endTest() {
   displayLeaderboard(currentTimeframe);
 }
 
-// Reset test
 function resetTest() {
   clearInterval(timerInterval);
   timerInterval = null;
@@ -246,12 +250,14 @@ function resetTest() {
   textArray = [];
   textEl.innerHTML = "";
   appendWords(30);
-  updateCaret();
+  
+  setTimeout(() => {
+    updateCaret();
+  }, 10);
 
   document.addEventListener("keydown", handleTyping);
 }
 
-// Handle typing input
 function handleTyping(e) {
   e.preventDefault();
 
@@ -295,11 +301,9 @@ function handleTyping(e) {
   accEl.textContent = Math.min(acc, 100);
 }
 
-// Initialize leaderboard
 function initLeaderboard() {
   displayLeaderboard(currentTimeframe);
   
-  // Add event listeners for timeframe buttons
   timeframeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       timeframeBtns.forEach(b => b.classList.remove('active'));
@@ -310,7 +314,6 @@ function initLeaderboard() {
   });
 }
 
-// Add scroll detection to show scroll indicator
 function checkScrollable() {
   const body = document.body;
   const isScrollable = body.scrollHeight > window.innerHeight;
@@ -322,16 +325,13 @@ function checkScrollable() {
   }
 }
 
-// Initialize scroll check
 window.addEventListener('load', checkScrollable);
-window.addEventListener('resize', checkScrollable);
+window.addEventListener('resize', () => {
+  checkScrollable();
+  updateCaret();
+});
 
-// Update after leaderboard loads
-setTimeout(checkScrollable, 1000);
-
-// Initialize
 resetTest();
 initLeaderboard();
 restartBtn.addEventListener("click", resetTest);
 timeSelect.addEventListener("change", resetTest);
-window.addEventListener("resize", updateCaret);
