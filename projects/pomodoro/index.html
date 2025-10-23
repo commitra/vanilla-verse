@@ -1,44 +1,200 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro Timer</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <main>
-        <h1>Pomodoro Timer</h1>
-        <div class="timer"><span id="time">25:00</span></div>
-        <div class="controls">
-            <button id="start">Start</button>
-            <button id="reset">Reset</button>
-        </div>
-        <p class="notes">Add custom intervals, notifications, and stats.</p>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="app-title">Pomodoro Timer</h1>
+            <div class="header-actions">
+                <button class="icon-btn" id="dashboard-btn" title="Dashboard">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z" />
+                    </svg>
+                </button>
+                <button class="icon-btn" id="settings-btn" title="Settings">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
 
-        <!-- Link timer to current task -->
-        <div class="current-task">
-            <label for="current-task-select">Working on:</label>
-            <select id="current-task-select">
-                <option value="">-- Select task --</option>
-            </select>
-        </div>
+        <!-- Timer Section -->
+        <section class="timer-section">
+            <div class="session-toggle">
+                <button class="toggle-btn active" data-type="work">Work</button>
+                <button class="toggle-btn" data-type="short-break">Short Break</button>
+                <button class="toggle-btn" data-type="long-break">Long Break</button>
+            </div>
 
-        <!-- TASK PANEL -->
-        <section class="task-panel">
-            <h2>Tasks</h2>
-            <form id="task-form">
-                <input type="text" id="task-name" placeholder="Task name" required>
-                <input type="text" id="task-desc" placeholder="Description (optional)">
-                <button type="submit">Add Task</button>
-            </form>
-            <ul id="task-list"></ul>
+            <div class="timer-display" id="timer-display">25:00</div>
+            <div class="session-info" id="session-info">Session 1</div>
+
+            <div class="timer-controls">
+                <button class="btn" id="toggle-timer">Start</button>
+                <button class="btn btn-secondary" id="reset-timer">Reset</button>
+            </div>
+
+            <div class="current-task">
+                <label>Working on</label>
+                <select id="current-task-select">
+                    <option value="">Select a task</option>
+                </select>
+                <div class="current-task-info" id="current-task-info" style="display: none;">
+                    <p id="current-task-name">Current Task: </p>
+                    <p id="current-task-pomodoros">Pomodoros completed: 0</p>
+                </div>
+            </div>
         </section>
-    </main>
 
-    <script src="./main.js"></script>
+        <!-- Task Panel -->
+        <section class="task-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Task Management</h2>
+            </div>
+
+            <form class="task-form" id="task-form">
+                <input type="text" name="name" class="form-input" placeholder="Task name" required>
+                <input type="text" name="description" class="form-input" placeholder="Description (optional)">
+                <button type="submit" class="btn">Add Task</button>
+            </form>
+
+            <div class="task-list" id="task-list">
+                <div class="empty-state">
+                    <p>No tasks yet. Add your first task above!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Modal -->
+        <div class="modal-overlay" id="dashboard-modal" style="display: none;">
+            <div class="modal modal-large">
+                <div class="modal-header">
+                    <h2 class="modal-title">Dashboard</h2>
+                    <button class="modal-close" id="close-dashboard">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="overview-stats">Overview Stats</div>
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-pomodoros">0</div>
+                        <div class="stat-label">Total Pomodoros</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-tasks">0</div>
+                        <div class="stat-label">Total Tasks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="today-pomodoros">0</div>
+                        <div class="stat-label">Today's Sessions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="current-streak">0</div>
+                        <div class="stat-label">Current Streak</div>
+                    </div>
+                </div>
+
+                <div class="task-performance">
+                    <h3 class="performance-title">Task Performance</h3>
+                    <div class="performance-list" id="performance-list">
+                        <div class="empty-state">
+                            <p>No task performance data yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="session-history">
+                    <h3 class="history-title">Recent Session History</h3>
+                    <div class="history-list" id="history-list">
+                        <div class="empty-state">
+                            <p>No session history yet. Complete some pomodoros to see your history!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal-overlay" id="settings-modal" style="display: none;">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Settings</h2>
+                    <button class="modal-close" id="close-settings">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="settings-form">
+                    <div class="settings-grid">
+                        <div class="setting-group">
+                            <label class="setting-label">Work Duration (minutes)</label>
+                            <input type="number" name="workDuration" class="setting-input" min="1" max="60" value="25"
+                                required>
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="setting-label">Short Break Duration (minutes)</label>
+                            <input type="number" name="breakDuration" class="setting-input" min="1" max="30" value="5"
+                                required>
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="setting-label">Long Break Duration (minutes)</label>
+                            <input type="number" name="longBreakDuration" class="setting-input" min="1" max="60"
+                                value="15" required>
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="setting-label">Long Break Interval</label>
+                            <input type="number" name="longBreakInterval" class="setting-input" min="1" max="10"
+                                value="4" required>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-container">
+                        <label class="checkbox-group">
+                            <input type="checkbox" name="notifications" checked>
+                            Enable Notifications
+                        </label>
+                        <label class="checkbox-group">
+                            <input type="checkbox" name="autoStartBreaks">
+                            Auto-start Breaks
+                        </label>
+                        <label class="checkbox-group">
+                            <input type="checkbox" name="autoStartPomodoros">
+                            Auto-start Pomodoros
+                        </label>
+                    </div>
+
+                    <div class="save-button-container">
+                        <button type="submit" class="btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Notification -->
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <script src="main.js"></script>
 </body>
 
 </html>
