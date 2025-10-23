@@ -1,219 +1,226 @@
 [
-    {
-        "title": "Snake Game",
-        "slug": "snake",
-        "description": "Classic snake with keyboard controls, speed levels, and scoring.",
-        "category": "Small Games",
-        "categoryKey": "games",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Memory Match",
-        "slug": "memory-match",
-        "description": "Flip cards to find pairs. Extend with themes and sounds.",
-        "category": "Small Games",
-        "categoryKey": "games",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Tic-Tac-Toe",
-        "slug": "tic-tac-toe",
-        "description": "Two-player tic-tac-toe. Extend with AI and themes.",
-        "category": "Small Games",
-        "categoryKey": "games",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Whack-a-Mole",
-        "slug": "whack-a-mole",
-        "description": "Click moles before they disappear. Add levels and effects.",
-        "category": "Small Games",
-        "categoryKey": "games",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Maze Solver",
-        "slug": "maze",
-        "description": "Generate a random maze and navigate through it.",
-        "category": "Small Games",
-        "categoryKey": "games",
-        "difficulty": "medium"
-    },
-    {
-        "title": "Todo List",
-        "slug": "todo",
-        "description": "Task tracker with localStorage, sorting, and themes.",
-        "category": "Productivity",
-        "categoryKey": "productivity",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Notes App",
-        "slug": "notes",
-        "description": "Notes with categories, search, and dark mode.",
-        "category": "Productivity",
-        "categoryKey": "productivity",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Pomodoro Timer",
-        "slug": "pomodoro",
-        "description": "Pomodoro timer with notifications and custom intervals.",
-        "category": "Productivity",
-        "categoryKey": "productivity",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Expense Tracker",
-        "slug": "expense-tracker",
-        "description": "Track expenses and visualize charts in pure JS.",
-        "category": "Productivity",
-        "categoryKey": "productivity",
-        "difficulty": "medium"
-    },
-    {
-        "title": "Markdown Editor",
-        "slug": "markdown",
-        "description": "Live Markdown editor and previewer.",
-        "category": "Productivity",
-        "categoryKey": "productivity",
-        "difficulty": "medium"
-    },
-    {
-        "title": "Theme Switcher",
-        "slug": "theme-switcher",
-        "description": "Generate color palettes and apply themes.",
-        "category": "Fun UI / Visual",
-        "categoryKey": "visual",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Image Slider",
-        "slug": "image-slider",
-        "description": "Simple carousel with autoplay and responsive behavior.",
-        "category": "Fun UI / Visual",
-        "categoryKey": "visual",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Animated Clock",
-        "slug": "animated-clock",
-        "description": "Smooth clock using requestAnimationFrame.",
-        "category": "Fun UI / Visual",
-        "categoryKey": "visual",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Weather Widget",
-        "slug": "weather",
-        "description": "Fetch weather from a public API and update UI dynamically.",
-        "category": "Fun UI / Visual",
-        "categoryKey": "visual",
-        "difficulty": "medium"
-    },
-    {
-        "title": "Typing Speed Test",
-        "slug": "typing-test",
-        "description": "Measure typing speed and accuracy.",
-        "category": "Fun UI / Visual",
-        "categoryKey": "visual",
-        "difficulty": "medium"
-    },
-    {
-        "title": "Quiz App",
-        "slug": "quiz",
-        "description": "Multiple-choice trivia with score tracking.",
-        "category": "Mini Data",
-        "categoryKey": "data",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Currency Converter",
-        "slug": "currency",
-        "description": "Offline rate-based converter with local overrides.",
-        "category": "Mini Data",
-        "categoryKey": "data",
-        "difficulty": "easy"
-    },
-    {
-        "title": "BMI Calculator",
-        "slug": "bmi",
-        "description": "Compute BMI with validation and simple history.",
-        "category": "Mini Data",
-        "categoryKey": "data",
-        "difficulty": "easy"
-    }
-    ,
-    {
-        "title": "Number Guessing Game",
-        "slug": "number-guessing-game",
-        "description": "Guess a random number with feedback and attempt tracking.",
-        "category": "Small Games",
-        "categoryKey": "games",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Text Encryption / Decryption Tool",
-        "slug": "text-encryption-decryption",
-        "description": "Encrypt and decrypt text using simple algorithms.",
-        "category": "Productivity",
-        "categoryKey": "productivity",
-        "difficulty": "easy"
-    },
-    {
-        "title": "Rock-Paper-Scissors Game",
-        "slug": "rock-paper-scissors",
-        "description": "Play rock-paper-scissors against the computer with score tracking.",
-        "category": "Small Games",
-        "categoryKey": "games",
-        "difficulty": "easy"
-    },
-    {
-        "title": "QR Code Generator & Scanner",
-        "slug": "qr-code-generator-scanner",
-        "description": "Generate and scan QR codes from text or images.",
-        "category": "Mini Data",
-        "categoryKey": "data",
-        "difficulty": "medium"
-    },
-    {
-        "title": "Quiz",
-        "slug": "quiz",
-        "description": "A dynamic quiz app using Open Trivia API with a timer and scoring.",
-        "category": "Fun UI",
-        "categoryKey": "fun",
-        "difficulty": "intermediate"
-      },
-      {
-        "title": "2048",
-        "slug": "game-2048",
-        "description": "Simple game with powers of 2.",
-        "category": "Small Games",
-        "categoryKey": "games",
-        "difficulty": "intermediate"
-      },
-      {
-        "title": "Password Generator",
-        "slug": "password-generator",
-        "description": "Generate secure passwords with customizable options.",
-        "category": "Productivity", 
-        "categoryKey": "productivity",
-        "difficulty": "easy"
-      },
-       {
-        "title": "Simon Says",
-        "slug": "simon-says",
-        "description": "Play Simon Says",
-        "category": "Small Games", 
-        "categoryKey": "games",
-        "difficulty": "easy"
-      },
-      {
-        "title": "Contributors Page",
-        "slug": "contributor",
-        "description": "See the contributions of people",
-        "category": "contributor", 
-        "categoryKey": "contributor",
-        "difficulty": "easy"
-      }
+  {
+    "title": "Snake Game",
+    "slug": "snake",
+    "description": "Classic snake with keyboard controls, speed levels, and scoring.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Memory Match",
+    "slug": "memory-match",
+    "description": "Flip cards to find pairs. Extend with themes and sounds.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Tic-Tac-Toe",
+    "slug": "tic-tac-toe",
+    "description": "Two-player tic-tac-toe. Extend with AI and themes.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Whack-a-Mole",
+    "slug": "whack-a-mole",
+    "description": "Click moles before they disappear. Add levels and effects.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Maze Solver",
+    "slug": "maze",
+    "description": "Generate a random maze and navigate through it.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "medium"
+  },
+  {
+    "title": "Todo List",
+    "slug": "todo",
+    "description": "Task tracker with localStorage, sorting, and themes.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Notes App",
+    "slug": "notes",
+    "description": "Notes with categories, search, and dark mode.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Pomodoro Timer",
+    "slug": "pomodoro",
+    "description": "Pomodoro timer with notifications and custom intervals.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Expense Tracker",
+    "slug": "expense-tracker",
+    "description": "Track expenses and visualize charts in pure JS.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "medium"
+  },
+  {
+    "title": "Markdown Editor",
+    "slug": "markdown",
+    "description": "Live Markdown editor and previewer.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "medium"
+  },
+  {
+    "title": "Theme Switcher",
+    "slug": "theme-switcher",
+    "description": "Generate color palettes and apply themes.",
+    "category": "Fun UI / Visual",
+    "categoryKey": "visual",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Image Slider",
+    "slug": "image-slider",
+    "description": "Simple carousel with autoplay and responsive behavior.",
+    "category": "Fun UI / Visual",
+    "categoryKey": "visual",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Animated Clock",
+    "slug": "animated-clock",
+    "description": "Smooth clock using requestAnimationFrame.",
+    "category": "Fun UI / Visual",
+    "categoryKey": "visual",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Weather Widget",
+    "slug": "weather",
+    "description": "Fetch weather from a public API and update UI dynamically.",
+    "category": "Fun UI / Visual",
+    "categoryKey": "visual",
+    "difficulty": "medium"
+  },
+  {
+    "title": "Typing Speed Test",
+    "slug": "typing-test",
+    "description": "Measure typing speed and accuracy.",
+    "category": "Fun UI / Visual",
+    "categoryKey": "visual",
+    "difficulty": "medium"
+  },
+  {
+    "title": "Quiz App",
+    "slug": "quiz",
+    "description": "Multiple-choice trivia with score tracking.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Currency Converter",
+    "slug": "currency",
+    "description": "Offline rate-based converter with local overrides.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "easy"
+  },
+  {
+    "title": "BMI Calculator",
+    "slug": "bmi",
+    "description": "Compute BMI with validation and simple history.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Number Guessing Game",
+    "slug": "number-guessing-game",
+    "description": "Guess a random number with feedback and attempt tracking.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Text Encryption / Decryption Tool",
+    "slug": "text-encryption-decryption",
+    "description": "Encrypt and decrypt text using simple algorithms.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Rock-Paper-Scissors Game",
+    "slug": "rock-paper-scissors",
+    "description": "Play rock-paper-scissors against the computer with score tracking.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "easy"
+  },
+  {
+    "title": "QR Code Generator & Scanner",
+    "slug": "qr-code-generator-scanner",
+    "description": "Generate and scan QR codes from text or images.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "medium"
+  },
+  {
+    "title": "Quiz",
+    "slug": "quiz",
+    "description": "A dynamic quiz app using Open Trivia API with a timer and scoring.",
+    "category": "Fun UI",
+    "categoryKey": "fun",
+    "difficulty": "intermediate"
+  },
+  {
+    "title": "2048",
+    "slug": "game-2048",
+    "description": "Simple game with powers of 2.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "intermediate"
+  },
+  {
+    "title": "Password Generator",
+    "slug": "password-generator",
+    "description": "Generate secure passwords with customizable options.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Simon Says",
+    "slug": "simon-says",
+    "description": "Play Simon Says",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Contributors Page",
+    "slug": "contributor",
+    "description": "See the contributions of people",
+    "category": "contributor",
+    "categoryKey": "contributor",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Hangman Game",
+    "slug": "hangman",
+    "description": "A two player word guessing game where one enters a secret word and the other tries to guess it.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "medium"
+  }
 ]
