@@ -196,7 +196,7 @@
         "title": "Password Generator",
         "slug": "password-generator",
         "description": "Generate secure passwords with customizable options.",
-        "category": "Productivity", 
+        "category": "Productivity",
         "categoryKey": "productivity",
         "difficulty": "easy"
       },
@@ -204,8 +204,16 @@
         "title": "Simon Says",
         "slug": "simon-says",
         "description": "Play Simon Says",
-        "category": "Small Games", 
+        "category": "Small Games",
         "categoryKey": "games",
+        "difficulty": "easy"
+      },
+      {
+        "title": "Tip Calculator",
+        "slug": "Tip Calculator",
+        "description": "Calculate tips and divide bills accurately in seconds",
+        "category": "Productivity",
+        "categoryKey": "productivity",
         "difficulty": "easy"
       }
 ]
