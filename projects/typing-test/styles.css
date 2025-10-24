@@ -672,3 +672,55 @@ main {
     color: #cccccc;
   }
 }
+
+
+/* === HACKTOBERFEST FIX: Dark mode text visibility === */
+.text span {
+  color: #cccccc !important;
+}
+
+.text span.correct {
+  color: #4aff9a !important;
+}
+
+.text span.wrong {
+  color: #ff5c5c !important;
+}
+
+.text span.current {
+  background: rgba(0, 208, 255, 0.2) !important;
+  border-bottom: 2px solid #00d0ff !important;
+  color: #eef1f8 !important;
+}
+
+/* LIVE TITLE: Smart Scroll Only When Needed */
+/* === FINAL: Clean, Ellipsis Title with Live Typing === */
+/* === FINAL: Full Live Typing Text — Wrapped, Clean, Beautiful === */
+h1 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #00d0ff;
+  text-align: center;
+  letter-spacing: 0.8px;
+  margin: 0 0 1.2rem 0;
+  order: -1;
+  
+  /* FULL TEXT: Wrap naturally */
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.4;
+  
+  /* Optional: subtle glow + shadow */
+  text-shadow: 0 0 10px rgba(0, 208, 255, 0.4);
+  
+  /* Smooth hover */
+  transition: all 0.3s ease;
+  padding: 0 1rem;
+}
+
+h1:hover {
+  color: #33e0ff;
+  text-shadow: 0 0 15px rgba(0, 208, 255, 0.6);
+}
+/* =============================================== */
