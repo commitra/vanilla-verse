@@ -1,0 +1,60 @@
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  background:linear-gradient(135deg,#0f172a,#061226);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  color:#e6eef8;
+  overflow:hidden;
+}
+#ui{
+  position:fixed;
+  left:12px;
+  top:12px;
+  z-index:10;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  background:rgba(255,255,255,0.03);
+  padding:8px 10px;
+  border-radius:10px;
+  backdrop-filter:blur(6px);
+  box-shadow:0 6px 18px rgba(2,6,23,0.6);
+}
+#ui > div{font-size:14px; padding:2px 6px;}
+#targetColorName{
+  display:inline-block;
+  width:16px;
+  height:14px;
+  vertical-align:middle;
+  margin-left:8px;
+  border-radius:3px;
+  border:1px solid rgba(255,255,255,0.12);
+}
+button#restart{
+  background:transparent;
+  color:inherit;
+  border:1px solid rgba(255,255,255,0.08);
+  padding:6px 8px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:13px;
+}
+canvas#game{
+  width:100vw;
+  height:100vh;
+  display:block;
+}
+.hint{
+  position:fixed;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  color:rgba(230,238,248,0.8);
+  font-size:13px;
+  background:rgba(255,255,255,0.02);
+  padding:8px 10px;
+  border-radius:8px;
+}
