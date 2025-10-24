@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythm Tap Garden</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 Rhythm Tap Garden</h1>
+        
+        <div class="game-info">
+            <div class="score">Score: <span id="score">0</span></div>
+            <div class="combo">Combo: <span id="combo">0</span></div>
+            <div class="streak">Best Streak: <span id="streak">0</span></div>
+        </div>
+
+        <div class="plant-container">
+            <div class="plant" id="plant">
+                <div class="stem"></div>
+                <div class="leaves"></div>
+            </div>
+        </div>
+
+        <div class="tap-zone">
+            <div class="beat-indicator" id="beatIndicator"></div>
+            <button class="tap-button" id="tapButton">TAP</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="controls">
+            <button id="startButton" class="control-btn">Start</button>
+            <button id="stopButton" class="control-btn" disabled>Stop</button>
+        </div>
+
+        <div class="timing-window">
+            <p>Tap timing:</p>
+            <div class="timing-bar">
+                <div class="perfect-zone">Perfect</div>
+                <div class="good-zone">Good</div>
+                <div class="miss-zone">Miss</div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="backgroundMusic" loop>
+        <source src="beat.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="main.js"></script>
+</body>
+</html>
