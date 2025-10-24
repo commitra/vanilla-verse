@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hangman - Vanilla Verse</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="dark-mode">
+    <button class="theme-toggle" aria-label="Toggle theme">
+      <svg
+        class="sun-icon"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <svg
+        class="moon-icon"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+
+    <div class="container">
+      <div class="header">
+        <h1>Hangman</h1>
+        <p>Classic word guessing game</p>
+      </div>
+
+      <div class="card setup-screen active">
+        <h2 style="margin-bottom: 1rem">Player 1: Enter Secret Word</h2>
+        <p style="color: var(--muted); margin-bottom: 1.5rem">
+          Enter a word for Player 2 to guess. Make it challenging!
+        </p>
+
+        <div class="form-group">
+          <label for="secretWord">Secret Word</label>
+          <input
+            type="password"
+            id="secretWord"
+            placeholder="Enter your word..."
+            autocomplete="off"
+          />
+          <div class="error-message" id="wordError">
+            Please enter a word with only letters (2-20 characters)
+          </div>
+        </div>
+
+        <button class="btn" id="startGame">Start Game</button>
+      </div>
+
+      <div class="card game-screen">
+        <div class="game-info">
+          <div class="info-item">
+            <div class="info-label">Tries Left</div>
+            <div class="info-value tries-left" id="triesLeft">6</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Wrong Guesses</div>
+            <div
+              class="info-value"
+              style="color: var(--error)"
+              id="wrongGuesses"
+            >
+              0
+            </div>
+          </div>
+        </div>
+
+        <div class="hangman-canvas">
+          <svg id="hangmanSvg" viewBox="0 0 200 250">
+            <!-- Gallows -->
+            <line
+              x1="20"
+              y1="230"
+              x2="180"
+              y2="230"
+              stroke="var(--text)"
+              stroke-width="4"
+            />
+            <line
+              x1="50"
+              y1="230"
+              x2="50"
+              y2="20"
+              stroke="var(--text)"
+              stroke-width="4"
+            />
+            <line
+              x1="50"
+              y1="20"
+              x2="130"
+              y2="20"
+              stroke="var(--text)"
+              stroke-width="4"
+            />
+            <line
+              x1="130"
+              y1="20"
+              x2="130"
+              y2="50"
+              stroke="var(--text)"
+              stroke-width="4"
+            />
+
+            <!-- Head -->
+            <circle
+              id="head"
+              cx="130"
+              cy="70"
+              r="20"
+              stroke="var(--error)"
+              stroke-width="3"
+              fill="none"
+              opacity="0"
+            />
+
+            <!-- Body -->
+            <line
+              id="body"
+              x1="130"
+              y1="90"
+              x2="130"
+              y2="150"
+              stroke="var(--error)"
+              stroke-width="3"
+              opacity="0"
+            />
+
+            <!-- Left arm -->
+            <line
+              id="leftArm"
+              x1="130"
+              y1="110"
+              x2="100"
+              y2="130"
+              stroke="var(--error)"
+              stroke-width="3"
+              opacity="0"
+            />
+
+            <!-- Right arm -->
+            <line
+              id="rightArm"
+              x1="130"
+              y1="110"
+              x2="160"
+              y2="130"
+              stroke="var(--error)"
+              stroke-width="3"
+              opacity="0"
+            />
+
+            <!-- Left leg -->
+            <line
+              id="leftLeg"
+              x1="130"
+              y1="150"
+              x2="110"
+              y2="190"
+              stroke="var(--error)"
+              stroke-width="3"
+              opacity="0"
+            />
+
+            <!-- Right leg -->
+            <line
+              id="rightLeg"
+              x1="130"
+              y1="150"
+              x2="150"
+              y2="190"
+              stroke="var(--error)"
+              stroke-width="3"
+              opacity="0"
+            />
+          </svg>
+        </div>
+
+        <div class="word-display" id="wordDisplay"></div>
+
+        <div class="keyboard" id="keyboard"></div>
+      </div>
+
+      <div class="card end-screen">
+        <div class="end-message" id="endMessage">
+          <h2></h2>
+          <p></p>
+          <div class="secret-word" id="revealWord"></div>
+        </div>
+        <button class="btn" id="playAgain">Play Again</button>
+      </div>
+    </div>
+
+    <script src="scripts.js"></script>
+  </body>
+</html>
