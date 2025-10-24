@@ -59,7 +59,11 @@ function saveScore(wpm, accuracy) {
     username: generateAnonymousUsername()
   };
   userScores.push(score);
-  if (userScores.length > 100) userScores = userScores.slice(-100);
+  
+  if (userScores.length > 100) {
+    userScores = userScores.slice(-100);
+  }
+  
   localStorage.setItem('typingTestScores', JSON.stringify(userScores));
   return score;
 }
@@ -91,6 +95,7 @@ function displayLeaderboard(timeframe = 'daily') {
   leaderboardLoading.style.display = 'block';
   leaderboardEmpty.style.display = 'none';
   leaderboardList.innerHTML = '';
+  
   setTimeout(() => {
     const scores = getScoresByTimeframe(timeframe)
       .sort((a, b) => b.wpm - a.wpm || b.accuracy - a.accuracy)
@@ -166,6 +171,7 @@ function appendWords(count = 10) {
   }, 10);
 }
 
+// FIXED: Update caret position
 function updateCaret() {
   const spans = textEl.querySelectorAll("span");
   
@@ -178,23 +184,27 @@ function updateCaret() {
   }
 
   const span = spans[index];
-
-  // Use requestAnimationFrame for better performance and timing
-  requestAnimationFrame(() => {
-    // Get the position relative to the text container
-    const textRect = textEl.getBoundingClientRect();
-    const spanRect = span.getBoundingClientRect();
-    
-    // Position the caret at the beginning of the current character
-    caret.style.left = `${spanRect.left - textRect.left}px`;
-    caret.style.top = `${spanRect.top - textRect.top}px`;
-    caret.style.height = `${spanRect.height}px`;
-    caret.style.display = "block";
-    caret.style.opacity = "1";
-
-    // mark current span for styling
-    span.classList.add("current");
-  });
+  const textStyles = window.getComputedStyle(textEl);
+  const paddingLeft = parseFloat(textStyles.paddingLeft);
+  const paddingTop = parseFloat(textStyles.paddingTop);
+  
+  // Calculate position relative to the text element's content area
+  let left = paddingLeft;
+  let top = paddingTop;
+  
+  for (let i = 0; i < index; i++) {
+    const s = spans[i];
+    if (s.offsetTop === span.offsetTop) {
+      left += s.offsetWidth;
+    }
+  }
+  
+  top = span.offsetTop - spans[0].offsetTop + paddingTop;
+  
+  caret.style.left = `${left}px`;
+  caret.style.top = `${top}px`;
+  caret.style.height = `${span.offsetHeight}px`;
+  caret.style.display = "block";
 }
 
 function startTimer() {
@@ -212,9 +222,11 @@ function startTimer() {
 function endTest() {
   document.removeEventListener("keydown", handleTyping);
   caret.style.display = "none";
+  
   const minutes = (Date.now() - start) / 60000;
   const wpm = Math.round((index / 5) / Math.max(minutes, 0.001));
   const acc = Math.round((correct / Math.max(index, 1)) * 100);
+  
   const savedScore = saveScore(wpm, acc);
   const highScore = isHighScore(wpm, currentTimeframe);
   showCurrentScore(wpm, acc, highScore);
@@ -236,12 +248,10 @@ function resetTest() {
   textArray = [];
   textEl.innerHTML = "";
   appendWords(30);
-
-  // Force caret to be visible and positioned
-  forceCaretVisible();
-  setTimeout(forceCaretVisible, 10);
-  setTimeout(forceCaretVisible, 50);
-  setTimeout(forceCaretVisible, 100);
+  
+  setTimeout(() => {
+    updateCaret();
+  }, 10);
 
   typedText = "";
   updateTitle(); // Reset title
@@ -301,6 +311,7 @@ function handleTyping(e) {
 
 function initLeaderboard() {
   displayLeaderboard(currentTimeframe);
+  
   timeframeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       timeframeBtns.forEach(b => b.classList.remove('active'));
@@ -318,38 +329,12 @@ function checkScrollable() {
 }
 
 window.addEventListener('load', checkScrollable);
-window.addEventListener('resize', checkScrollable);
-setTimeout(checkScrollable, 1000);
+window.addEventListener('resize', () => {
+  checkScrollable();
+  updateCaret();
+});
 
-// Force caret to be visible
-function forceCaretVisible() {
-  if (caret) {
-    caret.style.display = "block";
-    caret.style.opacity = "1";
-    caret.style.visibility = "visible";
-    updateCaret();
-  }
-}
-
-// Initialize
 resetTest();
 initLeaderboard();
 restartBtn.addEventListener("click", resetTest);
 timeSelect.addEventListener("change", resetTest);
-window.addEventListener("resize", updateCaret);
-
-// Ensure caret is visible when page loads
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(forceCaretVisible, 100);
-  setTimeout(forceCaretVisible, 300);
-  setTimeout(forceCaretVisible, 500);
-});
-
-// Also ensure caret is visible after a short delay
-setTimeout(forceCaretVisible, 200);
-setTimeout(forceCaretVisible, 400);
-setTimeout(forceCaretVisible, 800);
-
-// Ensure caret is visible when window gets focus
-window.addEventListener("focus", forceCaretVisible);
-window.addEventListener("load", forceCaretVisible);
