@@ -8,7 +8,7 @@
   --border: #e5e7eb;
 }
 
-body.dark-mode {
+body.dark-mode {  
 /* dark mode */
   --bg: #0f172a;
   --card: #1e293b;
