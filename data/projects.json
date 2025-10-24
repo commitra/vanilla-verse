@@ -216,11 +216,22 @@
     "difficulty": "easy"
   },
   {
+
+    "title": "Tip Calculator",
+    "slug": "Tip Calculator",
+    "description": "Calculate tips and divide bills accurately in seconds",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+
     "title": "Hangman Game",
     "slug": "hangman",
     "description": "A two player word guessing game where one enters a secret word and the other tries to guess it.",
     "category": "Small Games",
     "categoryKey": "games",
     "difficulty": "medium"
+
   }
 ]
