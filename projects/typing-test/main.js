@@ -6,6 +6,10 @@ const timeEl = document.getElementById("time");
 const restartBtn = document.getElementById("restartBtn");
 const timeSelect = document.getElementById("timeSelect");
 
+// === LIVE TITLE DISPLAY ===
+const titleEl = document.querySelector("h1");
+let typedText = "";
+
 // Leaderboard elements
 const leaderboardList = document.getElementById("leaderboard-list");
 const leaderboardLoading = document.getElementById("leaderboard-loading");
@@ -34,7 +38,18 @@ let typingStarted = false;
 let currentTimeframe = "daily";
 let userScores = JSON.parse(localStorage.getItem('typingTestScores')) || [];
 
-// Leaderboard Storage Management
+// === UPDATE TITLE WITH TYPED TEXT ===
+function updateTitle() {
+  const baseTitle = "Typing Test ";
+  const fullText = baseTitle + typedText;
+  titleEl.textContent = fullText;
+
+  // Trigger scroll only if text is too long
+  const isOverflowing = titleEl.scrollWidth > titleEl.parentElement.offsetWidth;
+  titleEl.classList.toggle("scrolling", isOverflowing);
+}
+
+// Leaderboard functions
 function saveScore(wpm, accuracy) {
   const score = {
     id: Date.now().toString(),
@@ -43,19 +58,12 @@ function saveScore(wpm, accuracy) {
     timestamp: Date.now(),
     username: generateAnonymousUsername()
   };
-  
   userScores.push(score);
-  
-  // Keep only last 100 scores to prevent storage bloat
-  if (userScores.length > 100) {
-    userScores = userScores.slice(-100);
-  }
-  
+  if (userScores.length > 100) userScores = userScores.slice(-100);
   localStorage.setItem('typingTestScores', JSON.stringify(userScores));
   return score;
 }
 
-// Generate anonymous username for privacy
 function generateAnonymousUsername() {
   const animals = ['Penguin', 'Fox', 'Dolphin', 'Tiger', 'Eagle', 'Wolf', 'Owl', 'Lion', 'Bear', 'Hawk'];
   const adjectives = ['Quick', 'Clever', 'Swift', 'Smart', 'Brave', 'Wise', 'Sharp', 'Nimble', 'Alert', 'Keen'];
@@ -64,64 +72,45 @@ function generateAnonymousUsername() {
   return `${adjective}${animal}${Math.floor(Math.random() * 1000)}`;
 }
 
-// Get scores for specific timeframe
 function getScoresByTimeframe(timeframe) {
   const now = Date.now();
   const dayInMs = 24 * 60 * 60 * 1000;
   const weekInMs = 7 * dayInMs;
-  
   return userScores.filter(score => {
-    const scoreTime = score.timestamp;
-    const timeDiff = now - scoreTime;
-    
+    const timeDiff = now - score.timestamp;
     switch(timeframe) {
-      case 'daily':
-        return timeDiff <= dayInMs;
-      case 'weekly':
-        return timeDiff <= weekInMs;
-      case 'alltime':
-        return true;
-      default:
-        return true;
+      case 'daily': return timeDiff <= dayInMs;
+      case 'weekly': return timeDiff <= weekInMs;
+      case 'alltime': return true;
+      default: return true;
     }
   });
 }
 
-// Display leaderboard
 function displayLeaderboard(timeframe = 'daily') {
   leaderboardLoading.style.display = 'block';
   leaderboardEmpty.style.display = 'none';
   leaderboardList.innerHTML = '';
-  
-  // Simulate loading for better UX
   setTimeout(() => {
-    const scores = getScoresByTimeframe(timeframe);
-    const topScores = scores
+    const scores = getScoresByTimeframe(timeframe)
       .sort((a, b) => b.wpm - a.wpm || b.accuracy - a.accuracy)
       .slice(0, 10);
-    
     leaderboardLoading.style.display = 'none';
-    
-    if (topScores.length === 0) {
+    if (scores.length === 0) {
       leaderboardEmpty.style.display = 'block';
       return;
     }
-    
-    topScores.forEach((score, index) => {
-      const item = createLeaderboardItem(score, index + 1);
-      leaderboardList.appendChild(item);
+    scores.forEach((score, i) => {
+      leaderboardList.appendChild(createLeaderboardItem(score, i + 1));
     });
   }, 500);
 }
 
-// Create leaderboard item element
 function createLeaderboardItem(score, rank) {
   const item = document.createElement('div');
   item.className = `leaderboard-item rank-${rank}`;
   item.setAttribute('role', 'listitem');
-  
   const timestamp = new Date(score.timestamp).toLocaleDateString();
-  
   item.innerHTML = `
     <div class="rank">${rank}</div>
     <div class="user-info">
@@ -134,34 +123,25 @@ function createLeaderboardItem(score, rank) {
     </div>
     <div class="timestamp">${timestamp}</div>
   `;
-  
   return item;
 }
 
-// Show current user score
 function showCurrentScore(wpm, accuracy, isHighScore = false) {
   userWpmEl.textContent = wpm;
   userAccEl.textContent = accuracy;
   currentScoreEl.style.display = 'block';
-  
   if (isHighScore) {
     currentScoreEl.classList.add('highlight');
-    setTimeout(() => {
-      currentScoreEl.classList.remove('highlight');
-    }, 3000);
+    setTimeout(() => currentScoreEl.classList.remove('highlight'), 3000);
   }
 }
 
-// Check if score is high score
 function isHighScore(wpm, timeframe) {
   const scores = getScoresByTimeframe(timeframe);
   if (scores.length === 0) return true;
-  
-  const topScore = Math.max(...scores.map(s => s.wpm));
-  return wpm > topScore;
+  return wpm > Math.max(...scores.map(s => s.wpm));
 }
 
-// Generate words and append as spans
 function appendWords(count = 10) {
   for (let i = 0; i < count; i++) {
     const word = words[Math.floor(Math.random() * words.length)];
@@ -186,17 +166,19 @@ function appendWords(count = 10) {
   }, 10);
 }
 
-// Update caret position relative to text container
 function updateCaret() {
   const spans = textEl.querySelectorAll("span");
   
+  // remove previous current marker
+  document.querySelectorAll(".current").forEach(el => el.classList.remove("current"));
+
   if (index >= spans.length) {
     caret.style.display = "none";
     return;
   }
-  
+
   const span = spans[index];
-  
+
   // Use requestAnimationFrame for better performance and timing
   requestAnimationFrame(() => {
     // Get the position relative to the text container
@@ -209,10 +191,12 @@ function updateCaret() {
     caret.style.height = `${spanRect.height}px`;
     caret.style.display = "block";
     caret.style.opacity = "1";
+
+    // mark current span for styling
+    span.classList.add("current");
   });
 }
 
-// Start timer on first keystroke
 function startTimer() {
   if (timerInterval) return;
   timerInterval = setInterval(() => {
@@ -225,51 +209,42 @@ function startTimer() {
   }, 1000);
 }
 
-// End test
 function endTest() {
   document.removeEventListener("keydown", handleTyping);
   caret.style.display = "none";
-  
-  // Calculate final scores
   const minutes = (Date.now() - start) / 60000;
   const wpm = Math.round((index / 5) / Math.max(minutes, 0.001));
   const acc = Math.round((correct / Math.max(index, 1)) * 100);
-  
-  // Save score and update leaderboard
   const savedScore = saveScore(wpm, acc);
   const highScore = isHighScore(wpm, currentTimeframe);
-  
   showCurrentScore(wpm, acc, highScore);
   displayLeaderboard(currentTimeframe);
 }
 
-// Reset test
 function resetTest() {
   clearInterval(timerInterval);
   timerInterval = null;
-
   index = 0;
   correct = 0;
   start = null;
   typingStarted = false;
-
   wpmEl.textContent = 0;
   accEl.textContent = 100;
-
   timeLeft = parseInt(timeSelect.value);
   timeEl.textContent = timeLeft;
-
   currentScoreEl.style.display = "none";
-
   textArray = [];
   textEl.innerHTML = "";
   appendWords(30);
-  
-  // Force caret to be visible and positioned immediately
+
+  // Force caret to be visible and positioned
   forceCaretVisible();
   setTimeout(forceCaretVisible, 10);
   setTimeout(forceCaretVisible, 50);
   setTimeout(forceCaretVisible, 100);
+
+  typedText = "";
+  updateTitle(); // Reset title
 
   document.addEventListener("keydown", handleTyping);
   
@@ -277,7 +252,6 @@ function resetTest() {
   textEl.addEventListener("click", forceCaretVisible);
 }
 
-// Handle typing input
 function handleTyping(e) {
   e.preventDefault();
 
@@ -292,28 +266,30 @@ function handleTyping(e) {
 
   const spans = textEl.querySelectorAll("span");
 
-  if (e.key.length === 1) {
-    if (index < spans.length) {
-      if (e.key === spans[index].textContent) {
-        spans[index].classList.add("correct");
-        correct++;
-      } else {
-        spans[index].classList.add("wrong");
-      }
-      index++;
-      updateCaret();
-
-      const currentWord = parseInt(spans[index]?.dataset.word) || 0;
-      if (currentWord >= textArray.length - 2) {
-        appendWords(10);
-        updateCaret();
-      }
+  if (e.key.length === 1 && index < spans.length) {
+    if (e.key === spans[index].textContent) {
+      spans[index].classList.add("correct");
+      correct++;
+    } else {
+      spans[index].classList.add("wrong");
     }
+    index++;
+    updateCaret();
 
+    typedText += e.key;
+    updateTitle();
+
+    const currentWord = parseInt(spans[index]?.dataset.word) || 0;
+    if (currentWord >= textArray.length - 2) {
+      appendWords(10);
+      updateCaret();
+    }
   } else if (e.key === "Backspace" && index > 0) {
     index--;
     spans[index].classList.remove("correct", "wrong");
     updateCaret();
+    typedText = typedText.slice(0, -1);
+    updateTitle();
   }
 
   const minutes = (Date.now() - start) / 60000;
@@ -323,11 +299,8 @@ function handleTyping(e) {
   accEl.textContent = Math.min(acc, 100);
 }
 
-// Initialize leaderboard
 function initLeaderboard() {
   displayLeaderboard(currentTimeframe);
-  
-  // Add event listeners for timeframe buttons
   timeframeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       timeframeBtns.forEach(b => b.classList.remove('active'));
@@ -338,23 +311,14 @@ function initLeaderboard() {
   });
 }
 
-// Add scroll detection to show scroll indicator
 function checkScrollable() {
   const body = document.body;
   const isScrollable = body.scrollHeight > window.innerHeight;
-  
-  if (isScrollable) {
-    body.classList.add('scrollable');
-  } else {
-    body.classList.remove('scrollable');
-  }
+  body.classList.toggle('scrollable', isScrollable);
 }
 
-// Initialize scroll check
 window.addEventListener('load', checkScrollable);
 window.addEventListener('resize', checkScrollable);
-
-// Update after leaderboard loads
 setTimeout(checkScrollable, 1000);
 
 // Force caret to be visible
@@ -389,7 +353,3 @@ setTimeout(forceCaretVisible, 800);
 // Ensure caret is visible when window gets focus
 window.addEventListener("focus", forceCaretVisible);
 window.addEventListener("load", forceCaretVisible);
- 
-
- 
- 
