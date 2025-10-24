@@ -49,7 +49,7 @@ function updateTitle() {
   titleEl.classList.toggle("scrolling", isOverflowing);
 }
 
-// Leaderboard functions (unchanged)
+// Leaderboard functions
 function saveScore(wpm, accuracy) {
   const score = {
     id: Date.now().toString(),
@@ -157,21 +157,44 @@ function appendWords(count = 10) {
     space.dataset.word = textArray.length - 1;
     textEl.appendChild(space);
   }
+  
+  // Ensure caret is visible after words are added
+  setTimeout(() => {
+    caret.style.display = "block";
+    caret.style.opacity = "1";
+    updateCaret();
+  }, 10);
 }
 
 function updateCaret() {
   const spans = textEl.querySelectorAll("span");
+  
+  // remove previous current marker
+  document.querySelectorAll(".current").forEach(el => el.classList.remove("current"));
+
   if (index >= spans.length) {
     caret.style.display = "none";
     return;
   }
-  document.querySelectorAll(".current").forEach(el => el.classList.remove("current"));
+
   const span = spans[index];
-  span.classList.add("current");
-  caret.style.left = `${span.offsetLeft}px`;
-  caret.style.top = `${span.offsetTop}px`;
-  caret.style.height = `${span.offsetHeight}px`;
-  caret.style.display = "block";
+
+  // Use requestAnimationFrame for better performance and timing
+  requestAnimationFrame(() => {
+    // Get the position relative to the text container
+    const textRect = textEl.getBoundingClientRect();
+    const spanRect = span.getBoundingClientRect();
+    
+    // Position the caret at the beginning of the current character
+    caret.style.left = `${spanRect.left - textRect.left}px`;
+    caret.style.top = `${spanRect.top - textRect.top}px`;
+    caret.style.height = `${spanRect.height}px`;
+    caret.style.display = "block";
+    caret.style.opacity = "1";
+
+    // mark current span for styling
+    span.classList.add("current");
+  });
 }
 
 function startTimer() {
@@ -209,15 +232,24 @@ function resetTest() {
   accEl.textContent = 100;
   timeLeft = parseInt(timeSelect.value);
   timeEl.textContent = timeLeft;
-  caret.style.display = "none";
   currentScoreEl.style.display = "none";
   textArray = [];
   textEl.innerHTML = "";
   appendWords(30);
-  updateCaret();
+
+  // Force caret to be visible and positioned
+  forceCaretVisible();
+  setTimeout(forceCaretVisible, 10);
+  setTimeout(forceCaretVisible, 50);
+  setTimeout(forceCaretVisible, 100);
+
   typedText = "";
   updateTitle(); // Reset title
+
   document.addEventListener("keydown", handleTyping);
+  
+  // Make sure caret is visible when user clicks on text area
+  textEl.addEventListener("click", forceCaretVisible);
 }
 
 function handleTyping(e) {
@@ -227,7 +259,9 @@ function handleTyping(e) {
     startTimer();
     typingStarted = true;
     start = Date.now();
+    // Caret should already be visible, but ensure it's shown
     caret.style.display = "block";
+    caret.style.opacity = "1";
   }
 
   const spans = textEl.querySelectorAll("span");
@@ -287,8 +321,35 @@ window.addEventListener('load', checkScrollable);
 window.addEventListener('resize', checkScrollable);
 setTimeout(checkScrollable, 1000);
 
+// Force caret to be visible
+function forceCaretVisible() {
+  if (caret) {
+    caret.style.display = "block";
+    caret.style.opacity = "1";
+    caret.style.visibility = "visible";
+    updateCaret();
+  }
+}
+
+// Initialize
 resetTest();
 initLeaderboard();
 restartBtn.addEventListener("click", resetTest);
 timeSelect.addEventListener("change", resetTest);
 window.addEventListener("resize", updateCaret);
+
+// Ensure caret is visible when page loads
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(forceCaretVisible, 100);
+  setTimeout(forceCaretVisible, 300);
+  setTimeout(forceCaretVisible, 500);
+});
+
+// Also ensure caret is visible after a short delay
+setTimeout(forceCaretVisible, 200);
+setTimeout(forceCaretVisible, 400);
+setTimeout(forceCaretVisible, 800);
+
+// Ensure caret is visible when window gets focus
+window.addEventListener("focus", forceCaretVisible);
+window.addEventListener("load", forceCaretVisible);
