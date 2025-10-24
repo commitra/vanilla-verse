@@ -1,0 +1,366 @@
+:root {
+  --bg: #0f0f12;
+  --card: #17171c;
+  --text: #eef1f8;
+  --muted: #a6adbb;
+  --accent: #6ee7b7;
+  --accent-2: #93c5fd;
+  --border: #262631;
+  --input-bg: #0e0e13;
+  --error: #ef4444;
+  --success: #10b981;
+}
+
+body:not(.dark-mode) {
+  --bg: #f8f9fa;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --input-bg: #ffffff;
+  --error: #dc2626;
+  --success: #059669;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    Noto Sans, sans-serif;
+  background: linear-gradient(180deg, #0b0b0e, #121217);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  transition: background 0.3s ease;
+}
+
+body:not(.dark-mode) {
+  background: linear-gradient(180deg, #f0f4f8, #e2e8f0);
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:hover {
+  transform: rotate(15deg) scale(1.1);
+  border-color: var(--accent);
+}
+
+.theme-toggle svg {
+  position: absolute;
+  transition: all 0.3s ease;
+  color: var(--text);
+}
+
+.theme-toggle .sun-icon {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+.theme-toggle .moon-icon {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+body:not(.dark-mode) .theme-toggle .sun-icon {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+body:not(.dark-mode) .theme-toggle .moon-icon {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.setup-screen,
+.game-screen,
+.end-screen {
+  display: none;
+}
+
+.setup-screen.active,
+.game-screen.active,
+.end-screen.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0b1020;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(110, 231, 183, 0.3);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--input-bg);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.info-item {
+  text-align: center;
+}
+
+.info-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.info-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.tries-left {
+  color: var(--accent);
+}
+
+.hangman-canvas {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+#hangmanSvg {
+  max-width: 200px;
+  height: 250px;
+}
+
+.word-display {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.letter-slot {
+  width: 40px;
+  height: 50px;
+  border-bottom: 3px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.letter-slot.revealed {
+  animation: reveal 0.3s ease;
+}
+
+@keyframes reveal {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.key {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.key:hover:not(.disabled) {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0b1020;
+  transform: translateY(-2px);
+}
+
+.key.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: var(--input-bg);
+}
+
+.key.correct {
+  background: var(--success);
+  color: white;
+  border-color: var(--success);
+}
+
+.key.wrong {
+  background: var(--error);
+  color: white;
+  border-color: var(--error);
+}
+
+.end-message {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.end-message h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.end-message.win h2 {
+  color: var(--success);
+}
+
+.end-message.lose h2 {
+  color: var(--error);
+}
+
+.end-message p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.secret-word {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.error-message {
+  color: var(--error);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: none;
+}
+
+.error-message.show {
+  display: block;
+}
