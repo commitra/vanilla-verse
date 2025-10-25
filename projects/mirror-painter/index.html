@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror Painter - VanillaVerse</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Mirror Painter</h1>
+            <p class="subtitle">Draw on the left canvas and watch it mirror in real-time. Match the template to complete each level!</p>
+        </header>
+
+        <div class="game-info">
+            <div class="level-info">
+                <div class="level-title" id="levelTitle">Level 1: Vertical Line</div>
+                <div class="level-description" id="levelDescription">Draw a straight vertical line</div>
+            </div>
+            <div class="match-info">
+                <div class="match-percentage low" id="matchPercentage">0%</div>
+                <div class="encouragement" id="encouragement">Start drawing!</div>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div class="canvas-wrapper">
+                <div class="canvas-label">✏️ Draw Here</div>
+                <canvas id="drawCanvas" width="400" height="400"></canvas>
+            </div>
+            <div class="canvas-wrapper">
+                <div class="canvas-label">🪞 Mirrored Result</div>
+                <canvas id="mirrorCanvas" width="400" height="400"></canvas>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="colorPicker">Color:</label>
+                <input type="color" id="colorPicker" value="#2563eb">
+            </div>
+            <div class="control-group">
+                <label for="brushSize">Brush Size:</label>
+                <input type="range" id="brushSize" min="2" max="10" value="4">
+                <span class="brush-size-value" id="brushSizeValue">4px</span>
+            </div>
+            <button class="btn-secondary" id="clearBtn">Clear</button>
+            <button class="btn-primary" id="nextLevelBtn">Next Level</button>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            🎉 Perfect! You matched the template!
+        </div>
+
+        <div class="completion-message" id="completionMessage">
+            🏆 Congratulations! You completed all levels!
+        </div>
+    </div>
+
+    <!-- Link to external JavaScript file for educational purposes -->
+    <!-- This demonstrates separation of concerns: HTML for structure, JS for behavior -->
+    <script src="main.js"></script>
+</body>
+</html>
