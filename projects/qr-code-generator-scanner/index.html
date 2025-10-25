@@ -1,20 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QR Code Generator & Scanner</title>
-  <link rel="stylesheet" href="styles.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
+
 <body>
   <h1>QR Code Generator & Scanner</h1>
+
   <div id="qr-container">
-    <!-- TODO: Input for text/URL to generate QR code -->
-    <!-- TODO: Display generated QR code -->
-    <!-- TODO: Option to download QR code -->
-    <!-- TODO: Input for uploading/scanning QR code image -->
-    <!-- TODO: Display scanned QR code result -->
+    <!-- QR Generator Section -->
+    <section class="generator">
+      <h2>Generate a QR Code</h2>
+      <input
+        id="qr-input"
+        type="text"
+        placeholder="Enter text or URL..."
+        aria-label="QR code input"
+      />
+      <button id="generate-btn">Generate</button>
+
+      <div id="qrcode"></div>
+
+      <button id="download-btn" class="hidden">Download QR</button>
+    </section>
+
+    <!-- QR Scanner Section -->
+    <section class="scanner">
+      <h2>Scan a QR Code</h2>
+      <div id="reader" style="width: 300px; margin: auto;"></div>
+      <p id="scan-result"></p>
+    </section>
   </div>
+
   <script src="main.js"></script>
 </body>
 </html>
