@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator - Vanilla Verse</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Generate beautiful color palettes with multiple algorithms. Export to CSS, JSON, or save as image.">
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        </svg>
+        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+    </button>
+
+    <main>
+        <div class="header">
+            <h1>Color Palette Generator</h1>
+            <p class="subtitle">Create beautiful color palettes for your designs</p>
+        </div>
+
+        <!-- Controls Section -->
+        <section class="controls" aria-label="Palette generation controls">
+            <div class="control-group">
+                <label for="generationMethod">Generation Method:</label>
+                <select id="generationMethod" aria-describedby="method-description">
+                    <option value="random">Random Colors</option>
+                    <option value="complementary">Complementary</option>
+                    <option value="triadic">Triadic</option>
+                    <option value="analogous">Analogous</option>
+                    <option value="monochromatic">Monochromatic</option>
+                </select>
+                <span id="method-description" class="sr-only">Choose how colors are generated</span>
+            </div>
+
+            <div class="control-group">
+                <label for="baseColor">Base Color:</label>
+                <input type="color" id="baseColor" value="#3498db" aria-describedby="base-color-description">
+                <span id="base-color-description" class="sr-only">Starting color for palette generation</span>
+            </div>
+
+            <div class="control-group">
+                <label for="colorCount">Number of Colors:</label>
+                <input type="range" id="colorCount" min="3" max="8" value="5" aria-describedby="count-description">
+                <span id="colorCountValue">5</span>
+                <span id="count-description" class="sr-only">Number of colors to generate</span>
+            </div>
+
+            <button id="generateBtn" class="btn primary" aria-describedby="generate-description">
+                Generate Palette
+            </button>
+            <span id="generate-description" class="sr-only">Generate a new color palette</span>
+        </section>
+
+        <!-- Color Palette Display -->
+        <section class="palette-section" aria-label="Generated color palette">
+            <div id="colorPalette" class="color-palette" role="list" aria-label="Color palette">
+                <!-- Colors will be dynamically generated here -->
+            </div>
+        </section>
+
+        <!-- Export Options -->
+        <section class="export-section" aria-label="Export options">
+            <h2>Export Options</h2>
+            <div class="export-controls">
+                <button id="exportCSS" class="btn secondary" aria-describedby="css-export-description">
+                    Export as CSS
+                </button>
+                <span id="css-export-description" class="sr-only">Export palette as CSS variables</span>
+
+                <button id="exportJSON" class="btn secondary" aria-describedby="json-export-description">
+                    Export as JSON
+                </button>
+                <span id="json-export-description" class="sr-only">Export palette as JSON data</span>
+
+                <button id="savePalette" class="btn secondary" aria-describedby="save-description">
+                    Save to Favorites
+                </button>
+                <span id="save-description" class="sr-only">Save current palette to favorites</span>
+            </div>
+        </section>
+
+        <!-- Saved Palettes -->
+        <section class="saved-section" aria-label="Saved palettes">
+            <h2>Saved Palettes</h2>
+            <div id="savedPalettes" class="saved-palettes" role="list" aria-label="Saved color palettes">
+                <!-- Saved palettes will be displayed here -->
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
