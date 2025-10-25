@@ -249,5 +249,13 @@
     "category": "Small Games",
     "categoryKey": "games",
     "difficulty": "easy"
+  },
+  {
+    "title": "Color Palette Generator",
+    "slug": "color-palette-generator",
+    "description": "Generate beautiful color palettes using multiple color theory algorithms. Export, save, and copy palettes with a modern UI.",
+    "category": "productivity",
+    "categoryKey": "productivity",
+    "difficulty": "intermediate"
   }
 ]
