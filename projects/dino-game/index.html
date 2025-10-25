@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Dino Run</title>
+  <meta name="description" content="A tiny Chrome Dino-style runner — pure JavaScript & canvas. High score saved in localStorage." />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap" role="application" aria-label="Dino Run mini game">
+    <header>
+      <div class="title">
+        <div class="logo" aria-hidden="true">DR</div>
+        <div>
+          <h1>Mini Dino Run</h1>
+          <p class="desc">A tiny Chrome Dino-style runner — pure JS & canvas</p>
+        </div>
+      </div>
+
+      <div class="hud" aria-hidden="true">
+        <div class="box" id="scoreBox">Score: 0</div>
+        <div class="box" id="highBox">High: 0</div>
+      </div>
+    </header>
+
+    <main class="game-area">
+      <section class="canvas-wrap">
+        <canvas id="game" width="800" height="260" role="img" aria-label="Game canvas"></canvas>
+
+        
+        <div class="touch-controls" aria-hidden="false">
+          <button id="touchJump" class="touch-btn" aria-label="Jump">Jump</button>
+          <button id="touchDuck" class="touch-btn" aria-label="Duck">Duck</button>
+        </div>
+      </section>
+
+      <aside>
+        <div class="tips">
+          <strong>How to play</strong>
+          <ul>
+            <li>Press <kbd>Space</kbd> or <kbd>↑</kbd> to jump</li>
+            <li>Hold <kbd>↓</kbd> to duck</li>
+            <li>Tap on mobile to jump</li>
+            <li>Score increases with distance. Difficulty rises over time.</li>
+          </ul>
+        </div>
+
+        <div class="controls" style="display:flex;gap:10px;">
+          <button class="btn" id="pauseBtn" aria-pressed="false">Pause</button>
+          <button class="btn primary" id="restartBtn">Restart</button>
+        </div>
+
+        <div class="tips" id="statusBox">
+          <strong>Status</strong>
+          <div id="statusText" class="muted">Ready — press Space to start</div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <div class="muted">Built with ❤️ · Vanilla JS · Canvas</div>
+      <div class="muted">High score saved in localStorage</div>
+    </footer>
+  </div>
+
+ 
+  <script src="game.js" defer></script>
+</body>
+</html>
