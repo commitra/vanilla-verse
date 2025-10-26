@@ -263,4 +263,45 @@
     "categoryKey": "games",
     "difficulty": "haed"
   }
+  ,
+  {
+    "title": "Calculator",
+    "slug": "calculator",
+    "description": "Basic four-function calculator with keyboard support and clear UI.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Stopwatch",
+    "slug": "stopwatch",
+    "description": "Start, pause, reset, and lap tracking using high-precision timing.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Countdown Timer",
+    "slug": "countdown-timer",
+    "description": "Countdown with start/pause/reset and a finish alert.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Unit Converter",
+    "slug": "unit-converter",
+    "description": "Convert between length, temperature, and weight units instantly.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Drawing Canvas",
+    "slug": "drawing-canvas",
+    "description": "Draw on a canvas with brush size/colors, clear, and save.",
+    "category": "Fun UI / Visual",
+    "categoryKey": "visual",
+    "difficulty": "easy"
+  }
 ]
