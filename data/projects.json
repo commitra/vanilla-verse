@@ -208,7 +208,6 @@
     "difficulty": "easy"
   },
   {
-
     "title": "Tip Calculator",
     "slug": "Tip Calculator",
     "description": "Calculate tips and divide bills accurately in seconds",
@@ -217,14 +216,12 @@
     "difficulty": "easy"
   },
   {
-
     "title": "Hangman Game",
     "slug": "hangman",
     "description": "A two player word guessing game where one enters a secret word and the other tries to guess it.",
     "category": "Small Games",
     "categoryKey": "games",
     "difficulty": "medium"
-
   },
   {
     "title": "Orbit Game",
@@ -257,5 +254,13 @@
     "category": "productivity",
     "categoryKey": "productivity",
     "difficulty": "intermediate"
+  },
+  {
+    "title": "gravity-flip-pinball",
+    "slug": "gravity-flip-pinball",
+    "description": "A simple pinball game where you control gravity to move the ball and score by passing through gates.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "haed"
   }
 ]
