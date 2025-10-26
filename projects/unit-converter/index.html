@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Unit Converter</h1>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+        
+        <div class="category-selector">
+            <button class="category-btn active" data-category="length">Length</button>
+            <button class="category-btn" data-category="temperature">Temperature</button>
+            <button class="category-btn" data-category="weight">Weight</button>
+        </div>
+
+        <div class="converter-box">
+            <div class="input-group">
+                <label>From</label>
+                <div class="input-wrapper">
+                    <input type="number" id="input1" placeholder="Enter value" step="any">
+                    <select id="unit1"></select>
+                </div>
+            </div>
+
+            <div class="swap-container">
+                <button class="swap-btn" id="swapBtn">⇅</button>
+            </div>
+
+            <div class="input-group">
+                <label>To</label>
+                <div class="input-wrapper">
+                    <input type="number" id="input2" placeholder="Result" step="any">
+                    <select id="unit2"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

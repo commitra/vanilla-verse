@@ -1,0 +1,239 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.display {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    font-size: 56px;
+    font-weight: 300;
+    text-align: center;
+    padding: 40px 20px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+button {
+    flex: 1;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+button:focus {
+    outline: 3px solid rgba(102, 126, 234, 0.5);
+    outline-offset: 2px;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#startPauseBtn {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+}
+
+#startPauseBtn:hover:not(:disabled) {
+    box-shadow: 0 8px 20px rgba(56, 239, 125, 0.4);
+    transform: translateY(-2px);
+}
+
+#startPauseBtn.paused {
+    background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+}
+
+#startPauseBtn.paused:hover:not(:disabled) {
+    box-shadow: 0 8px 20px rgba(238, 9, 121, 0.4);
+}
+
+#lapBtn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+#lapBtn:hover:not(:disabled) {
+    box-shadow: 0 8px 20px rgba(118, 75, 162, 0.4);
+    transform: translateY(-2px);
+}
+
+#resetBtn {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+#resetBtn:hover:not(:disabled) {
+    box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+    transform: translateY(-2px);
+}
+
+.laps-container {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+.laps-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.laps-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.laps-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.laps-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.laps-header {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.lap-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: #f8f9fa;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+    transition: all 0.2s ease;
+}
+
+.lap-item:hover {
+    background: #e9ecef;
+    transform: translateX(4px);
+}
+
+.lap-number {
+    font-weight: 600;
+    color: #667eea;
+    font-size: 16px;
+}
+
+.lap-times {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.lap-time {
+    font-variant-numeric: tabular-nums;
+    color: #333;
+    font-size: 15px;
+}
+
+.lap-delta {
+    font-variant-numeric: tabular-nums;
+    color: #666;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.keyboard-hint {
+    text-align: center;
+    color: #666;
+    font-size: 13px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.keyboard-hint kbd {
+    background: #f5f5f5;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+@media (max-width: 500px) {
+    .container {
+        padding: 24px;
+    }
+
+    .display {
+        font-size: 42px;
+        padding: 30px 15px;
+    }
+
+    button {
+        padding: 14px 18px;
+        font-size: 14px;
+    }
+
+    .controls {
+        flex-wrap: wrap;
+    }
+
+    button {
+        flex-basis: calc(50% - 6px);
+    }
+
+    #resetBtn {
+        flex-basis: 100%;
+    }
+}

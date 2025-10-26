@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>⏱️ Stopwatch</h1>
+        
+        <div class="display" id="display" role="timer" aria-live="off" aria-atomic="true">
+            00:00.000
+        </div>
+
+        <div class="controls">
+            <button id="startPauseBtn" aria-label="Start stopwatch">
+                Start
+            </button>
+            <button id="lapBtn" disabled aria-label="Record lap time">
+                Lap
+            </button>
+            <button id="resetBtn" disabled aria-label="Reset stopwatch">
+                Reset
+            </button>
+        </div>
+
+        <div id="lapsSection" style="display: none;">
+            <div class="laps-header">Lap Times</div>
+            <div class="laps-container" id="lapsContainer" role="list"></div>
+        </div>
+
+        <div class="keyboard-hint">
+            <kbd>Space</kbd> Start/Pause • <kbd>L</kbd> Lap • <kbd>R</kbd> Reset
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
