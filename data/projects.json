@@ -249,5 +249,14 @@
     "category": "Small Games",
     "categoryKey": "games",
     "difficulty": "easy"
-  }
+  },
+  {
+    
+    "title": "Echo Runner",
+    "slug": "echo-runner",
+    "description": "Side-scrolling runner where your previous runs become ghost obstacles",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "easy"
+ }
 ]

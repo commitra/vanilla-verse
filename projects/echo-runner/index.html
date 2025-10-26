@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Runner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>Echo Runner</h1>
+            <div class="game-info">
+                <div class="score">Score: <span id="score">0</span></div>
+                <div class="high-score">High Score: <span id="high-score">0</span></div>
+            </div>
+        </div>
+        
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+        
+        <div class="controls">
+            <div class="control-info">
+                <kbd>SPACE</kbd> or <kbd>CLICK</kbd> to jump
+            </div>
+            <button id="restartBtn" class="restart-btn">Restart Game</button>
+        </div>
+        
+        <div id="gameOver" class="game-over hidden">
+            <h2>Game Over!</h2>
+            <p>Your score: <span id="final-score">0</span></p>
+            <p>Watch your echo in the next run!</p>
+            <button id="playAgainBtn" class="restart-btn">Play Again</button>
+        </div>
+        
+        <div class="instructions">
+            <p>Survive as long as possible. Your previous runs become ghost obstacles!</p>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
