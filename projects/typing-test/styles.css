@@ -42,7 +42,8 @@ h1 {
   border: 1px solid #2a2a35;
 }
 
-select, button {
+select,
+button {
   background: #17171c;
   border: 1px solid #262631;
   color: #eef1f8;
@@ -106,8 +107,18 @@ button:hover {
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  0% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scaleY(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
 }
 
 .stats {
@@ -311,7 +322,8 @@ button:hover {
   text-align: right;
 }
 
-.loading, .empty-state {
+.loading,
+.empty-state {
   text-align: center;
   color: #8a93ad;
   padding: 3rem 2rem;
@@ -343,8 +355,13 @@ button:hover {
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
 }
 
 html {
@@ -416,13 +433,13 @@ body.scrollable::after {
     gap: 0.8rem;
     padding: 0.7rem 0.9rem;
   }
-  
+
   .score-info {
     grid-column: 1 / -1;
     justify-content: flex-start;
     margin-left: 3.7rem;
   }
-  
+
   .timestamp {
     grid-column: 1 / -1;
     text-align: left;
@@ -435,12 +452,13 @@ body.scrollable::after {
     min-width: 80px;
     font-size: 0.9rem;
   }
-  
+
   .username {
     font-size: 1rem;
   }
-  
-  .wpm-score, .accuracy-score {
+
+  .wpm-score,
+  .accuracy-score {
     font-size: 1rem;
     padding: 0.3rem 0.6rem;
   }
@@ -454,7 +472,7 @@ body.scrollable::after {
   .leaderboard {
     padding: 0.8rem;
   }
-  
+
   .leaderboard h2 {
     font-size: 1.3rem;
   }
@@ -462,28 +480,28 @@ body.scrollable::after {
   main {
     gap: 0.8rem;
   }
-  
+
   .score-info {
     flex-direction: column;
     gap: 0.5rem;
     align-items: flex-start;
   }
-  
+
   .user-info {
     gap: 0.8rem;
   }
-  
+
   .avatar {
     width: 2.2rem;
     height: 2.2rem;
     font-size: 0.8rem;
   }
-  
+
   .rank {
     font-size: 1.1rem;
     min-width: 2rem;
   }
-  
+
   .current-score {
     padding: 1rem;
     font-size: 1rem;

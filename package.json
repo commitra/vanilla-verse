@@ -20,5 +20,11 @@
   "homepage": "https://github.com/mohit-22/vanilla-verse#readme",
   "devDependencies": {
     "live-server": "^1.2.2"
+  },
+  "dependencies": {
+    "safe-validate-json-schema": "^0.1.0"
+  },
+  "directories": {
+    "test": "test"
   }
 }
