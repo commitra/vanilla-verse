@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gravity Flip Pinball</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="hud">
+      <h1>Gravity Flip Pinball</h1>
+      <div class="hud-row">
+        <span class="hud-label">Score:</span>
+        <span class="hud-value" id="score">0</span>
+      </div>
+      <div class="hud-row">
+        <span class="hud-label">Gates:</span>
+        <span class="hud-value" id="gates">0/3</span>
+      </div>
+      <div class="hud-row">
+        <span class="hud-label">Status:</span>
+        <span class="hud-value" id="status">Ready</span>
+      </div>
+      <div class="controls">
+        <button id="startBtn" class="btn">Start</button>
+        <button id="replayBtn" class="btn">Replay</button>
+      </div>
+      <p class="hint">
+        W/A/S/D — change gravity<br />
+        Double-click canvas to quick reset
+      </p>
+    </div>
+
+    <div class="mode-toggle">
+      <label>
+        <input type="checkbox" id="challengeMode" />
+        <span>Challenge Mode (60s)</span>
+      </label>
+    </div>
+
+    <div class="timer-display" id="timer">60</div>
+
+    <div class="gravity-indicator">
+      <button class="gravity-btn" data-key="w">↑</button>
+      <button class="gravity-btn" data-key="a">←</button>
+      <button class="gravity-btn" data-key="s">↓</button>
+      <button class="gravity-btn" data-key="d">→</button>
+    </div>
+
+    <div class="victory-modal" id="victoryModal">
+      <h2 id="victoryTitle">Victory!</h2>
+      <p id="victoryMessage">You collected all gates and reached the end!</p>
+      <button class="btn" onclick="replay()">Play Again</button>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    <script src="script.js"></script>
+  </body>
+</html>
