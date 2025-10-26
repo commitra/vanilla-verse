@@ -257,5 +257,13 @@
     "category": "productivity",
     "categoryKey": "productivity",
     "difficulty": "intermediate"
-  }
+  },
+  {
+  "title": "Guess by the Emoji",
+  "slug": "guess-by-emoji",
+  "description": "A fun game where players guess phrases or words based on a sequence of emojis. Test your emoji decoding skills!",
+  "category": "Fun UI / Visual",
+  "categoryKey": "visual",
+  "difficulty": "easy"
+}
 ]
