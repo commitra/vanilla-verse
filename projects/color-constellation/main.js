@@ -8,7 +8,7 @@ const gameState = {
     selectedStar: null,
     targetRequired: 0,
     gravity: { x: 0, y: 0.02 },
-    gravityEnabled: true,
+    gravityEnabled: false,
     hintUsed: false
 };
 
@@ -66,28 +66,28 @@ class Star {
 
     update() {
         if (gameState.gravityEnabled) {
-            // Apply gravity
-            this.vy += gameState.gravity.y;
-            this.vx += gameState.gravity.x;
+            // Apply much gentler gravity
+            this.vy += gameState.gravity.y * 0.5;
+            this.vx += gameState.gravity.x * 0.5;
 
             // Apply velocity with damping
             this.x += this.vx;
             this.y += this.vy;
 
-            // Bounce off walls
+            // Bounce off walls with strong damping
             if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
-                this.vx *= -0.8;
+                this.vx *= -0.3;
                 this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
             }
 
             if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) {
-                this.vy *= -0.8;
+                this.vy *= -0.3;
                 this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
             }
 
-            // Apply friction
-            this.vx *= 0.99;
-            this.vy *= 0.99;
+            // Apply strong friction to slow down quickly
+            this.vx *= 0.95;
+            this.vy *= 0.95;
         }
 
         // Animate glow
