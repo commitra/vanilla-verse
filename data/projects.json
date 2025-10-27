@@ -310,5 +310,13 @@
     "category": "Fun UI / Visual",
     "categoryKey": "visual",
     "difficulty": "easy"
+  },
+  {
+    "title": "Color Constellation",
+    "slug": "color-constellation",
+    "description": "Link stars to form constellations that match a given silhouette pattern. Lines cannot cross.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "medium"
   }
 ]
