@@ -333,7 +333,7 @@ h1 {
 
 .form-actions {
     display: flex;
-    gap: 1rem;
+    gap: 0.3rem;
     margin-top: 1rem;
 }
 
@@ -342,7 +342,7 @@ h1 {
     color: #1a0b2e;
     border: none;
     border-radius: 0.8rem;
-    padding: 1rem 2rem;
+    padding: 0rem 2rem;
     font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
@@ -573,4 +573,140 @@ body.light .btn-secondary {
 
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #ff9800, #ffb74d);
+}
+
+/* Autosave indicator */
+#autosaveStatus {
+  font-size: 0.85rem;
+  color: #b39ddb;
+  margin-top: -0.5rem;
+  text-align: right;
+  transition: color 0.3s ease;
+}
+
+/* Sort bar */
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.sort-bar label {
+  color: #e0b3ff;
+  font-weight: 600;
+}
+
+#sortNotes {
+  background: rgba(26, 11, 46, 0.8);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 183, 77, 0.3);
+  border-radius: 0.8rem;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+/* Undo/Redo buttons */
+#undo-btn,
+#redo-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e0b3ff;
+  border: 1px solid rgba(255, 183, 77, 0.3);
+  border-radius: 0.8rem;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  backdrop-filter: blur(10px);
+}
+
+#undo-btn:hover,
+#redo-btn:hover {
+  background: rgba(255, 183, 77, 0.2);
+  border-color: #ffb74d;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(255, 183, 77, 0.2);
+}
+
+/* Note preview and timestamp */
+.note-preview {
+  font-size: 0.95rem;
+  color: #e0e0ff;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.note-timestamp {
+  font-size: 0.8rem;
+  color: #b39ddb;
+}
+
+/* Light theme additions */
+body.light #autosaveStatus {
+  color: #8e24aa;
+}
+
+body.light #tagFilter {
+  background: rgba(243, 229, 245, 0.8);
+  color: #4a148c;
+  border-color: rgba(255, 152, 0, 0.3);
+}
+body.light .sort-bar label {
+  color: #7b1fa2;
+}
+
+
+body.light #sortNotes {
+  background: rgba(243, 229, 245, 0.8);
+  color: #4a148c;
+  border-color: rgba(255, 152, 0, 0.3);
+}
+
+
+body.light #undo-btn,
+body.light #redo-btn {
+  background: rgba(255, 152, 0, 0.1);
+  color: #7b1fa2;
+  border-color: rgba(255, 152, 0, 0.3);
+}
+
+body.light #undo-btn:hover,
+body.light #redo-btn:hover {
+  background: rgba(255, 152, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+}
+
+body.light .note-preview {
+  color: #6a1b9a;
+}
+
+body.light .note-timestamp {
+  color: #8e24aa;
+}
+
+/* Responsive sort bar */
+@media (max-width: 900px) {
+  .sort-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #sortNotes {
+    width: 100%;
+  }
+}
+
+#tagFilter{
+    background: rgba(26, 11, 46, 0.8);
+    color: #f8fafc;
+    border: 1px solid rgba(255, 183, 77, 0.3);
+    border-radius: 0.8rem;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
 }
