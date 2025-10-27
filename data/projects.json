@@ -263,6 +263,7 @@
   "categoryKey": "visual",
   "difficulty": "easy"
 },
+  {
     "title": "gravity-flip-pinball",
     "slug": "gravity-flip-pinball",
     "description": "A simple pinball game where you control gravity to move the ball and score by passing through gates.",
