@@ -4,17 +4,74 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Theme Switcher</title>
+    <title>Theme Switcher </title>
     <link rel="stylesheet" href="./styles.css">
 </head>
 
-<body>
-    <main>
+<body> 
+    <div class="container">
         <h1>Theme Switcher</h1>
-        <div class="controls"><input id="color" type="color" value="#6ee7b7"> <button id="apply">Apply</button></div>
-        <p class="notes">Add generated palettes, save themes, and share links.</p>
-    </main>
-    <script type="module" src="./main.js"></script>
+        <p class="subtitle">Generate beautiful color palettes with random colors</p>
+        
+        <div class="current-color">
+            <div class="color-preview" id="colorPreview"></div>
+            <div class="color-info">
+                <div class="color-value" id="colorValue">#6ee7b7</div>
+                <div class="color-label">Accent Color</div>
+            </div>
+            <button class="copy-btn" onclick="copyColor()">📋 Copy</button>
+        </div>
+        
+        <div class="palette-display">
+            <div class="palette-label">Current Palette</div>
+            <div class="palette-colors" id="paletteColors"></div>
+        </div>
+        
+        <div>
+            <h3 class="section-subtitle">Color Selection Panel</h3>
+            <div class="controls">
+                <div class="control-row">
+                    <input type="color" id="colorPicker" value="#6ee7b7">
+                    <button onclick="applyColor()">Apply Color</button>
+                </div>
+                
+                <button class="btn-full" onclick="generateRandomPalette()">
+                    🎲 Generate Random Palette
+                </button>
+                
+                <div class="control-row">
+                    <button class="btn-vibrant" onclick="generateVibrantPalette()" style="flex: 1">
+                        ✨ Vibrant Colors
+                    </button>
+                    <button class="btn-pastel" onclick="generatePastelPalette()" style="flex: 1">
+                        🌸 Pastel Colors
+                    </button>
+                </div>
+                
+                <div class="control-row">
+                    <input type="text" id="paletteName" placeholder="Palette name...">
+                    <button onclick="savePalette()">💾 Save</button>
+                </div>
+                
+                <button class="btn-full" onclick="sharePalette()">
+                    🔗 Share Palette
+                </button>
+            </div>
+        </div>
+        
+        <div class="scheme-grid">
+            <button class="btn-scheme" onclick="generateScheme('monochromatic')">Monochromatic</button>
+            <button class="btn-scheme" onclick="generateScheme('analogous')">Analogous</button>
+            <button class="btn-scheme" onclick="generateScheme('complementary')">Complementary</button>
+            <button class="btn-scheme" onclick="generateScheme('triadic')">Triadic</button>
+        </div>
+        
+        <div class="saved-section">
+            <div class="section-title">Saved Palettes</div>
+            <div class="saved-palettes" id="savedPalettes"></div>
+        </div>
+    </div> 
+    <script src="main.js"></script>
 </body>
 
 </html>

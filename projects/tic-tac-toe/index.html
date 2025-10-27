@@ -1,35 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tic-Tac-Toe</title>
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<main>
-    <h1>Tic-Tac-Toe</h1>
-    <div id="board" class="board"></div>
-
-    <div class="controls">
-        <button id="restartBtn">Restart</button>
-        <select id="modeSelect">
-            <option value="2P">2 Players</option>
-            <option value="AI">Play vs AI</option>
-        </select>
-        <select id="themeSelect">
-            <option value="dark">Dark</option>
-            <option value="light">Light</option>
-        </select>
-    </div>
-
-    <div class="scoreboard">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic-Tac-Toe</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+      <svg
+        class="sun-icon"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="5" />
+        <line x1="12" y1="1" x2="12" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="23" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="1" y1="12" x2="3" y2="12" />
+        <line x1="21" y1="12" x2="23" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+      </svg>
+      <svg
+        class="moon-icon"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    </button>
+    <main>
+      <div class="scoreboard">
         <p>X Wins: <span id="xScore">0</span></p>
         <p>O Wins: <span id="oScore">0</span></p>
         <p>Draws: <span id="drawScore">0</span></p>
-    </div>
-</main>
+        <p>Mode: <span id="Currentmode">player</span></p>
+      </div>
+      <div class="HeadingContainer">
+        <h1>Tic-Tac-Toe</h1>
+      </div>
+      <div id="board" class="board"></div>
+      <div class="players">
+        <div class="player one">Player 1</div>
+        <span
+          class="material-icons md-36 orange-marker"
+          style="visibility: hidden"
+        >
+          chevron_left
+        </span>
+        <span
+          class="material-icons md-36 pink-marker marker-an"
+          style="visibility: hidden"
+        >
+          chevron_right
+        </span>
+        <div class="player two">Player 2</div>
+      </div>
+      <div class="controls">
+        <button id="restartBtn">Restart</button>
+        <span class="material-icons md-24 exit"> settings </span>
+      </div>
+      <div class="start-modal">
+        <div class="start-screen">
+          <div class="selection">
+            <h3>Play against:</h3>
+          </div>
+          <div class="choices">
+            <h3 class="select-player" value="2P">Player</h3>
+            <h3 class="select-computer" value="AI">Computer</h3>
+          </div>
+        </div>
+      </div>
+    </main>
 
-<script src="main.js"></script>
-</body>
+    <script src="main.js"></script>
+  </body>
 </html>

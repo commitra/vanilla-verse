@@ -1,0 +1,40 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Drawing Canvas | Vanilla Verse</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header><h1>Drawing Canvas</h1></header>
+  <main id="app">
+    <!-- TODO: <canvas> area with drawing via mouse/touch -->
+    <div class="canvas-container">
+      <canvas id="drawingCanvas"></canvas>
+    </div>
+    
+    <!-- TODO: Controls: color picker, brush size, clear, save as PNG -->
+    <div class="toolbar" role="toolbar" aria-label="Drawing tools">
+      <div class="tool-group">
+        <label for="colorPicker">Color:</label>
+        <input type="color" id="colorPicker" value="#000000" aria-label="Brush color">
+      </div>
+      
+      <div class="tool-group">
+        <label for="brushSize">Brush Size:</label>
+        <input type="range" id="brushSize" min="1" max="50" value="5" aria-label="Brush size">
+        <span id="brushSizeValue">5</span>
+      </div>
+      
+      <button class="button clear" id="clearButton" aria-label="Clear canvas">Clear</button>
+      <button class="button save" id="saveButton" aria-label="Save drawing as PNG">Save as PNG</button>
+    </div>
+    
+    <p class="warning">Note: Resizing the window will clear your drawing.</p>
+    
+    <!-- TODO: Optional: eraser mode, background grid, undo/redo -->
+  </main>
+  <script defer src="main.js"></script>
+</body>
+</html>

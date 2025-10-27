@@ -1,5 +1,13 @@
 [
   {
+    "title": "Contributors Page",
+    "slug": "contributor",
+    "description": "See the contributions of people",
+    "category": "contributor",
+    "categoryKey": "contributor",
+    "difficulty": "easy"
+  },
+  {
     "title": "Snake Game",
     "slug": "snake",
     "description": "Classic snake with keyboard controls, speed levels, and scoring.",
@@ -208,7 +216,6 @@
     "difficulty": "easy"
   },
   {
-
     "title": "Tip Calculator",
     "slug": "Tip Calculator",
     "description": "Calculate tips and divide bills accurately in seconds",
@@ -217,14 +224,12 @@
     "difficulty": "easy"
   },
   {
-
     "title": "Hangman Game",
     "slug": "hangman",
     "description": "A two player word guessing game where one enters a secret word and the other tries to guess it.",
     "category": "Small Games",
     "categoryKey": "games",
     "difficulty": "medium"
-
   },
   {
     "title": "Orbit Game",
@@ -235,19 +240,75 @@
     "difficulty": "easy"
   },
   {
-    "title": "Contributors Page",
-    "slug": "contributor",
-    "description": "See the contributions of people",
-    "category": "contributor",
-    "categoryKey": "contributor",
-    "difficulty": "easy"
-  },
-  {
     "title": "Rhythm Tap Garden",
     "slug": "rhythm-tap-garden",
     "description": "Grow a virtual plant by tapping in rhythm with a beat.",
     "category": "Small Games",
     "categoryKey": "games",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Color Palette Generator",
+    "slug": "color-palette-generator",
+    "description": "Generate beautiful color palettes using multiple color theory algorithms. Export, save, and copy palettes with a modern UI.",
+    "category": "productivity",
+    "categoryKey": "productivity",
+    "difficulty": "intermediate"
+  },
+  {
+  "title": "Guess by the Emoji",
+  "slug": "guess-by-emoji",
+  "description": "A fun game where players guess phrases or words based on a sequence of emojis. Test your emoji decoding skills!",
+  "category": "Fun UI / Visual",
+  "categoryKey": "visual",
+  "difficulty": "easy"
+},
+  {
+    "title": "gravity-flip-pinball",
+    "slug": "gravity-flip-pinball",
+    "description": "A simple pinball game where you control gravity to move the ball and score by passing through gates.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "haed"
+  },
+  {
+    "title": "Calculator",
+    "slug": "calculator",
+    "description": "Basic four-function calculator with keyboard support and clear UI.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Stopwatch",
+    "slug": "stopwatch",
+    "description": "Start, pause, reset, and lap tracking using high-precision timing.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Countdown Timer",
+    "slug": "countdown-timer",
+    "description": "Countdown with start/pause/reset and a finish alert.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Unit Converter",
+    "slug": "unit-converter",
+    "description": "Convert between length, temperature, and weight units instantly.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Drawing Canvas",
+    "slug": "drawing-canvas",
+    "description": "Draw on a canvas with brush size/colors, clear, and save.",
+    "category": "Fun UI / Visual",
+    "categoryKey": "visual",
     "difficulty": "easy"
   }
 ]

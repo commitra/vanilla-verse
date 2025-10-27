@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Number Guessing Game</title>
-  <link rel="stylesheet" href="../../assets/styles.css">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/styles.css" />
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Number Guessing Game</h1>
-  <div id="game-container" class="card">
-    <p id="instructions">I'm thinking of a number between 1 and 100. Can you guess it?</p>
-    <div id="controls" class="controls">
-      <input id="guess-input" type="number" min="1" max="100" placeholder="Enter your guess" />
-      <button id="guess-btn" type="button">Guess</button>
+    <div class="container">
+        <div class="card">
+            <h1>Number Guessing Game</h1>
+            <p class="description">I'm thinking of a number between 1 and 100. Can you guess it?</p>
+
+            <div class="input-group">
+                <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100">
+                <button id="guessButton" class="btn primary-btn">Guess</button>
+            </div>
+
+            <p class="message" id="message"></p>
+            <p class="attempts" id="attempts">Attempts: 0</p>
+
+            <button id="resetButton" class="btn secondary-btn reset-btn">Play Again</button>
+        </div>
     </div>
-    <p id="feedback" aria-live="polite"></p>
-    <p id="attempts">Attempts: <span id="attempt-count">0</span></p>
-    <button id="restart-btn" type="button">Restart</button>
-  </div>
-  <script src="main.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
