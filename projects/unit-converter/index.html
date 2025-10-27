@@ -1,3 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main class="container">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span id="themeIcon">🌙</span>
+        </button>
+
+        <h1>Unit Converter</h1>
+
+        <div class="category-selector">
+            <label for="category">Category</label>
+            <select id="category">
+                <option value="length">Length</option>
+                <option value="temperature">Temperature</option>
+                <option value="weight">Weight</option>
+            </select>
+        </div>
+
+        <div class="converter-box">
+            <div class="input-group">
+                <input type="number" id="input1" placeholder="0" step="any">
+                <select class="unit-select" id="unit1"></select>
+            </div>
+        </div>
+
+        <button class="swap-btn" id="swapBtn">
+            <span class="swap-icon">⇅</span>
+            Swap Units
+        </button>
+
+        <div class="converter-box">
+            <div class="input-group">
+                <input type="number" id="input2" placeholder="0" step="any">
+                <select class="unit-select" id="unit2"></select>
+            </div>
+        </div>
+    </main>
+    <script src="main.js"></script>
+</body>
+
+</html>
+=======
 <!doctype html>
 <html lang="en">
 <head>
@@ -16,3 +68,4 @@
   <script defer src="main.js"></script>
 </body>
 </html>
+
