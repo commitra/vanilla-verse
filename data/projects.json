@@ -1,5 +1,13 @@
 [
   {
+    "title": "Contributors Page",
+    "slug": "contributor",
+    "description": "See the contributions of people",
+    "category": "contributor",
+    "categoryKey": "contributor",
+    "difficulty": "easy"
+  },
+  {
     "title": "Snake Game",
     "slug": "snake",
     "description": "Classic snake with keyboard controls, speed levels, and scoring.",
@@ -229,14 +237,6 @@
     "description": "Collect the stars while avoiding the planets in this fun orbit game.",
     "category": "Small Games",
     "categoryKey": "games",
-    "difficulty": "easy"
-  },
-  {
-    "title": "Contributors Page",
-    "slug": "contributor",
-    "description": "See the contributions of people",
-    "category": "contributor",
-    "categoryKey": "contributor",
     "difficulty": "easy"
   },
   {
