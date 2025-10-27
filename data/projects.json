@@ -208,7 +208,6 @@
     "difficulty": "easy"
   },
   {
-
     "title": "Tip Calculator",
     "slug": "Tip Calculator",
     "description": "Calculate tips and divide bills accurately in seconds",
@@ -217,14 +216,12 @@
     "difficulty": "easy"
   },
   {
-
     "title": "Hangman Game",
     "slug": "hangman",
     "description": "A two player word guessing game where one enters a secret word and the other tries to guess it.",
     "category": "Small Games",
     "categoryKey": "games",
     "difficulty": "medium"
-
   },
   {
     "title": "Orbit Game",
@@ -265,5 +262,52 @@
   "category": "Fun UI / Visual",
   "categoryKey": "visual",
   "difficulty": "easy"
-}
+},
+    "title": "gravity-flip-pinball",
+    "slug": "gravity-flip-pinball",
+    "description": "A simple pinball game where you control gravity to move the ball and score by passing through gates.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "haed"
+  },
+  {
+    "title": "Calculator",
+    "slug": "calculator",
+    "description": "Basic four-function calculator with keyboard support and clear UI.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Stopwatch",
+    "slug": "stopwatch",
+    "description": "Start, pause, reset, and lap tracking using high-precision timing.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Countdown Timer",
+    "slug": "countdown-timer",
+    "description": "Countdown with start/pause/reset and a finish alert.",
+    "category": "Productivity",
+    "categoryKey": "productivity",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Unit Converter",
+    "slug": "unit-converter",
+    "description": "Convert between length, temperature, and weight units instantly.",
+    "category": "Mini Data",
+    "categoryKey": "data",
+    "difficulty": "easy"
+  },
+  {
+    "title": "Drawing Canvas",
+    "slug": "drawing-canvas",
+    "description": "Draw on a canvas with brush size/colors, clear, and save.",
+    "category": "Fun UI / Visual",
+    "categoryKey": "visual",
+    "difficulty": "easy"
+  }
 ]

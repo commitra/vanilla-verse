@@ -13,13 +13,74 @@
                 <h1>Create Note</h1>
                 <button class="toggle-btn" id="themeToggle">🌙</button>
             </div>
-            <form id="form">
-                <input type="text" id="title" placeholder="Title" required>
-                <input type="text" id="tag" placeholder="Tag (optional)">
-                <textarea id="content" placeholder="Write your note..." required></textarea>
-                <button type="submit">Add Note</button>
-            </form>
+            
+            <!-- Enhanced Form -->
+            <div class="notes-form-container">
+                <form id="form" class="notes-form" aria-labelledby="form-title">
+                    <h2 id="form-title" class="form-title">Add New Note</h2>
+                    
+                    <div class="form-group">
+                        <label for="title" class="form-label">
+                            Title
+                            <span class="required-indicator" aria-hidden="true">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="title" 
+                            class="form-input"
+                            placeholder="Enter note title"
+                            aria-required="true"
+                            required
+                            maxlength="100"
+                        >
+                        <div class="character-count">
+                            <span id="title-count">0</span>/100
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tag" class="form-label">Tag</label>
+                        <select id="tag" class="form-select">
+                            <option value="">Select a tag (optional)</option>
+                            <option value="personal">Personal</option>
+                            <option value="work">Work</option>
+                            <option value="ideas">Ideas</option>
+                            <option value="important">Important</option>
+                            <option value="study">Study</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content" class="form-label">
+                            Content
+                            <span class="required-indicator" aria-hidden="true">*</span>
+                        </label>
+                        <textarea 
+                            id="content" 
+                            class="form-textarea"
+                            placeholder="Write your note here..."
+                            aria-required="true"
+                            required
+                            maxlength="1000"
+                            rows="5"
+                        ></textarea>
+                        <div class="character-count">
+                            <span id="content-count">0</span>/1000
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            Add Note
+                        </button>
+                        <button type="button" class="btn-secondary" id="clear-form">
+                            Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
+        
         <div class="right-panel">
             <h1>My Notes</h1>
             <div class="notes-header">
@@ -27,11 +88,18 @@
             </div>
             <div class="filter-bar">
                 <label>Filter by tag:</label>
-                <select id="tagFilter"></select>
+                <select id="tagFilter">
+                    <option value="">All tags</option>
+                    <option value="personal">Personal</option>
+                    <option value="work">Work</option>
+                    <option value="ideas">Ideas</option>
+                    <option value="study">Study</option>
+                </select>
             </div>
             <div class="grid" id="notes"></div>
         </div>
     </div>
+    
     <script src="main.js"></script>
 </body>
 </html>
