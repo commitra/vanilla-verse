@@ -19,6 +19,42 @@ canvas {
     border-radius: .5rem
 }
 
+.controls {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .5rem;
+    align-items: center;
+}
+
+.controls button {
+    background: #23232a;
+    color: #eef1f8;
+    border: 1px solid #37373f;
+    padding: .4rem .6rem;
+    border-radius: .35rem;
+    cursor: pointer;
+}
+
+.controls button[aria-pressed="true"] {
+    background: linear-gradient(90deg,#2b6cb0,#2b9cf0);
+    color: #fff;
+    border-color: #1f6fb5;
+}
+
+.status {
+    margin-left: .5rem;
+    color: #9fb4c8;
+    font-size: .95rem;
+}
+
+.instructions {
+    color: #9aa3b3;
+    font-size: .9rem;
+    margin-top: .5rem;
+}
+
+canvas { touch-action: none; }
+
 .notes {
     color: #a6adbb;
     font-size: .9rem

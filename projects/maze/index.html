@@ -10,8 +10,15 @@
 
 <body>
     <main>
-        <h1>Maze</h1><canvas id="maze" width="320" height="320"></canvas>
+        <h1>Maze</h1>
+        <div class="controls" role="region" aria-label="Maze controls">
+            <button id="drawToggle" aria-pressed="false">Draw to Exit Mode</button>
+            <button id="clearPath">Clear Path</button>
+            <span id="status" aria-live="polite" class="status">Ready</span>
+        </div>
+        <canvas id="maze" width="320" height="320" tabindex="0"></canvas>
         <p class="notes">Contribute: generator, solver, keyboard navigation.</p>
+        <p class="instructions">Instructions: Toggle "Draw to Exit Mode", then click/touch and drag across the maze to draw a path from the entrance (top-left) to the exit (bottom-right). Use Clear Path to reset.</p>
     </main>
     <script type="module" src="./main.js"></script>
 </body>
