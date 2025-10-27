@@ -10,10 +10,44 @@
 
 <body>
     <main>
-        <h1>Todo List</h1>
-        <form id="form"><input id="input" placeholder="Add a task" required> <button>Add</button></form>
-        <ul id="list"></ul>
-        <p class="notes">Add persistence, sorting, filters, themes.</p>
+        <header class="app-header">
+            <h1>Todo</h1>
+            <p class="subtitle">Simple, focused tasks</p>
+        </header>
+
+        <form id="form" class="add-form" aria-label="Add todo">
+            <input id="input" placeholder="Add a task" required aria-label="Task description">
+            <input id="due" type="date" aria-label="Due date (optional)">
+            <button type="submit">Add</button>
+        </form>
+
+        <ul id="list" aria-live="polite"></ul>
+
+        <div class="controls">
+            <div class="filter-controls">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="active">Active</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+            </div>
+            <div class="sort-controls">
+                <label for="sort">Sort</label>
+                <select id="sort" aria-label="Sort todos">
+                    <option value="created">Created</option>
+                    <option value="due">Due date</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div id="counts">0 active • 0 total</div>
+            <div>
+                <button id="clear-completed" aria-label="Clear completed tasks">Clear completed tasks</button>
+            </div>
+        </div>
+
+        <div id="pending-list" class="pending-list muted" aria-live="polite">No pending tasks</div>
+
+       
     </main>
     <script type="module" src="./main.js"></script>
 </body>
