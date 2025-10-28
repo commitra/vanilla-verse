@@ -8,6 +8,8 @@ let status = "ready";
 let challengeMode = false;
 let timeRemaining = 60;
 let timerInterval = null;
+let hardCoreMode = false;
+let collisions = 0;
 
 let walls = [];
 let gates = [];
@@ -164,6 +166,14 @@ function ballRectCollision(b, rect) {
   const distSq = dx * dx + dy * dy;
 
   if (distSq < b.radius * b.radius) {
+    collisions++;
+    if(hardCoreMode && collisions%50 == 0) {
+        score--;
+        document.getElementById("score").textContent = score;
+        if(score < 0) {
+            showVictoryModal();
+        }
+    }
     const dist = Math.sqrt(distSq) || 1;
     const overlap = b.radius - dist;
 
@@ -248,7 +258,20 @@ function showVictoryModal() {
   const title = document.getElementById("victoryTitle");
   const message = document.getElementById("victoryMessage");
 
-  if (challengeMode) {
+  if(hardCoreMode) {
+
+    if(score <= 0) {
+        title.textContent = "Better luck next time";
+        message.textContent = `You had too many collisions! Tip: Do not let the ball remain idle`;
+    } else {
+        const timeTaken = 60 - timeRemaining;
+        score += timeRemaining;    
+        document.getElementById("score").textContent = score;
+        title.textContent = "Impeccable Victory!";
+        message.textContent = `You finished Hard Core mode in ${timeTaken} seconds and ${collisions} collisions with a final score of ${score}!`;
+    }
+    
+  } else if (challengeMode) {
     const timeTaken = 60 - timeRemaining;
     title.textContent = "Challenge Complete!";
     score += timeRemaining;    
@@ -434,17 +457,31 @@ document.querySelectorAll(".gravity-btn").forEach((btn) => {
 
 window.addEventListener("resize", resizeCanvas);
 
+const challengeCheckbox = document.getElementById("challengeMode");
+const hardCoreCheckbox = document.getElementById("hardCoreMode");
+
+challengeCheckbox.addEventListener("change", () => {
+  if (challengeCheckbox.checked) hardCoreCheckbox.checked = false;
+});
+
+hardCoreCheckbox.addEventListener("change", () => {
+  if (hardCoreCheckbox.checked) challengeCheckbox.checked = false;
+});
+
 document.getElementById("startBtn").addEventListener("click", () => {
-  challengeMode = document.getElementById("challengeMode").checked;
+  challengeMode = challengeCheckbox.checked;
+  hardCoreMode = hardCoreCheckbox.checked; 
   status = "playing";
+
   document.getElementById("status").textContent = "Playing";
   document.getElementById("startBtn").style.display = "none";
 
-  if (challengeMode) {
+  if (challengeMode || hardCoreMode) {
     document.getElementById("timer").classList.add("active");
-    startTimer();
+    startTimer(); 
   }
 });
+
 
 function replay() {
   document.getElementById("victoryModal").classList.remove("show");
@@ -459,7 +496,8 @@ function replay() {
   setGravity(0, 0.5, "down");
 
   challengeMode = document.getElementById("challengeMode").checked;
-  if (challengeMode) {
+  hardCoreMode = document.getElementById("hardCoreMode").checked;
+  if (challengeMode || hardCoreMode) {
     document.getElementById("timer").classList.add("active");
     startTimer();
   } else {
@@ -487,7 +525,7 @@ canvas.addEventListener("dblclick", () => {
   ball.vy = 0;
   setGravity(0, 0.5, "down");
 
-  if (challengeMode) {
+  if (challengeMode || hardCoreMode) {
     startTimer();
   }
 });
