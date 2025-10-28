@@ -180,11 +180,12 @@ li:hover {
 label {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem; /* slightly larger gap between checkbox and text */
     cursor: pointer;
     flex: 1;
     margin: 0;
     padding: 2px 0;
+    min-width: 0; /* allow label to shrink in flex layout */
 }
 
 /* Improved: Checkbox alignment */
@@ -224,7 +225,10 @@ label span::after {
 /* Improved: Text alignment */
 label span {
     flex: 1;
-    word-break: break-word;
+    min-width: 0; /* allow ellipsis when the container is narrow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* keep a single-line summary to maintain even spacing */
     line-height: 1.4;
     padding: 2px 0;
 }
@@ -251,6 +255,9 @@ li.done label span::after { transform: scaleX(1); }
     border: none;
     transition: background-color 0.2s;
 }
+
+/* Ensure delete button stays at the far right and spacing is even */
+.del { margin-left: auto; }
 
 .del:hover {
     background: #dc2626;
