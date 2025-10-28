@@ -1,4 +1,4 @@
- const canvas = document.getElementById('maze');
+const canvas = document.getElementById('maze');
 const ctx = canvas.getContext('2d');
 
 // UI Elements
@@ -8,17 +8,27 @@ const mazeSizeValue = document.getElementById('mazeSizeValue');
 const speedSlider = document.getElementById('speed');
 const generateBtn = document.getElementById('generateBtn');
 const solveBtn = document.getElementById('solveBtn');
-const clearBtn = document.getElementById('clearBtn');
+const clearBtn = document.getElementById('clearPath');
+const drawToggle = document.getElementById('drawToggle');
+const status = document.getElementById('status');
 
 // Metrics
 const nodesVisitedEl = document.getElementById('nodes-visited');
 const pathLengthEl = document.getElementById('path-length');
 const timeTakenEl = document.getElementById('time-taken');
 
+// State
 let size = 20;
 let cellSize = canvas.width / size;
 let grid = [];
 let animationFrameId;
+
+// Drawing state
+let drawMode = false;
+let isDrawing = false;
+let pathCells = [];
+
+function setStatus(text) { status.textContent = text; }
 
 // --- Maze Generation (Recursive Backtracker) ---
 function createGrid() {
@@ -76,6 +86,10 @@ function removeWall(a, b) {
 
 // --- Pathfinding Algorithms ---
 function solve() {
+    if (drawMode) {
+        setStatus('Disable draw mode to use automatic solver');
+        return;
+    }
     cancelAnimationFrame(animationFrameId);
     clearPath();
     const startTime = performance.now();
@@ -173,6 +187,117 @@ function reconstructPath(parentMap, end) {
     return path;
 }
 
+// --- Manual Drawing Functions ---
+function toggleDrawMode(on) {
+    drawMode = typeof on === 'boolean' ? on : !drawMode;
+    drawToggle.setAttribute('aria-pressed', String(drawMode));
+    drawToggle.classList.toggle('active', drawMode);
+    setStatus(drawMode ? 'Draw mode: ON — draw a path' : 'Draw mode: OFF');
+    if (drawMode) {
+        clearPath();
+    }
+}
+
+function cellFromEvent(e) {
+    const rect = canvas.getBoundingClientRect();
+    const px = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const py = (e.clientY - rect.top) * (canvas.height / rect.height);
+    const cx = Math.floor(px / cellSize);
+    const cy = Math.floor(py / cellSize);
+    if (cx < 0 || cy < 0 || cx >= size || cy >= size) return null;
+    return grid[cy][cx];
+}
+
+function cellsAreNeighbors(a, b) {
+    const dx = b.x - a.x, dy = b.y - a.y;
+    if (dx === 1 && dy === 0) return ['right', 'left'];
+    if (dx === -1 && dy === 0) return ['left', 'right'];
+    if (dx === 0 && dy === 1) return ['bottom', 'top'];
+    if (dx === 0 && dy === -1) return ['top', 'bottom'];
+    return null;
+}
+
+function pointerDown(e) {
+    if (!drawMode) return;
+    isDrawing = true;
+    canvas.setPointerCapture(e.pointerId);
+    const cell = cellFromEvent(e);
+    if (cell) {
+        pathCells = [cell];
+        render();
+    }
+}
+
+function pointerMove(e) {
+    if (!isDrawing) return;
+    const cell = cellFromEvent(e);
+    if (!cell) return;
+    const last = pathCells[pathCells.length - 1];
+    if (!last || (last.x === cell.x && last.y === cell.y)) return;
+    
+    // Check if move is valid (adjacent and no wall between)
+    const neigh = cellsAreNeighbors(last, cell);
+    if (!neigh) return; // not adjacent, skip
+    const [fromSide, toSide] = neigh;
+    if (last.walls[fromSide] || cell.walls[toSide]) {
+        // Wall blocking, don't add this cell
+        return;
+    }
+    
+    pathCells.push(cell);
+    render();
+}
+
+function pointerUp(e) {
+    if (isDrawing) {
+        isDrawing = false;
+        tryValidatePath();
+    }
+    try { canvas.releasePointerCapture(e.pointerId); } catch (err) {}
+}
+
+function tryValidatePath() {
+    if (!pathCells.length) { setStatus('No path drawn'); return; }
+    const start = grid[0][0];
+    const exit = grid[size - 1][size - 1];
+    const first = pathCells[0];
+    const last = pathCells[pathCells.length - 1];
+    if (first.x !== start.x || first.y !== start.y) { setStatus('Path must start at the entrance'); return; }
+    if (last.x !== exit.x || last.y !== exit.y) { setStatus('Path must end at the exit'); return; }
+
+    // ensure each step moves to neighbor and there's no wall between
+    for (let i = 0; i < pathCells.length - 1; i++) {
+        const a = pathCells[i], b = pathCells[i + 1];
+        const neigh = cellsAreNeighbors(a, b);
+        if (!neigh) { setStatus('Invalid path: must travel between adjacent cells'); return; }
+        const [fromSide, toSide] = neigh;
+        if (a.walls[fromSide] || b.walls[toSide]) { setStatus('Invalid path: crosses a wall'); return; }
+    }
+    setStatus('Success! Path reaches the exit without crossing walls.');
+}
+
+function render() {
+    drawMaze();
+    // overlay path
+    if (pathCells.length && drawMode) {
+        ctx.save();
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'rgba(52,144,220,0.95)';
+        ctx.shadowColor = 'rgba(52,144,220,0.7)';
+        ctx.shadowBlur = 8;
+        ctx.lineWidth = Math.max(4, cellSize * 0.45);
+        ctx.beginPath();
+        for (let i = 0; i < pathCells.length; i++) {
+            const p = pathCells[i];
+            const cx = p.x * cellSize + cellSize / 2;
+            const cy = p.y * cellSize + cellSize / 2;
+            if (i === 0) ctx.moveTo(cx, cy); else ctx.lineTo(cx, cy);
+        }
+        ctx.stroke();
+        ctx.restore();
+    }
+}
 
 // --- Drawing & Animation ---
 function drawCell(cell, color) {
@@ -226,9 +351,9 @@ function drawPath(path) {
             i++;
             animationFrameId = setTimeout(animate, 20);
         } else {
-             // Redraw start and end over the path
+            // Redraw start and end over the path
             drawCell(grid[0][0], '#6ee7b7');
-            drawCell(grid[size-1][size-1], '#f472b6');
+            drawCell(grid[size - 1][size - 1], '#f472b6');
         }
     }
     animate();
@@ -236,16 +361,19 @@ function drawPath(path) {
 
 function clearPath() {
     cancelAnimationFrame(animationFrameId);
+    pathCells = [];
     grid.forEach(row => row.forEach(cell => {
         cell.visited = false;
-        delete cell.g; delete cell.h; delete cell.f;
+        delete cell.g;
+        delete cell.h;
+        delete cell.f;
     }));
     nodesVisitedEl.textContent = 0;
     pathLengthEl.textContent = 0;
     timeTakenEl.textContent = '0ms';
+    setStatus(drawMode ? 'Draw mode: ON — path cleared' : 'Path cleared');
     drawMaze();
 }
-
 
 // --- Event Listeners ---
 generateBtn.addEventListener('click', () => {
@@ -256,14 +384,31 @@ generateBtn.addEventListener('click', () => {
 solveBtn.addEventListener('click', solve);
 clearBtn.addEventListener('click', clearPath);
 
+drawToggle.addEventListener('click', () => toggleDrawMode());
+drawToggle.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        toggleDrawMode();
+    }
+});
+
+canvas.addEventListener('pointerdown', pointerDown);
+canvas.addEventListener('pointermove', pointerMove);
+window.addEventListener('pointerup', pointerUp);
+
 mazeSizeSlider.addEventListener('input', (e) => {
     size = parseInt(e.target.value);
     mazeSizeValue.textContent = `${size}x${size}`;
     cellSize = canvas.width / size;
     cancelAnimationFrame(animationFrameId);
+    pathCells = [];
     generateMaze();
     clearPath();
 });
 
 // --- Initial Load ---
 generateMaze();
+setStatus('Ready');
+
+// Expose for debugging
+window._maze = { grid, render, clearPath, toggleDrawMode };

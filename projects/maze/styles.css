@@ -1,4 +1,4 @@
- body {
+body {
     font-family: system-ui, -apple-system, sans-serif;
     background: #0f0f12;
     color: #eef1f8;
@@ -29,8 +29,10 @@ canvas {
     border-radius: .5rem;
     width: 100%;
     height: auto;
+    touch-action: none;
 }
 
+/* === Controls === */
 .controls {
     background: #17171c;
     border: 1px solid #262631;
@@ -43,7 +45,8 @@ canvas {
     align-items: center;
 }
 
-.control-group, .button-group {
+.control-group,
+.button-group {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -54,7 +57,24 @@ label {
     color: #a6adbb;
 }
 
-select, button {
+.controls button {
+    background: #23232a;
+    color: #eef1f8;
+    border: 1px solid #37373f;
+    padding: .4rem .6rem;
+    border-radius: .35rem;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.controls button[aria-pressed="true"] {
+    background: linear-gradient(90deg, #2b6cb0, #2b9cf0);
+    color: #fff;
+    border-color: #1f6fb5;
+}
+
+select,
+button {
     background: #262631;
     color: #eef1f8;
     border: 1px solid #3a3a4a;
@@ -78,6 +98,23 @@ button:hover {
 
 input[type="range"] {
     cursor: pointer;
+}
+
+/* === Extra UI Elements === */
+.status {
+    margin-left: .5rem;
+    color: #9fb4c8;
+    font-size: .95rem;
+}
+
+.instructions {
+    color: #9aa3b3;
+    font-size: .9rem;
+    margin-top: .5rem;
+}
+
+.notes {
+    color: #a6adbb;
 }
 
 .metrics {
