@@ -15,14 +15,67 @@
             <div class="controls">
                 <button id="theme-toggle" aria-pressed="false" title="Toggle theme">🌙</button>
                 <div class="timer">
-                    Time Left: <span id="time">15</span>s
+                    Time Left: <span id="time">20</span>s
                 </div>
             </div>
         </div>
-        <div id="q"></div>
-        <div id="answers"></div>
-        <div id="result"></div>
-        <p class="notes">Add question sets, scoring, and categories.</p>
+        
+        <!-- Settings Panel -->
+        <div id="settings" class="settings-panel">
+            <div class="setting-group">
+                <label for="category">Category:</label>
+                <select id="category">
+                    <option value="any">Any Category</option>
+                    <option value="9">General Knowledge</option>
+                    <option value="17">Science & Nature</option>
+                    <option value="18">Computers</option>
+                    <option value="19">Mathematics</option>
+                    <option value="22">Geography</option>
+                    <option value="23">History</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <label>Difficulty:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="difficulty" value="any" checked> Any</label>
+                    <label><input type="radio" name="difficulty" value="easy"> Easy</label>
+                    <label><input type="radio" name="difficulty" value="medium"> Medium</label>
+                    <label><input type="radio" name="difficulty" value="hard"> Hard</label>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <label for="question-count">Questions:</label>
+                <select id="question-count">
+                    <option value="5">5 Questions</option>
+                    <option value="10">10 Questions</option>
+                    <option value="15">15 Questions</option>
+                    <option value="20">20 Questions</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <label><input type="checkbox" id="shuffle-answers" checked> Shuffle Answers</label>
+                <label><input type="checkbox" id="shuffle-questions" checked> Shuffle Questions</label>
+            </div>
+            
+            <button id="start-quiz" class="start-btn">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Content -->
+        <div id="quiz-content" class="hidden">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text" id="progress-text">Question 1 of 5</div>
+            </div>
+            
+            <div id="q"></div>
+            <div id="answers"></div>
+            <div id="result"></div>
+        </div>
     </main>
     <script type="module" src="./main.js"></script>
 </body>

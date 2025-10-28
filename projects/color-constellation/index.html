@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Constellation - Vanilla Verse</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌟 Color Constellation</h1>
+            <p class="subtitle">Connect the stars to match the constellation pattern</p>
+        </header>
+
+        <div class="game-info">
+            <div class="info-item">
+                <span class="label">Level:</span>
+                <span id="level" class="value">1</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Score:</span>
+                <span id="score" class="value">0</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Connections:</span>
+                <span id="connections" class="value">0/0</span>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <!-- Target Pattern Display -->
+            <div class="target-container">
+                <h3>Target Pattern</h3>
+                <canvas id="targetCanvas"></canvas>
+            </div>
+
+            <!-- Main Game Canvas -->
+            <div class="canvas-container">
+                <canvas id="gameCanvas"></canvas>
+                <div id="message" class="message"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="clearBtn" class="btn btn-secondary">Clear Connections</button>
+            <button id="hintBtn" class="btn btn-hint">Show Hint</button>
+            <button id="checkBtn" class="btn btn-primary">Check Pattern</button>
+            <button id="nextBtn" class="btn btn-success" style="display: none;">Next Level</button>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li>Click two stars to connect them with a line</li>
+                <li>Match the target constellation pattern shown above</li>
+                <li>Lines cannot cross each other</li>
+                <li>Click "Check Pattern" when you think you've matched it</li>
+                <li>Use hints if you're stuck (costs points)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

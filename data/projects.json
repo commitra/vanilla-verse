@@ -1,5 +1,13 @@
 [
   {
+    "title": "Contributors Page",
+    "slug": "contributor",
+    "description": "See the contributions of people",
+    "category": "contributor",
+    "categoryKey": "contributor",
+    "difficulty": "easy"
+  },
+  {
     "title": "Snake Game",
     "slug": "snake",
     "description": "Classic snake with keyboard controls, speed levels, and scoring.",
@@ -232,14 +240,6 @@
     "difficulty": "easy"
   },
   {
-    "title": "Contributors Page",
-    "slug": "contributor",
-    "description": "See the contributions of people",
-    "category": "contributor",
-    "categoryKey": "contributor",
-    "difficulty": "easy"
-  },
-  {
     "title": "Rhythm Tap Garden",
     "slug": "rhythm-tap-garden",
     "description": "Grow a virtual plant by tapping in rhythm with a beat.",
@@ -310,5 +310,13 @@
     "category": "Fun UI / Visual",
     "categoryKey": "visual",
     "difficulty": "easy"
+  },
+  {
+    "title": "Color Constellation",
+    "slug": "color-constellation",
+    "description": "Link stars to form constellations that match a given silhouette pattern. Lines cannot cross.",
+    "category": "Small Games",
+    "categoryKey": "games",
+    "difficulty": "medium"
   }
 ]

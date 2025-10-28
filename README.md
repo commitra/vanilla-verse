@@ -44,7 +44,7 @@ vanillaverse/
 ├── projects/               # Individual mini-project folders
 │   └── example/
 │       ├── index.html
-│       └── main.js         # Each includes TODOs for contributors
+│       └── main.js         # Each includes TODOs
 └── .github/                # Issue templates and deploy workflow
 ```
 

@@ -1,26 +1,48 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Maze</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Maze Solver</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
-
 <body>
     <main>
-        <h1>Maze</h1>
+        <h1>Maze Solver</h1>
         <div class="controls" role="region" aria-label="Maze controls">
-            <button id="drawToggle" aria-pressed="false">Draw to Exit Mode</button>
-            <button id="clearPath">Clear Path</button>
+            <div class="control-group">
+                <label for="algorithm">Algorithm:</label>
+                <select id="algorithm">
+                    <option value="bfs">BFS (Breadth-First Search)</option>
+                    <option value="astar">A* Search</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="mazeSize">Size:</label>
+                <input type="range" id="mazeSize" min="10" max="50" value="20">
+                <span id="mazeSizeValue">20x20</span>
+            </div>
+            <div class="control-group">
+                <label for="speed">Speed:</label>
+                <input type="range" id="speed" min="1" max="100" value="50">
+            </div>
+            <div class="button-group">
+                <button id="generateBtn">New Maze</button>
+                <button id="solveBtn">Solve</button>
+                <button id="drawToggle" aria-pressed="false">Draw to Exit Mode</button>
+                <button id="clearPath">Clear Path</button>
+            </div>
             <span id="status" aria-live="polite" class="status">Ready</span>
         </div>
-        <canvas id="maze" width="320" height="320" tabindex="0"></canvas>
+        <canvas id="maze" width="560" height="560" tabindex="0"></canvas>
+        <div class="metrics">
+            <span>Nodes Visited: <strong id="nodes-visited">0</strong></span>
+            <span>Path Length: <strong id="path-length">0</strong></span>
+            <span>Time: <strong id="time-taken">0ms</strong></span>
+        </div>
         <p class="notes">Contribute: generator, solver, keyboard navigation.</p>
-        <p class="instructions">Instructions: Toggle "Draw to Exit Mode", then click/touch and drag across the maze to draw a path from the entrance (top-left) to the exit (bottom-right). Use Clear Path to reset.</p>
+        <p class="instructions">Instructions: Use "Solve" for automatic pathfinding, or toggle "Draw to Exit Mode" to manually draw a path from entrance to exit.</p>
     </main>
     <script type="module" src="./main.js"></script>
 </body>
-
 </html>

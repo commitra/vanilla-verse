@@ -1,18 +1,615 @@
-/* TODO: Style the Calculator UI (grid of buttons, responsive layout, accessible focus states) */
-:root {
-  --bg: #0f172a;
-  --fg: #e2e8f0;
-  --accent: #22d3ee;
-  --panel: #111827;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--fg);
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-}
-#app { width: min(92vw, 420px); }
+
+        /* ===== GLOBAL STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 1s ease;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: backgroundMove 20s linear infinite;
+            opacity: 0.3;
+            z-index: 0;
+            transition: opacity 1s ease;
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(180deg);
+        }
+
+        .theme-toggle:active {
+            transform: rotate(180deg) scale(0.95);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            transition: all 0.5s ease;
+        }
+
+        /* ===== CALCULATOR CONTAINER ===== */
+        .calculator-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        .calculator {
+            background: linear-gradient(145deg, rgba(30, 30, 40, 0.95), rgba(20, 20, 30, 0.95));
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 120px rgba(102, 126, 234, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            width: 100%;
+            padding: 25px;
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 1s ease;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== DISPLAY WITH HISTORY ===== */
+        .display {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 20px;
+            min-height: 120px;
+            max-height: 200px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 2px 10px rgba(0, 0, 0, 0.3),
+                0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 1s ease;
+        }
+
+        .display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .history-container {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            min-height: 60px;
+            max-height: 120px;
+        }
+
+        .history-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .history-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .history-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .history-item {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: fadeInHistory 0.3s ease;
+        }
+
+        @keyframes fadeInHistory {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .history-item:hover {
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.05);
+            padding-left: 5px;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .current-calculation {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 10px;
+            margin-top: 5px;
+        }
+
+        .previous-operand {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            height: 1.2rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: color 1s ease;
+        }
+
+        .current-operand {
+            color: #ffffff;
+            font-size: 2.2rem;
+            font-weight: 300;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            letter-spacing: -1px;
+            transition: color 1s ease;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .clear-history {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 3px 8px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .clear-history:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* ===== BUTTON GRID ===== */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        /* ===== BUTTON STYLES ===== */
+        button {
+            background: linear-gradient(145deg, #2d2d3f, #1f1f2e);
+            border: none;
+            border-radius: 50%;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 400;
+            height: 65px;
+            width: 65px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 1s ease, color 1s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 20px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.95);
+            box-shadow: 
+                0 2px 10px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        button:focus {
+            box-shadow: 
+                0 0 0 3px rgba(102, 126, 234, 0.5),
+                0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ===== SPECIAL BUTTONS ===== */
+        .operator {
+            background: linear-gradient(145deg, #ff6b6b, #ee5a24);
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 1s ease;
+        }
+
+        .operator:hover {
+            background: linear-gradient(145deg, #ff7979, #f5635f);
+            box-shadow: 
+                0 6px 20px rgba(238, 90, 36, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .equals {
+            background: linear-gradient(145deg, #4ecdc4, #44a3aa);
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 1s ease;
+        }
+
+        .equals:hover {
+            background: linear-gradient(145deg, #5ed9d0, #4fb3b9);
+            box-shadow: 
+                0 6px 20px rgba(78, 205, 196, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .function {
+            background: linear-gradient(145deg, #636e72, #2d3436);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 1s ease;
+        }
+
+        .function:hover {
+            background: linear-gradient(145deg, #747d81, #3d4447);
+            box-shadow: 
+                0 6px 20px rgba(99, 110, 114, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .clear {
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 1s ease;
+        }
+
+        .clear:hover {
+            background: linear-gradient(145deg, #ec7063, #cd6155);
+            box-shadow: 
+                0 6px 20px rgba(231, 76, 60, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .backspace {
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 1s ease;
+        }
+
+        .backspace:hover {
+            background: linear-gradient(145deg, #f5b041, #eb984e);
+            box-shadow: 
+                0 6px 20px rgba(243, 156, 18, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .percentage {
+            background: linear-gradient(145deg, #9b59b6, #8e44ad);
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 1s ease;
+        }
+
+        .percentage:hover {
+            background: linear-gradient(145deg, #a569bd, #9c88a8);
+            box-shadow: 
+                0 6px 20px rgba(155, 89, 182, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .sign-toggle {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 1s ease;
+        }
+
+        .sign-toggle:hover {
+            background: linear-gradient(145deg, #5dade2, #3498db);
+            box-shadow: 
+                0 6px 20px rgba(52, 152, 219, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* ===== ENTRANCE ANIMATIONS ===== */
+        button {
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        button:nth-child(1) { animation-delay: 0.1s; }
+        button:nth-child(2) { animation-delay: 0.12s; }
+        button:nth-child(3) { animation-delay: 0.14s; }
+        button:nth-child(4) { animation-delay: 0.16s; }
+        button:nth-child(5) { animation-delay: 0.18s; }
+        button:nth-child(6) { animation-delay: 0.2s; }
+        button:nth-child(7) { animation-delay: 0.22s; }
+        button:nth-child(8) { animation-delay: 0.24s; }
+        button:nth-child(9) { animation-delay: 0.26s; }
+        button:nth-child(10) { animation-delay: 0.28s; }
+        button:nth-child(11) { animation-delay: 0.3s; }
+        button:nth-child(12) { animation-delay: 0.32s; }
+        button:nth-child(13) { animation-delay: 0.34s; }
+        button:nth-child(14) { animation-delay: 0.36s; }
+        button:nth-child(15) { animation-delay: 0.38s; }
+        button:nth-child(16) { animation-delay: 0.4s; }
+        button:nth-child(17) { animation-delay: 0.42s; }
+        button:nth-child(18) { animation-delay: 0.44s; }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== ERROR STATE ===== */
+        .error {
+            color: #ff6b6b !important;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+            20%, 40%, 60%, 80% { transform: translateX(2px); }
+        }
+
+        /* ===== SUCCESS ANIMATION ===== */
+        .success {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .calculator {
+                padding: 15px;
+                border-radius: 20px;
+            }
+            
+            button {
+                height: 55px;
+                width: 55px;
+                font-size: 1.2rem;
+            }
+            
+            .current-operand {
+                font-size: 2rem;
+            }
+            
+            .previous-operand {
+                font-size: 0.9rem;
+            }
+            
+            .theme-toggle {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .theme-toggle-container {
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            button {
+                height: 50px;
+                width: 50px;
+                font-size: 1.1rem;
+            }
+            
+            .current-operand {
+                font-size: 1.8rem;
+            }
+            
+            .buttons {
+                gap: 10px;
+            }
+        }
+
+        /* ===== LIGHT THEME ===== */
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        body.light .calculator {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 245, 0.95));
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.1),
+                0 0 120px rgba(102, 126, 234, 0.05);
+        }
+
+        body.light .display {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+        }
+
+        body.light .previous-operand {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        body.light .current-operand {
+            color: #212529;
+        }
+
+        body.light .history-item {
+            color: rgba(0, 0, 0, 0.6);
+            border-bottom-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light .history-item:hover {
+            color: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        body.light .current-calculation {
+            border-top-color: rgba(0, 0, 0, 0.2);
+        }
+
+        body.light .clear-history {
+            background: rgba(0, 0, 0, 0.1);
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        body.light .clear-history:hover {
+            background: rgba(0, 0, 0, 0.2);
+            color: #000;
+        }
+
+        body.light button {
+            background: linear-gradient(145deg, #e9ecef, #dee2e6);
+            color: #212529;
+        }
+
+        body.light .operator {
+            background: linear-gradient(145deg, #ff9a9e, #fad0c4);
+        }
+
+        body.light .equals {
+            background: linear-gradient(145deg, #a8edea, #fed6e3);
+        }
+
+        body.light .function {
+            background: linear-gradient(145deg, #dfe6e9, #b2bec3);
+        }
+
+        body.light .clear {
+            background: linear-gradient(145deg, #f5b7b1, #f1948a);
+        }
+
+        body.light .backspace {
+            background: linear-gradient(145deg, #fdebd0, #fad7a0);
+        }
+
+        body.light .percentage {
+            background: linear-gradient(145deg, #e8daef, #d7bde2);
+        }
+
+        body.light .sign-toggle {
+            background: linear-gradient(145deg, #d6eaf8, #aed6f1);
+        }
+
+        body.light .theme-toggle {
+            background: rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        body.light .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== ICON ANIMATIONS ===== */
+        .icon-sun {
+            animation: rotateSun 20s linear infinite;
+        }
+
+        @keyframes rotateSun {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .icon-moon {
+            animation: floatMoon 3s ease-in-out infinite;
+        }
+
+        @keyframes floatMoon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }

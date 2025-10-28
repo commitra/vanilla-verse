@@ -1,8 +1,11 @@
-/* TODO: Style the drawing canvas and toolbar */
+ /* TODO: Style the drawing canvas and toolbar */
 :root {
   --bg: #0b1220;
   --fg: #f8fafc;
   --accent: #f472b6;
+  --toolbar-bg: #1e293b;
+  --toolbar-border: #334155;
+  --canvas-bg: #ffffff;
 }
 * { box-sizing: border-box; }
 body {
@@ -13,5 +16,128 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
+  padding: 1rem;
 }
-#app { width: min(94vw, 960px); }
+#app { 
+  width: min(94vw, 960px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+header h1 {
+  text-align: center;
+  margin: 0 0 1rem 0;
+  color: var(--accent);
+}
+
+.canvas-container {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  border: 2px solid var(--toolbar-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--canvas-bg);
+}
+
+#drawingCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--toolbar-bg);
+  border: 1px solid var(--toolbar-border);
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tool-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+#colorPicker {
+  width: 50px;
+  height: 40px;
+  border: 2px solid var(--toolbar-border);
+  border-radius: 4px;
+  cursor: pointer;
+  background: #000000;
+}
+
+#brushSize {
+  width: 120px;
+}
+
+#brushSizeValue {
+  min-width: 30px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button.clear {
+  background: #ef4444;
+}
+
+.button.save {
+  background: #10b981;
+}
+
+.warning {
+  color: #f59e0b;
+  font-size: 0.8rem;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .tool-group {
+    justify-content: space-between;
+  }
+  
+  .canvas-container {
+    height: 50vh;
+  }
+}
