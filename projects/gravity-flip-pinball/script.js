@@ -251,6 +251,8 @@ function showVictoryModal() {
   if (challengeMode) {
     const timeTaken = 60 - timeRemaining;
     title.textContent = "Challenge Complete!";
+    score += timeRemaining;    
+    document.getElementById("score").textContent = score;
     message.textContent = `You finished in ${timeTaken} seconds with a score of ${score}!`;
   } else {
     title.textContent = "Victory!";
