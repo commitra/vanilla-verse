@@ -1,105 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes App</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes App</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-    <div class="container">
-        <div class="left-panel">
-            <div class="header-row">
-                <h1>Create Note</h1>
-                <button class="toggle-btn" id="themeToggle">🌙</button>
-            </div>
-            
-            <!-- Enhanced Form -->
-            <div class="notes-form-container">
-                <form id="form" class="notes-form" aria-labelledby="form-title">
-                    <h2 id="form-title" class="form-title">Add New Note</h2>
-                    
-                    <div class="form-group">
-                        <label for="title" class="form-label">
-                            Title
-                            <span class="required-indicator" aria-hidden="true">*</span>
-                        </label>
-                        <input 
-                            type="text" 
-                            id="title" 
-                            class="form-input"
-                            placeholder="Enter note title"
-                            aria-required="true"
-                            required
-                            maxlength="100"
-                        >
-                        <div class="character-count">
-                            <span id="title-count">0</span>/100
-                        </div>
-                    </div>
+<body class="light-theme">
+  <main role="main" class="container">
+    <!-- Left Panel: Editor -->
+    <section class="left-panel">
+      <div class="header-row">
+        <h1>Create Note</h1>
+        <button class="toggle-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+      </div>
 
-                    <div class="form-group">
-                        <label for="tag" class="form-label">Tag</label>
-                        <select id="tag" class="form-select">
-                            <option value="">Select a tag (optional)</option>
-                            <option value="personal">Personal</option>
-                            <option value="work">Work</option>
-                            <option value="ideas">Ideas</option>
-                            <option value="important">Important</option>
-                            <option value="study">Study</option>
-                        </select>
-                    </div>
+      <div class="notes-form-container">
+        <form id="form" class="notes-form" aria-labelledby="form-title">
+          <h2 id="form-title" class="form-title">Add New Note</h2>
 
-                    <div class="form-group">
-                        <label for="content" class="form-label">
-                            Content
-                            <span class="required-indicator" aria-hidden="true">*</span>
-                        </label>
-                        <textarea 
-                            id="content" 
-                            class="form-textarea"
-                            placeholder="Write your note here..."
-                            aria-required="true"
-                            required
-                            maxlength="1000"
-                            rows="5"
-                        ></textarea>
-                        <div class="character-count">
-                            <span id="content-count">0</span>/1000
-                        </div>
-                    </div>
+          <div class="form-group">
+            <label for="title" class="form-label">
+              Title <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <input
+              type="text"
+              id="title"
+              class="form-input"
+              placeholder="Enter note title"
+              aria-required="true"
+              required
+              maxlength="100"
+            />
+            <div class="character-count">
+              <span id="title-count">0</span>/100
+            </div>
+          </div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="btn-primary">
-                            Add Note
-                        </button>
-                        <button type="button" class="btn-secondary" id="clear-form">
-                            Clear
-                        </button>
-                    </div>
-                </form>
+          <div class="form-group">
+            <label for="tag" class="form-label">Tag</label>
+            <select id="tag" class="form-select">
+              <option value="">Select a tag (optional)</option>
+              <option value="personal">Personal</option>
+              <option value="work">Work</option>
+              <option value="ideas">Ideas</option>
+              <option value="important">Important</option>
+              <option value="study">Study</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="content" class="form-label">
+              Content <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <textarea
+              id="content"
+              class="form-textarea"
+              placeholder="Write your note here..."
+              aria-required="true"
+              required
+              maxlength="1000"
+              rows="5"
+            ></textarea>
+            <div class="character-count">
+              <span id="content-count">0</span>/1000
             </div>
-        </div>
-        
-        <div class="right-panel">
-            <h1>My Notes</h1>
-            <div class="notes-header">
-                <input type="text" id="search" placeholder="Search notes...">
-            </div>
-            <div class="filter-bar">
-                <label>Filter by tag:</label>
-                <select id="tagFilter">
-                    <option value="">All tags</option>
-                    <option value="personal">Personal</option>
-                    <option value="work">Work</option>
-                    <option value="ideas">Ideas</option>
-                    <option value="study">Study</option>
-                </select>
-            </div>
-            <div class="grid" id="notes"></div>
-        </div>
-    </div>
-    
-    <script src="main.js"></script>
+          </div>
+
+          <div class="autosave-status" id="autosaveStatus" aria-live="polite">
+            Saved
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Add Note</button>
+            <button type="button" class="btn-secondary" id="clear-form">Clear</button>
+            <button type="button" class="btn-secondary" id="undo-btn">Undo</button>
+            <button type="button" class="btn-secondary" id="redo-btn">Redo</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Right Panel: Notes List -->
+    <section class="right-panel">
+      <h1>My Notes</h1>
+
+      <div class="notes-header">
+        <input
+          type="text"
+          id="search"
+          placeholder="Search notes..."
+          aria-label="Search notes"
+        />
+      </div>
+
+      <div class="filter-bar">
+        <label for="tagFilter">Filter by tag:</label> 
+        <select id="tagFilter" aria-label="Filter notes by tag">
+          <option value="">All tags</option>
+          <option value="personal">Personal</option>
+          <option value="work">Work</option>
+          <option value="ideas">Ideas</option>
+          <option value="important">Important</option>
+          <option value="study">Study</option>
+        </select>
+      </div>
+
+      <div class="sort-bar">
+        <label for="sortNotes">Sort by:</label>
+        <select id="sortNotes" aria-label="Sort notes">
+          <option value="latest">Latest</option>
+          <option value="title">Title</option>
+        </select>
+      </div>
+
+      <div class="grid" id="notes">
+        <!-- Notes will be dynamically injected here -->
+      </div>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
 </body>
 </html>
