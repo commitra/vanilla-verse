@@ -254,6 +254,8 @@ function showVictoryModal() {
     timerInterval = null;
   }
 
+  collisions = 0;
+
   const modal = document.getElementById("victoryModal");
   const title = document.getElementById("victoryTitle");
   const message = document.getElementById("victoryMessage");
