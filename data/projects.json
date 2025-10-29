@@ -318,5 +318,13 @@
     "category": "Small Games",
     "categoryKey": "games",
     "difficulty": "medium"
+  },
+  {
+    "title": "Blackjack",
+    "slug": "blackjack",
+    "description": "Classic card game - Beat the dealer to 21! Features betting, realistic animations, and dark/light themes.",
+    "category": "Game",
+    "categoryKey": "game",
+    "difficulty": "Intermediate"
   }
 ]
