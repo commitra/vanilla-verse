@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Quick UUID Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <button id="themeToggle" class="theme-toggle" title="Toggle Theme">🌙</button>
+
+    <main class="card" role="main">
+        <h1>Quick UUID Generator</h1><br>
+        <p>Click the button to generate a Version 4 UUID.</p>
+
+        <div class="controls">
+            <button id="generate">Generate UUID</button>
+            <div id="uuid" aria-live="polite">—</div>
+            <button id="copy" class="small-btn" title="Copy UUID">Copy</button>
+        </div>
+
+        <div class="hint">Tip: Click <em>Copy</em> or click the UUID itself to copy it to your clipboard.</div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
