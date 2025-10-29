@@ -185,7 +185,10 @@ body:not(.dark-mode) .theme-toggle .moon-icon {
 }
 
 .card a:hover {
-  filter: brightness(1.05);
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  background-size: 200% auto;
+  transition: background-position 0.4s ease;
+  background-position: right center;
 }
 
 .site-footer {
@@ -203,4 +206,164 @@ body:not(.dark-mode) .theme-toggle .moon-icon {
 
 .site-footer a:hover {
   text-decoration: underline;
+}
+
+
+/* ================================
+   📱 RESPONSIVE DESIGN ENHANCEMENTS
+   ================================ */
+
+/* --- Tablet (≤ 1024px) --- */
+@media (max-width: 1024px) {
+  .site-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .site-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .controls input,
+  .controls select {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .project-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+/* --- Mobile (≤ 600px) --- */
+@media (max-width: 600px) {
+  body {
+    font-size: 0.95rem;
+  }
+
+  .site-header {
+    padding: 1rem 0.75rem;
+  }
+
+  .site-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .site-header p {
+    font-size: 0.9rem;
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .controls input,
+  .controls select {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+    padding: 0.75rem;
+  }
+
+  .card {
+    padding: 0.75rem;
+  }
+
+  .site-footer {
+    font-size: 0.85rem;
+    padding: 1rem;
+  }
+}
+
+
+/* ================================
+   ✨ TRANSITIONS & ANIMATIONS
+   ================================ */
+
+/* Smooth transitions on layout adjustments */
+.controls,
+.project-grid,
+.card,
+.site-header,
+.site-footer {
+  transition:
+    all 0.3s ease-in-out,
+    grid-template-columns 0.3s ease-in-out,
+    padding 0.3s ease-in-out,
+    font-size 0.2s ease-in-out;
+}
+
+/* Animate cards when the grid rearranges */
+.project-grid {
+  transition:
+    grid-template-columns 0.4s ease,
+    gap 0.3s ease;
+}
+
+/* Subtle hover animation for cards */
+.card {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.3s ease;
+}
+
+.card:hover {
+   border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(110, 231, 183, 0.15);
+  transform: translateY(-5px);
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+/* Smoothly scale theme toggle when viewport changes */
+.theme-toggle {
+  transition:
+    all 0.25s ease,
+    transform 0.3s ease;
+}
+
+/* Fade animation when switching between dark/light themes */
+body {
+  transition:
+    background 0.4s ease,
+    color 0.4s ease,
+    filter 0.4s ease;
+}
+
+/* Optional: add a slight fade-in effect when content loads */
+body {
+  opacity: 0;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
