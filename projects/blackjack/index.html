@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack - 21</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="themeBtn" aria-label="Toggle theme">
+            <span class="icon">🌙</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Blackjack</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Chips:</span>
+                    <span id="chips" class="stat-value">1000</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Wins:</span>
+                    <span id="wins" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Losses:</span>
+                    <span id="losses" class="stat-value">0</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="game-area">
+            <section class="dealer-section">
+                <div class="player-info">
+                    <h2>Dealer</h2>
+                    <div class="hand-value" id="dealerValue">0</div>
+                </div>
+                <div class="cards-container" id="dealerCards"></div>
+            </section>
+            <div class="game-message" id="gameMessage"></div>
+            <section class="player-section">
+                <div class="player-info">
+                    <h2>You</h2>
+                    <div class="hand-value" id="playerValue">0</div>
+                </div>
+                <div class="cards-container" id="playerCards"></div>
+            </section>
+            <section class="betting-section" id="bettingSection">
+                <h3>Place Your Bet</h3>
+                <div class="bet-controls">
+                    <button class="bet-btn" data-bet="10">$10</button>
+                    <button class="bet-btn" data-bet="25">$25</button>
+                    <button class="bet-btn" data-bet="50">$50</button>
+                    <button class="bet-btn" data-bet="100">$100</button>
+                </div>
+                <div class="custom-bet">
+                    <input type="number" id="customBet" min="1" placeholder="Custom amount">
+                    <button id="placeBetBtn">Place Bet</button>
+                </div>
+                <div class="current-bet">Current Bet: $<span id="currentBet">0</span></div>
+            </section>
+            <section class="controls" id="gameControls" style="display: none;">
+                <button id="hitBtn" class="control-btn primary">Hit</button>
+                <button id="standBtn" class="control-btn secondary">Stand</button>
+                <button id="newGameBtn" class="control-btn tertiary">New Game</button>
+            </section>
+        </main>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
