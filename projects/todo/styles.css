@@ -1,6 +1,9 @@
 :root {
+    /* Dark / default tokens */
     --bg-color: #0f0f12;
+    --card-bg: #0b0b0e;
     --text-color: #eef1f8;
+    --muted: #94a3b8;
     --input-bg: #17171c;
     --input-border: #262631;
     --button-bg: #6ee7b7;
@@ -8,18 +11,25 @@
     --secondary-text: #a6adbb;
     --item-border: #262631;
     --completed-text: #6b7280;
+    --accent: #6ee7b7;
+    --danger: #ef4444;
 }
 
 [data-theme="light"] {
+    /* Polished light tokens */
     --bg-color: #f8fafc;
-    --text-color: #1e293b;
+    --card-bg: #ffffff;
+    --text-color: #0f172a;
+    --muted: #64748b;
     --input-bg: #ffffff;
-    --input-border: #cbd5e1;
-    --button-bg: #10b981;
+    --input-border: #e2e8f0;
+    --button-bg: #06b6a4;
     --button-color: #ffffff;
-    --secondary-text: #64748b;
-    --item-border: #e2e8f0;
+    --secondary-text: #475569;
+    --item-border: #e6eef8;
     --completed-text: #94a3b8;
+    --accent: #06b6a4;
+    --danger: #ef4444;
 }
 
 [data-theme="blue"] {
@@ -50,11 +60,25 @@ main {
     width: 100%;
 }
 
+/* Card-like container for better hierarchy */
+main {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    padding: 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+}
+
 .app-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.app-header .subtitle {
+    color: var(--secondary-text);
+    font-size: 0.95rem;
+    margin: 0;
 }
 
 .controls {
@@ -87,6 +111,11 @@ input {
     background: var(--input-bg);
     color: var(--text-color);
     flex: 1;
+}
+
+/* Date input smaller and separated */
+input#due {
+    max-width: 140px;
 }
 
 button {
@@ -137,23 +166,26 @@ li {
     gap: 12px;
     padding: 0.75rem 0.5rem;
     border-bottom: 1px solid var(--item-border);
-    transition: background-color 0.2s;
+    transition: background-color 0.18s, transform 0.18s;
     min-height: 52px;
+    background: transparent;
 }
 
 li:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+    background-color: rgba(255,255,255,0.02);
 }
 
 /* Improved: Label alignment */
 label {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem; /* slightly larger gap between checkbox and text */
     cursor: pointer;
     flex: 1;
     margin: 0;
     padding: 2px 0;
+    min-width: 0; /* allow label to shrink in flex layout */
 }
 
 /* Improved: Checkbox alignment */
@@ -165,10 +197,38 @@ input[type="checkbox"] {
     flex-shrink: 0;
 }
 
+/* Modern checkbox accent & animation */
+input[type="checkbox"] {
+    accent-color: var(--accent);
+    transition: transform 0.18s ease, box-shadow 0.18s;
+}
+
+input[type="checkbox"]:active { transform: scale(0.95); }
+
+/* Smooth strike-through animation using pseudo element */
+label span { position: relative; }
+label span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 220ms cubic-bezier(.2,.9,.2,1);
+    top: 50%;
+    opacity: 0.95;
+}
+
+
 /* Improved: Text alignment */
 label span {
     flex: 1;
-    word-break: break-word;
+    min-width: 0; /* allow ellipsis when the container is narrow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* keep a single-line summary to maintain even spacing */
     line-height: 1.4;
     padding: 2px 0;
 }
@@ -177,6 +237,7 @@ li.done label span {
     text-decoration: line-through;
     color: var(--completed-text);
 }
+li.done label span::after { transform: scaleX(1); }
 
 /* Improved: Delete button alignment */
 .del {
@@ -194,6 +255,9 @@ li.done label span {
     border: none;
     transition: background-color 0.2s;
 }
+
+/* Ensure delete button stays at the far right and spacing is even */
+.del { margin-left: auto; }
 
 .del:hover {
     background: #dc2626;
@@ -251,3 +315,26 @@ li.done label span {
         gap: 0.5rem;
     }
 }
+
+/* Overdue state */
+.overdue { border-left: 4px solid var(--danger); }
+.overdue .meta { color: var(--danger); font-weight:600; }
+
+/* Focus styles for accessibility */
+input:focus, select:focus, button:focus, .del:focus { outline: 3px solid rgba(6,182,164,0.12); outline-offset: 2px; }
+
+/* Small utility */
+.muted { color: var(--secondary-text); font-size: 0.95rem; }
+
+/* Pending list area (shows short textual list of pending tasks) */
+.pending-list {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.4rem;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.01);
+    color: var(--text-color);
+    font-size: 0.95rem;
+    min-height: 36px;
+}
+.pending-item { padding: 2px 0; }
+.pending-list .muted { color: var(--secondary-text); font-size: 0.9rem; }
