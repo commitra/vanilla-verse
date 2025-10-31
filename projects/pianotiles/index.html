@@ -2,469 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Piano Tiles</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            transition: background-color 0.3s, color 0.3s;
-            overflow: hidden;
-        }
-
-        body.light {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-        }
-
-        body.dark {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
-        }
-
-        .game-container {
-            position: relative;
-            width: 400px;
-            height: 600px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .header {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .score {
-            font-size: 28px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .theme-toggle {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 20px;
-            transition: transform 0.2s;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        .game-area {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-        }
-
-        .game-area::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 150px;
-            background: rgba(76, 175, 80, 0.15);
-            border-top: 3px solid rgba(76, 175, 80, 0.5);
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .column {
-            flex: 1;
-            position: relative;
-            border-right: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .column:last-child {
-            border-right: none;
-        }
-
-        .tile {
-            position: absolute;
-            width: 100%;
-            height: 150px;
-            background: #000;
-            cursor: pointer;
-            transition: background-color 0.1s;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        body.light .tile {
-            background: #2d3561;
-        }
-
-        body.dark .tile {
-            background: #0f3460;
-        }
-
-        .tile:hover {
-            opacity: 0.9;
-        }
-
-        .tile.hit {
-            background: #4caf50 !important;
-        }
-
-        .tile.miss {
-            background: #f44336 !important;
-        }
-
-        .menu-screen,
-        .game-over-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            padding: 40px;
-        }
-
-        .menu-screen.hidden,
-        .game-over-screen.hidden {
-            display: none;
-        }
-
-        h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-        }
-
-        h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-
-        .final-score {
-            font-size: 64px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #ffd700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        button {
-            padding: 15px 40px;
-            font-size: 20px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 10px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .instructions {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .audio-status {
-            font-size: 14px;
-            margin-top: 10px;
-            padding: 5px 15px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
 </head>
-<body class="dark">
-    <div class="game-container">
-        <div class="header">
-            <div class="score">Score: <span id="score">0</span></div>
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌓</button>
-        </div>
+<body>
+    <button class="stats-button hidden" id="stats-button">📊</button>
 
-        <div class="game-area" id="gameArea">
-            <div class="column" data-column="0"></div>
-            <div class="column" data-column="1"></div>
-            <div class="column" data-column="2"></div>
-            <div class="column" data-column="3"></div>
-        </div>
-
-        <div class="menu-screen" id="menuScreen">
-            <h1>🎹 Piano Tiles</h1>
-            <div class="instructions">
-                Tap the falling tiles when they reach the <strong>GREEN ZONE</strong> at the bottom!<br>
-                Don't let any tiles pass through or it's game over!
+    <main>
+        <section id="game-container">
+            <div id="game-area"></div>
+            
+            <!-- Improved Game UI -->
+            <div class="game-ui">
+                <div class="score-container">
+                    <div class="score-label">Score</div>
+                    <div class="score-value" id="score-display">0</div>
+                </div>
+                <div class="high-score-container">
+                    <div class="high-score-label">Best</div>
+                    <div class="high-score-value" id="high-score">0</div>
+                </div>
             </div>
-            <button id="startBtn">Start Game</button>
-            <div class="audio-status" id="audioStatus">🔊 Audio Ready</div>
-        </div>
 
-        <div class="game-over-screen hidden" id="gameOverScreen">
-            <h2>Game Over!</h2>
-            <div class="final-score" id="finalScore">0</div>
-            <button id="restartBtn">Play Again</button>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-    <script>
-        // Piano synth with Tone.js
-        let synth = null;
-        let audioReady = false;
-        
-        // Piano notes (C4 to C5)
-        const notes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5'];
-
-        async function initAudio() {
-            try {
-                await Tone.start();
+            <div class="combo-display" id="combo-display"></div>
+            <div class="speed-indicator">
+                <span>Speed</span>
+                <div class="speed-bar">
+                    <div class="speed-fill" id="speed-fill"></div>
+                </div>
+            </div>
+            
+            <button id="pause-button" class="hidden">⏸️</button>
+            
+            <div id="start-screen">
+                <h1>Piano Tiles</h1>
+                <p>Tap the black tiles as they fall</p>
+                <button id="mode-select-button" class="mode-button">Select Mode</button>
+            </div>
+            
+            <div id="mode-selection" class="hidden">
+                <h1>Game Mode</h1>
+                <div class="game-modes">
+                    <button class="mode-button" data-mode="classic">
+                        <span>Classic</span>
+                        <span>🎹</span>
+                    </button>
+                    <button class="mode-button" data-mode="arcade">
+                        <span>Arcade</span>
+                        <span>🕹️</span>
+                    </button>
+                </div>
+                <button id="back-button" class="mode-button">Back</button>
+            </div>
+            
+            <div id="pause-screen" class="hidden">
+                <h1>Game Paused</h1>
+                <button id="resume-button" class="mode-button">Resume</button>
+                <button id="menu-button-pause" class="mode-button">Main Menu</button>
+            </div>
+            
+            <div id="stats-screen" class="hidden">
+                <h1>Statistics</h1>
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Games Played:</span>
+                        <span class="stat-value" id="total-games">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">All-Time High Score:</span>
+                        <span class="stat-value" id="all-time-high">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Average Score:</span>
+                        <span class="stat-value" id="average-score">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Tiles Tapped:</span>
+                        <span class="stat-value" id="total-tiles">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Best Mode:</span>
+                        <span class="stat-value" id="best-mode">-</span>
+                    </div>
+                </div>
                 
-                if (!synth) {
-                    synth = new Tone.Synth({
-                        oscillator: {
-                            type: 'sine'
-                        },
-                        envelope: {
-                            attack: 0.005,
-                            decay: 0.1,
-                            sustain: 0.3,
-                            release: 0.4
-                        }
-                    }).toDestination();
-                    
-                    synth.volume.value = -10;
-                }
+                <div class="score-history">
+                    <h3>Recent Scores</h3>
+                    <div id="history-list">
+                        <!-- Score history will be added here -->
+                    </div>
+                </div>
                 
-                audioReady = true;
-                updateAudioStatus('🔊 Audio Enabled', '#4caf50');
-                console.log('Audio initialized successfully');
-                
-                // Play test sound
-                playNote('C4');
-                
-            } catch (e) {
-                console.error('Audio initialization error:', e);
-                updateAudioStatus('🔇 Audio Failed', '#f44336');
-            }
-        }
-
-        function updateAudioStatus(text, color) {
-            const statusEl = document.getElementById('audioStatus');
-            statusEl.textContent = text;
-            statusEl.style.color = color;
-        }
-
-        function playNote(note) {
-            if (!audioReady || !synth) {
-                console.log('Audio not ready');
-                return;
-            }
+                <button id="clear-data-button" class="clear-data-button">Clear All Data</button>
+                <button class="theme-toggle" id="theme-toggle">🌙</button>
+                <button id="back-from-stats" class="mode-button">Back</button>
+            </div>
             
-            try {
-                synth.triggerAttackRelease(note, '8n');
-                console.log('Playing note:', note);
-            } catch (e) {
-                console.error('Playback error:', e);
-            }
-        }
+            <div id="game-over-screen" class="hidden">
+                <h2>Game Over</h2>
+                <div id="final-score">Final Score: 0</div>
+                <div id="highest-score-display">Highest Score: 0</div>
+                <div id="new-high-score" class="hidden">New High Score!</div>
+                <button id="restart-button" class="mode-button">Play Again</button>
+                <button id="menu-button" class="mode-button">Main Menu</button>
+            </div>
+        </section>
+    </main>
 
-        // Game state
-        let score = 0;
-        let gameActive = false;
-        let tileSpeed = 2;
-        let spawnInterval = 1000;
-        let animationId;
-        let spawnTimerId;
-        let tiles = [];
+    <footer>
+        <p>Tap the black tiles to score points. Don't miss any!</p>
+    </footer>
 
-        // DOM elements
-        const gameArea = document.getElementById('gameArea');
-        const scoreDisplay = document.getElementById('score');
-        const menuScreen = document.getElementById('menuScreen');
-        const gameOverScreen = document.getElementById('gameOverScreen');
-        const finalScoreDisplay = document.getElementById('finalScore');
-        const startBtn = document.getElementById('startBtn');
-        const restartBtn = document.getElementById('restartBtn');
-        const themeToggle = document.getElementById('themeToggle');
-        const columns = document.querySelectorAll('.column');
 
-        // Theme toggle
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-            document.body.classList.toggle('light');
-        });
-
-        // Start game
-        startBtn.addEventListener('click', async () => {
-            console.log('Start button clicked');
-            await initAudio();
-            setTimeout(() => startGame(), 300);
-        });
-        
-        restartBtn.addEventListener('click', async () => {
-            console.log('Restart button clicked');
-            if (!audioReady) {
-                await initAudio();
-            }
-            gameOverScreen.classList.add('hidden');
-            startGame();
-        });
-
-        function startGame() {
-            menuScreen.classList.add('hidden');
-            score = 0;
-            tileSpeed = 2;
-            spawnInterval = 1000;
-            tiles = [];
-            scoreDisplay.textContent = score;
-            gameActive = true;
-            
-            // Clear any existing tiles
-            columns.forEach(col => col.innerHTML = '');
-            
-            spawnTile();
-            gameLoop();
-        }
-
-        function spawnTile() {
-            if (!gameActive) return;
-
-            const columnIndex = Math.floor(Math.random() * 4);
-            const column = columns[columnIndex];
-            
-            const tile = document.createElement('div');
-            tile.className = 'tile';
-            tile.style.top = '-150px';
-            tile.dataset.column = columnIndex;
-            tile.dataset.position = -150;
-            
-            const noteIndex = Math.floor(Math.random() * notes.length);
-            tile.dataset.note = notes[noteIndex];
-            
-            column.appendChild(tile);
-            tiles.push(tile);
-
-            tile.addEventListener('click', handleTileClick);
-            tile.addEventListener('touchstart', handleTileClick);
-
-            // Gradually increase speed and spawn rate
-            if (score > 0 && score % 10 === 0) {
-                tileSpeed = Math.min(tileSpeed + 0.3, 8);
-                spawnInterval = Math.max(spawnInterval - 50, 400);
-            }
-
-            spawnTimerId = setTimeout(spawnTile, spawnInterval);
-        }
-
-        function handleTileClick(e) {
-            e.preventDefault();
-            if (!gameActive) return;
-
-            const tile = e.target;
-            const position = parseFloat(tile.dataset.position);
-            const note = tile.dataset.note;
-
-            console.log('Tile clicked at position:', position, 'Need to be >= 450');
-
-            // Check if tile is in the bottom zone (green zone - last 150px means position >= 450)
-            if (position >= 450 && position <= 600) {
-                tile.classList.add('hit');
-                playNote(note);
-                score++;
-                scoreDisplay.textContent = score;
-                
-                setTimeout(() => {
-                    if (tile.parentElement) {
-                        tile.remove();
-                    }
-                    tiles = tiles.filter(t => t !== tile);
-                }, 100);
-            } else {
-                console.log('Tile clicked too early! Wait for it to enter the green zone.');
-            }
-        }
-
-        function gameLoop() {
-            if (!gameActive) return;
-
-            let missedTile = false;
-
-            tiles.forEach(tile => {
-                if (!tile.parentElement) return;
-
-                let position = parseFloat(tile.dataset.position);
-                position += tileSpeed;
-                tile.dataset.position = position;
-                tile.style.top = position + 'px';
-
-                // Check if tile passed the bottom
-                if (position > 600) {
-                    missedTile = true;
-                    tile.classList.add('miss');
-                }
-            });
-
-            if (missedTile) {
-                endGame();
-                return;
-            }
-
-            animationId = requestAnimationFrame(gameLoop);
-        }
-
-        function endGame() {
-            gameActive = false;
-            clearTimeout(spawnTimerId);
-            cancelAnimationFrame(animationId);
-            
-            finalScoreDisplay.textContent = score;
-            gameOverScreen.classList.remove('hidden');
-
-            // Clear all tiles
-            setTimeout(() => {
-                columns.forEach(col => col.innerHTML = '');
-                tiles = [];
-            }, 500);
-        }
-    </script>
 </body>
 </html>
