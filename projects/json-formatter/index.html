@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Vanilla JSON Formatter & Validator — vanilla-verse</title>
+    <meta name="description"
+        content="A JavaScript JSON Formatter and Validator with tree view, syntax highlighting, schema-free validation helpers, and export/import features.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="brand">
+                <div class="logo">JV</div>
+                <div>
+                    <h1>Vanilla JSON Formatter & Validator</h1>
+                    <p class="lead">Prettify, compress, validate, inspect and export JSON — pure vanilla JS.</p>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn ghost" id="btn-sample">Load Sample</button>
+                <button class="btn primary" id="btn-beautify">Beautify</button>
+                <button class="btn" id="btn-minify">Minify</button>
+                <div class="panel help"
+                    style="display:inline-block;vertical-align:middle;margin-left:12px;padding:8px 16px;min-width:180px;max-width:380px;">
+                    <div style="display:flex;align-items:center;gap:12px;font-size:12px;white-space:nowrap;">
+                        <span><strong>Shortcuts:</strong></span>
+                        <span><code>Ctrl/Cmd + B</code> - Beautify</span>
+                        <span><code>Ctrl/Cmd + M</code> - Minify</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="panel editor-wrap">
+            <div class="toolbar">
+                <div class="left">
+                    <div class="controls">
+                        <select id="sel-indent" title="Indentation">
+                            <option value="2">Indent: 2 spaces</option>
+                            <option value="4">Indent: 4 spaces</option>
+                            <option value="\t">Indent: Tab</option>
+                        </select>
+                        <select id="sel-sort" title="Sorting keys">
+                            <option value="none">Sort: None</option>
+                            <option value="alpha">Sort: A–Z</option>
+                        </select>
+                        <select id="sel-autovalid" title="Automatically validate">
+                            <option value="on">Auto-validate: On</option>
+                            <option value="off">Auto-validate: Off</option>
+                        </select>
+                                                <button class="btn" id="btn-validate">Validate</button>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="controls">
+                        <input type="search" id="search" placeholder="Find key or value..." />
+                        <button class="btn" id="btn-copy">Copy</button>
+                        <button class="btn" id="btn-download">Download</button>
+                        <input type="file" id="file-in" style="display:none" />
+                        <button class="btn" id="btn-upload">Upload</button>
+                    </div>
+                </div>
+            </div>
+            <div class="editor three-col">
+                <div class="panel editor-panel">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <strong>Editor</strong>
+                    </div>
+                    <textarea id="code" class="code" spellcheck="false" placeholder='Paste JSON here...'></textarea>
+                </div>
+                <div class="panel validator-panel">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <strong>Preview & Validator</strong>
+                        <div class="status" id="status">
+                            <span class="pill" id="pill-info">Idle</span>
+                        </div>
+                    </div>
+                    <div class="preview" id="preview">
+                        <pre id="pretty"></pre>
+                    </div>
+                    <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+                        <button class="btn" id="btn-tree">Open Tree</button>
+                        <button class="btn" id="btn-json-stats">Show JSON Stats</button>
+                    </div>
+                    <div id="json-stats-panel" class="panel"
+                        style="display:none;margin-top:8px;background:rgba(124,58,237,0.08);color:#c7d2fe;font-size:13px;padding:10px;border-radius:8px;">
+                    </div>
+                    <div style="margin-top:4px;font-size:12px;color:#94a3b8;">
+                        <span class="help-tip">Tip: Use <em>Tree</em> view to inspect nested objects.</span>
+                    </div>
+                </div>
+                <div class="panel tree-panel">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <strong>Tree Viewer</strong>
+                        <button class="btn" id="toggle-tree">Hide Tree</button>
+                    </div>
+                    <span style="display:flex;gap:8px;align-items:center">
+                        <button class="btn" id="btn-expand">Expand All</button>
+                        <button class="btn" id="btn-collapse">Collapse All</button>
+                    </span>
+                    <div id="tree" style="margin-top:8px;max-height:360px;overflow:auto;margin-bottom:30px"></div>
+                    <div class="panel">
+                        <strong>Search Results</strong>
+                        <div class="search-results" id="search-results">No search yet.</div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        <aside class="panel right-panel">
+            <div>
+                <strong>Actions Log</strong>
+                <div id="log"
+                    style="margin-top:8px;font-family:var(--mono);font-size:13px;color:var(--muted);max-height:300px;overflow:auto;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)">
+                </div>
+            </div>
+        </aside>
+        <footer class="small">Built for <strong>vanilla-verse</strong> — pure HTML/CSS/JS. Expand, collapse, copy,
+            download, upload, search, and validate JSON right in the browser.</footer>
+    </div>
+    <script src="main.js">
+    </script>
+</body>
+
+</html>
