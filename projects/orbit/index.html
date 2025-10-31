@@ -1,22 +1,138 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Orbit Collector</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shadow Collector</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-  <div id="ui">
-    <div id="score">Score: 0</div>
-    <div id="level">Level: 1</div>
-    <div id="lives">Lives: 3</div>
-    <div id="target">Target: <span id="targetColorName">—</span></div>
-    <button id="restart">Restart</button>
-  </div>
-
-  <canvas id="game"></canvas>
-
-  <script src="script.js"></script>
+    <header>
+        <h1>Shadow Collector</h1>
+    </header>
+    
+    <main>
+        <div id="gameContainer">
+            <canvas id="gameCanvas"></canvas>
+            
+            <div id="gameUI">
+                <div id="leftUI">
+                    <div class="uiElement">Score: <span id="score">0</span></div>
+                    <div class="uiElement">Orbs: <span id="orbCount">0</span></div>
+                    <div class="uiElement">High Score: <span id="highScoreValue">0</span></div>
+                </div>
+                <div id="rightUI">
+                </div>
+            </div>
+            
+            <div id="lightIndicator">
+                <div id="lightBar" style="width: 100%"></div>
+            </div>
+            
+            <div id="powerUp" title="Light Burst">💡</div>
+            <div id="pauseButton" title="Pause">⏸️</div>
+            <div id="statsButton" title="Statistics">📊</div>
+            
+            <div id="mobileControls">
+                <div class="joystick-container">
+                    <div class="joystick"></div>
+                </div>
+            </div>
+            
+            <div id="stealthButton">👤</div>
+            
+            <div id="startScreen">
+                <h2 class="screenTitle">Shadow Collector</h2>
+                <p class="screenText">Navigate through the darkness and collect glowing orbs. Each orb you collect dims the room, spawning more watchers that hunt you in the shadows.</p>
+                <div class="highScore">High Score: <span id="menuHighScore">0</span></div>
+                <button id="startButton">Start Game</button>
+                <button id="statsMenuButton">View Statistics</button>
+            </div>
+            
+            <div id="pauseScreen" class="hidden">
+                <h2 class="screenTitle">Game Paused</h2>
+                <p class="screenText">Take a break. The shadows will wait for you.</p>
+                <button id="resumeButton">Resume</button>
+                <button id="restartButton">Restart</button>
+                <button id="statsPauseButton">View Statistics</button>
+            </div>
+            
+            <div id="statsScreen" class="hidden">
+                <h2 class="screenTitle">Game Statistics</h2>
+                
+                <div class="statsContainer">
+                    <div class="statsSection">
+                        <div class="statsSectionTitle">Overall Performance</div>
+                        <div class="statsGrid">
+                            <div class="statsCard">
+                                <div class="statsCardTitle">Games Played</div>
+                                <div class="statsCardValue" id="statGamesPlayed">0</div>
+                            </div>
+                            <div class="statsCard">
+                                <div class="statsCardTitle">Total Orbs Collected</div>
+                                <div class="statsCardValue" id="statTotalOrbs">0</div>
+                            </div>
+                            <div class="statsCard">
+                                <div class="statsCardTitle">High Score</div>
+                                <div class="statsCardValue" id="statHighScore">0</div>
+                            </div>
+                            <div class="statsCard">
+                                <div class="statsCardTitle">Average Score</div>
+                                <div class="statsCardValue" id="statAvgScore">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="statsSection">
+                        <div class="statsSectionTitle">Survival Stats</div>
+                        <div class="statsGrid">
+                            <div class="statsCard">
+                                <div class="statsCardTitle">Total Time Survived</div>
+                                <div class="statsCardValue" id="statTotalTime">0s</div>
+                            </div>
+                            <div class="statsCard">
+                                <div class="statsCardTitle">Longest Survival</div>
+                                <div class="statsCardValue" id="statLongestTime">0s</div>
+                            </div>
+                            <div class="statsCard">
+                                <div class="statsCardTitle">Enemies Avoided</div>
+                                <div class="statsCardValue" id="statEnemiesAvoided">0</div>
+                            </div>
+                            <div class="statsCard">
+                                <div class="statsCardTitle">Times Caught</div>
+                                <div class="statsCardValue" id="statTimesCaught">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="statsSection">
+                        <div class="statsSectionTitle">Power-Up Usage</div>
+                        <div class="statsGrid">
+                            <div class="statsCard">
+                                <div class="statsCardTitle">Light Bursts Used</div>
+                                <div class="statsCardValue" id="statPowerUpsUsed">0</div>
+                            </div>
+                            <div class="statsCard">
+                                <div class="statsCardTitle">Stealth Time</div>
+                                <div class="statsCardValue" id="statStealthTime">0s</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="closeStatsButton">Back</button>
+                <button id="resetStatsButton">Reset Statistics</button>
+            </div>
+            
+            <div id="gameOverScreen" class="hidden">
+                <h2 class="screenTitle">Game Over</h2>
+                <p class="screenText">You were caught by the watchers. You collected <span id="finalScore">0</span> orbs.</p>
+                <div class="highScore" id="newHighScore" class="hidden">New High Score!</div>
+                <button id="playAgainButton">Play Again</button>
+                <button id="statsGameOverButton">View Statistics</button>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

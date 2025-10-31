@@ -1,424 +1,965 @@
-// Orbit Collector - target-persistent version (wrong collections cost a life)
-(() => {
-  const canvas = document.getElementById('game');
-  const ctx = canvas.getContext('2d', { alpha: true });
-
-  // UI elements
-  const scoreEl = document.getElementById('score');
-  const levelEl = document.getElementById('level');
-  const livesEl = document.getElementById('lives');
-  const targetNameEl = document.getElementById('targetColorName');
-  const restartBtn = document.getElementById('restart');
-
-  // Resize canvas to device pixels
-  function fitCanvas() {
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.floor(window.innerWidth * dpr);
-    canvas.height = Math.floor(window.innerHeight * dpr);
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  window.addEventListener('resize', fitCanvas);
-  fitCanvas();
-
-  // Game state
-  let particles = [];
-  let score = 0;
-  let level = 1;
-  let lives = 3;
-  let running = true;
-
-  // colors and names (Crimson is target)
-  const COLORS = [
-    { name: 'Crimson', hex: '#ff4d6d' }, // index 0 -> target
-    { name: 'Amber', hex: '#ffb86b' },
-    { name: 'Lime', hex: '#a7ff83' },
-    { name: 'Cyan', hex: '#6ee7ff' },
-    { name: 'Violet', hex: '#cda4ff' },
-  ];
-
-  const CRIMSON_INDEX = COLORS.findIndex(c => c.name === 'Crimson');
-  if (CRIMSON_INDEX === -1) throw new Error('Crimson color missing from COLORS');
-
-  // Track how many of each color the player has collected (optional, kept)
-  const collectionCounts = {};
-  COLORS.forEach(c => (collectionCounts[c.hex] = 0));
-
-  // tuning constants
-  const SPAWN_BIAS_FACTOR = 1.6;
-  const MIN_WEIGHT = 0.4;
-
-  // Force target to Crimson and lock it
-  let targetIndex = CRIMSON_INDEX;
-  const targetLocked = true;
-  function setTarget(i) {
-    if (targetLocked) targetIndex = CRIMSON_INDEX;
-    else targetIndex = i % COLORS.length;
-    targetNameEl.style.background = COLORS[targetIndex].hex;
-    targetNameEl.textContent = '';
-    targetNameEl.title = COLORS[targetIndex].name;
-  }
-  setTarget(0);
-
-  // player attractor (follows mouse)
-  const player = { x: window.innerWidth / 2, y: window.innerHeight / 2, radius: 24 };
-
-  // mouse tracking
-  window.addEventListener('mousemove', (e) => {
-    player.x = e.clientX;
-    player.y = e.clientY;
-  });
-
-  // click to pulse (brief stronger pull)
-  let pulse = 0;
-  window.addEventListener('mousedown', () => (pulse = 1.2));
-  window.addEventListener('mouseup', () => (pulse = 0));
-
-  // particle constructor
-  function createParticle(cx, cy, colorObj, orbitRadius, angle, speed) {
-    return {
-      x: cx + Math.cos(angle) * orbitRadius,
-      y: cy + Math.sin(angle) * orbitRadius,
-      cx, cy,
-      orbitRadius,
-      angle,
-      speed,
-      color: colorObj.hex,
-      name: colorObj.name,
-      size: 8 + Math.random() * 6,
-      wobble: Math.random() * Math.PI * 2,
-    };
-  }
-
-  // choose a color object with weights influenced by collectionCounts (kept for variety)
-  function chooseColorByWeight(preferNonTarget = false) {
-    // compute total collected so far
-    const totals = Object.values(collectionCounts).reduce((a,b) => a + b, 0);
-
-    // if nothing collected yet, use uniform distribution
-    if (totals === 0) {
-      // if preferNonTarget, avoid choosing Crimson
-      if (preferNonTarget) {
-        const nonTargets = COLORS.filter((c, i) => i !== targetIndex);
-        return nonTargets[Math.floor(Math.random() * nonTargets.length)];
-      }
-      return COLORS[Math.floor(Math.random() * COLORS.length)];
-    }
-
-    const raw = COLORS.map((c, i) => {
-      const count = collectionCounts[c.hex] || 0;
-      const proportion = count / totals;
-      // keep a slightly higher base for target so it tends to appear (but we also enforce presence)
-      const base = (i === targetIndex) ? 1.2 : 1;
-      return MIN_WEIGHT + base * (1 + proportion * SPAWN_BIAS_FACTOR);
-    });
-
-    // If preferNonTarget, set target weight to a tiny value so we pick others
-    if (preferNonTarget) raw[targetIndex] = MIN_WEIGHT * 0.2;
-
-    const sum = raw.reduce((a,b) => a + b, 0);
-    const probs = raw.map(r => r / sum);
-
-    let r = Math.random();
-    for (let i = 0; i < probs.length; i++) {
-      r -= probs[i];
-      if (r <= 0) return COLORS[i];
-    }
-    return COLORS[COLORS.length - 1];
-  }
-
-  // spawn single particle at a logical position; allow forcing a specific color
-  function spawnParticleSingle(lv, forcedColorIndex = null) {
-    const cx = window.innerWidth / 2 + (Math.random() - 0.5) * 120;
-    const cy = window.innerHeight / 2 + (Math.random() - 0.5) * 80;
-    const c = (forcedColorIndex !== null) ? COLORS[forcedColorIndex] : chooseColorByWeight();
-    const radius = 60 + Math.random() * (Math.min(window.innerWidth, window.innerHeight) / 3);
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 0.005 + Math.random() * 0.008 + lv * 0.002;
-    particles.push(createParticle(cx, cy, c, radius, angle, speed));
-  }
-
-  // spawn multiple non-target particles (used when player eats a red)
-  function spawnExtraNonTarget(count, lv) {
-    for (let i = 0; i < count; i++) {
-      // prefer non-target colors when spawning these extras
-      const c = chooseColorByWeight(true);
-      const cx = window.innerWidth / 2 + (Math.random() - 0.5) * 160;
-      const cy = window.innerHeight / 2 + (Math.random() - 0.5) * 120;
-      const radius = 60 + Math.random() * (Math.min(window.innerWidth, window.innerHeight) / 3);
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 0.006 + Math.random() * 0.01 + lv * 0.003;
-      particles.push(createParticle(cx, cy, c, radius, angle, speed));
-    }
-  }
-
-  // spawn initial level particles
-  function spawnLevel(lv) {
-    particles = [];
-    const count = 6 + lv * 2;
-    for (let i = 0; i < count; i++) spawnParticleSingle(lv);
-    // ensure at least one target exists
-    ensureTargetPresence();
-  }
-
-  // ensure there's always at least one Crimson (target) in the field
-  function ensureTargetPresence() {
-    const found = particles.some(p => p.color === COLORS[targetIndex].hex);
-    if (!found) {
-      // spawn 1 forced Crimson
-      spawnParticleSingle(level, targetIndex);
-    }
-  }
-
-  spawnLevel(level);
-
-  // main loop
-  let last = performance.now();
-  function loop(now) {
-    const dt = Math.min(50, now - last);
-    last = now;
-    update(dt / 16.67);
-    render();
-    if (running) requestAnimationFrame(loop);
-  }
-
-  // update physics
-  function update(delta) {
-    pulse *= 0.92;
-
-    for (let p of particles) {
-      p.angle += p.speed * delta;
-      p.wobble += 0.04 * delta;
-      const wob = Math.sin(p.wobble) * 6;
-
-      p.x = p.cx + Math.cos(p.angle) * (p.orbitRadius + wob);
-      p.y = p.cy + Math.sin(p.angle) * (p.orbitRadius + wob);
-
-      const dx = player.x - p.x;
-      const dy = player.y - p.y;
-      const dist = Math.hypot(dx, dy) || 0.001;
-      const strength = (0.6 + pulse * 1.4) * (40 / (dist * dist)) * (1 + level * 0.08);
-
-      p.x += dx * strength * delta * 0.6;
-      p.y += dy * strength * delta * 0.6;
-
-      const pdist = Math.hypot(player.x - p.x, player.y - p.y);
-      if (pdist < player.radius + p.size / 2) {
-        collectParticle(p);
-      }
-    }
-
-    // make sure target remains present (in case multiple got collected quickly)
-    ensureTargetPresence();
-  }
-
-  // when a particle is collected
-  function collectParticle(p) {
-    const correct = p.color === COLORS[targetIndex].hex;
-    if (correct) {
-      // collected the target (Crimson)
-      score += 15; // slightly bigger reward
-      scoreEl.textContent = `Score: ${score}`;
-      spawnBurst(p.x, p.y, p.color);
-
-      // update collection counts
-      if (collectionCounts[p.color] !== undefined) collectionCounts[p.color] += 1;
-      else collectionCounts[p.color] = 1;
-
-      // remove the particle
-      const idx = particles.indexOf(p);
-      if (idx >= 0) particles.splice(idx, 1);
-
-      // Immediately spawn another Crimson (guaranteed target continuity)
-      spawnParticleSingle(level, targetIndex);
-
-      // Then spawn extra NON-TARGET particles to make it harder
-      // number of extras scales with level and can be tuned
-      const extras = 2 + Math.floor(level * 0.6);
-      spawnExtraNonTarget(extras, level);
-
-    } else {
-      // collected a non-target --> now costs a life
-      score += 5;
-      scoreEl.textContent = `Score: ${score}`;
-
-      // deduct a life
-      lives -= 1;
-      livesEl.textContent = `Lives: ${lives}`;
-
-      // bigger white burst for wrong hit
-      spawnBurst(p.x, p.y, '#ffffff', true);
-
-      // update collection counts
-      if (collectionCounts[p.color] !== undefined) collectionCounts[p.color] += 1;
-      else collectionCounts[p.color] = 1;
-
-      // remove particle and respawn a replacement (keeps overall count stable)
-      const idx = particles.indexOf(p);
-      if (idx >= 0) particles.splice(idx, 1);
-      spawnParticleSingle(level);
-
-      // ensure target still present
-      ensureTargetPresence();
-
-      // check for game over after life loss
-      if (lives <= 0) return gameOver();
-    }
-
-    // if few particles left (edge case), advance level
-    if (particles.length <= 2) {
-      levelUp();
-    }
-  }
-
-  function levelUp() {
-    level += 1;
-    levelEl.textContent = `Level: ${level}`;
-    // keep target locked to Crimson
-    setTarget(targetIndex);
-    // spawn fresh level with higher count
-    spawnLevel(level);
-  }
-
-  function gameOver() {
-    running = false;
-    setTimeout(() => {
-      const msg = document.createElement('div');
-      msg.style.position = 'fixed';
-      msg.style.left = '50%';
-      msg.style.top = '50%';
-      msg.style.transform = 'translate(-50%,-50%)';
-      msg.style.background = 'rgba(0,0,0,0.6)';
-      msg.style.padding = '18px 22px';
-      msg.style.borderRadius = '12px';
-      msg.style.boxShadow = '0 8px 30px rgba(2,6,23,0.7)';
-      msg.style.color = '#fff';
-      msg.style.textAlign = 'center';
-      msg.innerHTML = `<h2 style="margin-bottom:8px">Game Over</h2>
-        <div style="margin-bottom:12px">Score: ${score}</div>
-        <button id="playAgain" style="padding:8px 12px;border-radius:8px;border:none;cursor:pointer">Play Again</button>`;
-      document.body.appendChild(msg);
-      document.getElementById('playAgain').addEventListener('click', () => {
-        document.body.removeChild(msg);
-        restart();
-      });
-    }, 120);
-  }
-
-  // small particle burst visual
-  const bursts = [];
-  function spawnBurst(x, y, color = '#fff', big = false) {
-    const n = big ? 18 : 10;
-    for (let i = 0; i < n; i++) {
-      bursts.push({
-        x,
-        y,
-        vx: (Math.random() - 0.5) * (big ? 5 : 3),
-        vy: (Math.random() - 0.5) * (big ? 5 : 3),
-        life: 30 + Math.random() * 30,
-        color,
-        size: 1 + Math.random() * 3,
-      });
-    }
-  }
-
-  // render
-  function render() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const g = ctx.createRadialGradient(player.x, player.y, 0, player.x, player.y, 180);
-    g.addColorStop(0, 'rgba(255,255,255,0.03)');
-    g.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    for (let p of particles) {
-      ctx.beginPath();
-      ctx.strokeStyle = 'rgba(255,255,255,0.02)';
-      ctx.lineWidth = 1;
-      ctx.ellipse(p.cx, p.cy, p.orbitRadius, p.orbitRadius * 0.8, 0, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-
-    for (let p of particles) {
-      ctx.beginPath();
-      ctx.fillStyle = p.color;
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.fillStyle = 'rgba(255,255,255,0.12)';
-      ctx.arc(p.x - p.size * 0.35, p.y - p.size * 0.35, p.size * 0.45, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    ctx.beginPath();
-    ctx.fillStyle = 'rgba(255,255,255,0.06)';
-    ctx.arc(player.x, player.y, player.radius + 6 + pulse * 8, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.fillStyle = COLORS[targetIndex].hex;
-    ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-    ctx.fill();
-
-    for (let i = bursts.length - 1; i >= 0; i--) {
-      const b = bursts[i];
-      ctx.beginPath();
-      ctx.fillStyle = b.color;
-      ctx.globalAlpha = Math.max(0, b.life / 60);
-      ctx.arc(b.x, b.y, b.size, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-      b.x += b.vx;
-      b.y += b.vy;
-      b.vy += 0.06;
-      b.life -= 1;
-      if (b.life <= 0) bursts.splice(i, 1);
-    }
-
-    // target swatch near cursor
-    ctx.beginPath();
-    ctx.fillStyle = COLORS[targetIndex].hex;
-    ctx.rect(player.x + player.radius + 10, player.y - 8, 20, 16);
-    ctx.fill();
-  }
-
-  // restart
-  function restart() {
-    Object.keys(collectionCounts).forEach(k => (collectionCounts[k] = 0));
-    score = 0;
-    level = 1;
-    lives = 3;
-    scoreEl.textContent = `Score: ${score}`;
-    levelEl.textContent = `Level: ${level}`;
-    livesEl.textContent = `Lives: ${lives}`;
-    setTarget(targetIndex);
-    spawnLevel(level);
-    running = true;
-    last = performance.now();
-    requestAnimationFrame(loop);
-  }
-
-  restartBtn.addEventListener('click', restart);
-
-  // start
-  scoreEl.textContent = `Score: ${score}`;
-  levelEl.textContent = `Level: ${level}`;
-  livesEl.textContent = `Lives: ${lives}`;
-  setTarget(targetIndex);
-  requestAnimationFrame(loop);
-
-  // keyboard: keep space from changing target because target is locked to Crimson,
-  // but allow pause with P
-  window.addEventListener('keydown', (e) => {
-    if (e.code === 'KeyP') {
-      running = !running;
-      if (running) {
-        last = performance.now();
-        requestAnimationFrame(loop);
-      }
-    }
-  });
-
-})();
+    
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing game...');
+            
+            // Game setup
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Responsive canvas sizing
+            function resizeCanvas() {
+                const container = document.getElementById('gameContainer');
+                const containerWidth = container.clientWidth;
+                const containerHeight = container.clientHeight;
+                
+                // Calculate aspect ratio (4:3 is ideal for this game)
+                const aspectRatio = 4 / 3;
+                let canvasWidth, canvasHeight;
+                
+                if (containerWidth / containerHeight > aspectRatio) {
+                    // Container is wider than the aspect ratio
+                    canvasHeight = containerHeight;
+                    canvasWidth = canvasHeight * aspectRatio;
+                } else {
+                    // Container is taller than the aspect ratio
+                    canvasWidth = containerWidth;
+                    canvasHeight = canvasWidth / aspectRatio;
+                }
+                
+                // Set canvas size
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+                
+                // Update game positions based on new canvas size
+                if (window.gameState && window.gameState.player) {
+                    window.gameState.player.x = Math.min(window.gameState.player.x, canvasWidth - window.gameState.player.radius);
+                    window.gameState.player.y = Math.min(window.gameState.player.y, canvasHeight - window.gameState.player.radius);
+                }
+            }
+            
+            // Initial canvas resize
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Game state object
+            window.gameState = {
+                running: false,
+                paused: false,
+                score: 0,
+                highScore: localStorage.getItem('shadowCollectorHighScore') || 0,
+                lightLevel: 1.0,
+                enemies: [],
+                orbs: [],
+                walls: [],
+                particles: [],
+                
+                player: {
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    radius: 10,
+                    baseSpeed: 3,
+                    baseStealthSpeed: 1.5,
+                    speed: 3,
+                    stealthSpeed: 1.5,
+                    lightRadius: 100,
+                    isStealth: false,
+                    color: '#4a9eff'
+                },
+                
+                powerUp: {
+                    active: false,
+                    cooldown: 0,
+                    duration: 0
+                },
+                
+                stats: {
+                    gamesPlayed: parseInt(localStorage.getItem('statGamesPlayed')) || 0,
+                    totalOrbs: parseInt(localStorage.getItem('statTotalOrbs')) || 0,
+                    highScore: parseInt(localStorage.getItem('shadowCollectorHighScore')) || 0,
+                    totalScore: parseInt(localStorage.getItem('statTotalScore')) || 0,
+                    totalTime: parseInt(localStorage.getItem('statTotalTime')) || 0,
+                    longestTime: parseInt(localStorage.getItem('statLongestTime')) || 0,
+                    enemiesAvoided: parseInt(localStorage.getItem('statEnemiesAvoided')) || 0,
+                    timesCaught: parseInt(localStorage.getItem('statTimesCaught')) || 0,
+                    powerUpsUsed: parseInt(localStorage.getItem('statPowerUpsUsed')) || 0,
+                    stealthTime: parseInt(localStorage.getItem('statStealthTime')) || 0,
+                    
+                    currentGameTime: 0,
+                    currentStealthTime: 0,
+                    currentEnemiesAvoided: 0
+                }
+            };
+            
+            // Input handling
+            const keys = {};
+            const touch = {
+                active: false,
+                x: 0,
+                y: 0,
+                joystick: {
+                    active: false,
+                    x: 0,
+                    y: 0
+                }
+            };
+            
+            // Enemy class
+            class Enemy {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.radius = 8;
+                    this.baseSpeed = 1.5;
+                    this.speed = this.baseSpeed;
+                    this.color = '#ff3366';
+                    this.visionRadius = 60;
+                    this.alerted = false;
+                    this.patrolDirection = Math.random() * Math.PI * 2;
+                    this.patrolTimer = 0;
+                    this.avoided = false;
+                }
+                
+                update() {
+                    // Calculate distance to player
+                    const dx = window.gameState.player.x - this.x;
+                    const dy = window.gameState.player.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    // Gradually increase speed based on score
+                    this.speed = this.baseSpeed + (window.gameState.score * 0.05);
+                    
+                    // Check if player is in vision radius
+                    const inVision = distance < this.visionRadius;
+                    
+                    // Check if player is in light
+                    const inLight = distance < window.gameState.player.lightRadius * window.gameState.lightLevel;
+                    
+                    // If player is visible and not in stealth or in light, chase
+                    if (inVision && (!window.gameState.player.isStealth || inLight)) {
+                        this.alerted = true;
+                        
+                        // Move towards player
+                        const angle = Math.atan2(dy, dx);
+                        this.x += Math.cos(angle) * this.speed;
+                        this.y += Math.sin(angle) * this.speed;
+                    } else {
+                        this.alerted = false;
+                        
+                        // Patrol behavior
+                        this.patrolTimer++;
+                        if (this.patrolTimer > 60) {
+                            this.patrolDirection = Math.random() * Math.PI * 2;
+                            this.patrolTimer = 0;
+                        }
+                        
+                        this.x += Math.cos(this.patrolDirection) * this.speed * 0.5;
+                        this.y += Math.sin(this.patrolDirection) * this.speed * 0.5;
+                    }
+                    
+                    // Keep enemy within bounds
+                    this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
+                    this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
+                    
+                    // Check collision with player
+                    if (distance < this.radius + window.gameState.player.radius) {
+                        gameOver();
+                    }
+                    
+                    // Track if enemy was avoided
+                    if (distance < this.visionRadius * 2 && !this.avoided) {
+                        this.avoided = true;
+                        window.gameState.stats.currentEnemiesAvoided++;
+                    }
+                }
+                
+                draw() {
+                    // Draw enemy
+                    ctx.save();
+                    
+                    // Draw vision radius when alerted
+                    if (this.alerted) {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.visionRadius, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(255, 51, 102, 0.1)';
+                        ctx.fill();
+                    }
+                    
+                    // Draw enemy body with color that changes based on speed
+                    const speedRatio = (this.speed - this.baseSpeed) / 2;
+                    const red = Math.min(255, 255 + speedRatio * 100);
+                    const green = Math.max(0, 102 - speedRatio * 102);
+                    const blue = Math.max(0, 102 - speedRatio * 102);
+                    
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.alerted ? '#ff6666' : `rgb(${red}, ${green}, ${blue})`;
+                    ctx.fill();
+                    
+                    // Draw eyes
+                    ctx.fillStyle = '#fff';
+                    const eyeAngle = Math.atan2(window.gameState.player.y - this.y, window.gameState.player.x - this.x);
+                    const eyeDistance = 3;
+                    
+                    // Left eye
+                    ctx.beginPath();
+                    ctx.arc(
+                        this.x + Math.cos(eyeAngle - 0.5) * eyeDistance,
+                        this.y + Math.sin(eyeAngle - 0.5) * eyeDistance,
+                        2, 0, Math.PI * 2
+                    );
+                    ctx.fill();
+                    
+                    // Right eye
+                    ctx.beginPath();
+                    ctx.arc(
+                        this.x + Math.cos(eyeAngle + 0.5) * eyeDistance,
+                        this.y + Math.sin(eyeAngle + 0.5) * eyeDistance,
+                        2, 0, Math.PI * 2
+                    );
+                    ctx.fill();
+                    
+                    ctx.restore();
+                }
+            }
+            
+            // Orb class
+            class Orb {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.radius = 12;
+                    this.color = '#ffcc00';
+                    this.glowRadius = 20;
+                    this.pulsePhase = Math.random() * Math.PI * 2;
+                    this.collected = false;
+                }
+                
+                update() {
+                    // Pulse animation
+                    this.pulsePhase += 0.05;
+                    this.glowRadius = 20 + Math.sin(this.pulsePhase) * 5;
+                    
+                    // Check collision with player
+                    const dx = window.gameState.player.x - this.x;
+                    const dy = window.gameState.player.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < this.radius + window.gameState.player.radius) {
+                        this.collected = true;
+                        window.gameState.score++;
+                        window.gameState.stats.totalOrbs++;
+                        window.gameState.lightLevel = Math.max(0.2, window.gameState.lightLevel - 0.1);
+                        updateUI();
+                        
+                        // Create collection particles
+                        for (let i = 0; i < 10; i++) {
+                            window.gameState.particles.push(new Particle(this.x, this.y, this.color));
+                        }
+                        
+                        // Spawn new enemy with some probability based on light level
+                        if (Math.random() < (1 - window.gameState.lightLevel) * 0.8) {
+                            spawnEnemy();
+                        }
+                    }
+                }
+                
+                draw() {
+                    // Draw glow
+                    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.glowRadius);
+                    gradient.addColorStop(0, 'rgba(255, 204, 0, 0.8)');
+                    gradient.addColorStop(1, 'rgba(255, 204, 0, 0)');
+                    
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.glowRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                    
+                    // Draw orb
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+            
+            // Particle class for effects
+            class Particle {
+                constructor(x, y, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.vx = (Math.random() - 0.5) * 4;
+                    this.vy = (Math.random() - 0.5) * 4;
+                    this.radius = Math.random() * 3 + 1;
+                    this.color = color;
+                    this.life = 1;
+                }
+                
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.life -= 0.02;
+                    this.radius *= 0.98;
+                }
+                
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.life;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+            
+            // Wall class for level generation
+            class Wall {
+                constructor(x, y, width, height) {
+                    this.x = x;
+                    this.y = y;
+                    this.width = width;
+                    this.height = height;
+                }
+                
+                draw() {
+                    ctx.fillStyle = '#222';
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+                
+                checkCollision(x, y, radius) {
+                    // Check if circle collides with rectangle
+                    const closestX = Math.max(this.x, Math.min(x, this.x + this.width));
+                    const closestY = Math.max(this.y, Math.min(y, this.y + this.height));
+                    
+                    const dx = x - closestX;
+                    const dy = y - closestY;
+                    
+                    return (dx * dx + dy * dy) < (radius * radius);
+                }
+            }
+            
+            // Initialize game
+            function init() {
+                console.log('Initializing game...');
+                
+                // Reset game state
+                window.gameState.score = 0;
+                window.gameState.lightLevel = 1.0;
+                window.gameState.enemies = [];
+                window.gameState.orbs = [];
+                window.gameState.walls = [];
+                window.gameState.particles = [];
+                
+                // Reset current game stats
+                window.gameState.stats.currentGameTime = 0;
+                window.gameState.stats.currentStealthTime = 0;
+                window.gameState.stats.currentEnemiesAvoided = 0;
+                
+                // Reset player speed
+                window.gameState.player.speed = window.gameState.player.baseSpeed;
+                window.gameState.player.stealthSpeed = window.gameState.player.baseStealthSpeed;
+                
+                // Reset power-up
+                window.gameState.powerUp.active = false;
+                window.gameState.powerUp.cooldown = 0;
+                window.gameState.powerUp.duration = 0;
+                
+                // Reset player position
+                window.gameState.player.x = canvas.width / 2;
+                window.gameState.player.y = canvas.height / 2;
+                
+                // Generate level
+                generateLevel();
+                
+                // Spawn initial orbs
+                for (let i = 0; i < 5; i++) {
+                    spawnOrb();
+                }
+                
+                // Spawn initial enemies
+                for (let i = 0; i < 2; i++) {
+                    spawnEnemy();
+                }
+                
+                updateUI();
+                console.log('Game initialized successfully');
+            }
+            
+            // Generate random level
+            function generateLevel() {
+                // Add some random walls
+                const wallCount = Math.min(5, Math.floor(canvas.width / 100));
+                for (let i = 0; i < wallCount; i++) {
+                    const width = Math.random() * 100 + 50;
+                    const height = Math.random() * 100 + 50;
+                    const x = Math.random() * (canvas.width - width);
+                    const y = Math.random() * (canvas.height - height);
+                    
+                    // Make sure walls don't spawn on player
+                    if (Math.abs(x + width/2 - window.gameState.player.x) > 100 || 
+                        Math.abs(y + height/2 - window.gameState.player.y) > 100) {
+                        window.gameState.walls.push(new Wall(x, y, width, height));
+                    }
+                }
+            }
+            
+            // Spawn orb at random position
+            function spawnOrb() {
+                let validPosition = false;
+                let x, y;
+                
+                while (!validPosition) {
+                    x = Math.random() * (canvas.width - 40) + 20;
+                    y = Math.random() * (canvas.height - 40) + 20;
+                    
+                    validPosition = true;
+                    
+                    // Check if position is not too close to player
+                    const dx = x - window.gameState.player.x;
+                    const dy = y - window.gameState.player.y;
+                    if (Math.sqrt(dx * dx + dy * dy) < 100) {
+                        validPosition = false;
+                    }
+                    
+                    // Check if position is not inside walls
+                    for (const wall of window.gameState.walls) {
+                        if (wall.checkCollision(x, y, 20)) {
+                            validPosition = false;
+                            break;
+                        }
+                    }
+                }
+                
+                window.gameState.orbs.push(new Orb(x, y));
+            }
+            
+            // Spawn enemy at random position
+            function spawnEnemy() {
+                let validPosition = false;
+                let x, y;
+                
+                while (!validPosition) {
+                    x = Math.random() * (canvas.width - 40) + 20;
+                    y = Math.random() * (canvas.height - 40) + 20;
+                    
+                    validPosition = true;
+                    
+                    // Check if position is not too close to player
+                    const dx = x - window.gameState.player.x;
+                    const dy = y - window.gameState.player.y;
+                    if (Math.sqrt(dx * dx + dy * dy) < 200) {
+                        validPosition = false;
+                    }
+                    
+                    // Check if position is not inside walls
+                    for (const wall of window.gameState.walls) {
+                        if (wall.checkCollision(x, y, 20)) {
+                            validPosition = false;
+                            break;
+                        }
+                    }
+                }
+                
+                window.gameState.enemies.push(new Enemy(x, y));
+            }
+            
+            // Update game state
+            function update() {
+                if (!window.gameState.running || window.gameState.paused) return;
+                
+                // Update game time
+                window.gameState.stats.currentGameTime++;
+                
+                // Update stealth time
+                if (window.gameState.player.isStealth) {
+                    window.gameState.stats.currentStealthTime++;
+                }
+                
+                // Update player speed based on score
+                window.gameState.player.speed = window.gameState.player.baseSpeed + (window.gameState.score * 0.03);
+                window.gameState.player.stealthSpeed = window.gameState.player.baseStealthSpeed + (window.gameState.score * 0.02);
+                
+                // Handle player movement
+                let dx = 0;
+                let dy = 0;
+                
+                // Keyboard input
+                if (keys['w'] || keys['ArrowUp']) dy = -1;
+                if (keys['s'] || keys['ArrowDown']) dy = 1;
+                if (keys['a'] || keys['ArrowLeft']) dx = -1;
+                if (keys['d'] || keys['ArrowRight']) dx = 1;
+                
+                // Touch/joystick input
+                if (touch.joystick.active) {
+                    dx = touch.joystick.x;
+                    dy = touch.joystick.y;
+                }
+                
+                // Normalize diagonal movement
+                if (dx !== 0 && dy !== 0) {
+                    dx *= 0.707;
+                    dy *= 0.707;
+                }
+                
+                // Apply movement with stealth modifier
+                const speed = window.gameState.player.isStealth ? window.gameState.player.stealthSpeed : window.gameState.player.speed;
+                const newX = window.gameState.player.x + dx * speed;
+                const newY = window.gameState.player.y + dy * speed;
+                
+                // Check wall collisions
+                let canMove = true;
+                for (const wall of window.gameState.walls) {
+                    if (wall.checkCollision(newX, newY, window.gameState.player.radius)) {
+                        canMove = false;
+                        break;
+                    }
+                }
+                
+                if (canMove) {
+                    window.gameState.player.x = newX;
+                    window.gameState.player.y = newY;
+                }
+                
+                // Keep player within bounds
+                window.gameState.player.x = Math.max(window.gameState.player.radius, Math.min(canvas.width - window.gameState.player.radius, window.gameState.player.x));
+                window.gameState.player.y = Math.max(window.gameState.player.radius, Math.min(canvas.height - window.gameState.player.radius, window.gameState.player.y));
+                
+                // Update power-up
+                if (window.gameState.powerUp.cooldown > 0) {
+                    window.gameState.powerUp.cooldown--;
+                }
+                
+                if (window.gameState.powerUp.active) {
+                    window.gameState.powerUp.duration--;
+                    if (window.gameState.powerUp.duration <= 0) {
+                        window.gameState.powerUp.active = false;
+                        document.getElementById('powerUp').classList.remove('active');
+                    }
+                }
+                
+                // Update enemies
+                window.gameState.enemies.forEach(enemy => enemy.update());
+                
+                // Update orbs
+                window.gameState.orbs = window.gameState.orbs.filter(orb => {
+                    orb.update();
+                    return !orb.collected;
+                });
+                
+                // Update particles
+                window.gameState.particles = window.gameState.particles.filter(particle => {
+                    particle.update();
+                    return particle.life > 0;
+                });
+                
+                // Spawn new orbs if all collected
+                if (window.gameState.orbs.length === 0) {
+                    for (let i = 0; i < 5; i++) {
+                        spawnOrb();
+                    }
+                }
+                
+                // Slowly regenerate light over time
+                window.gameState.lightLevel = Math.min(1.0, window.gameState.lightLevel + 0.0005);
+                
+                // Apply light boost power-up
+                if (window.gameState.powerUp.active) {
+                    window.gameState.lightLevel = Math.min(1.0, window.gameState.lightLevel + 0.01);
+                }
+                
+                updateUI();
+            }
+            
+            // Draw game
+            function draw() {
+                // Clear canvas
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw walls
+                window.gameState.walls.forEach(wall => wall.draw());
+                
+                // Draw darkness overlay
+                ctx.save();
+                ctx.globalCompositeOperation = 'source-over';
+                
+                // Calculate effective light radius with power-up
+                let effectiveLightRadius = window.gameState.player.lightRadius * window.gameState.lightLevel;
+                if (window.gameState.powerUp.active) {
+                    effectiveLightRadius *= 1.5;
+                }
+                
+                // Create radial gradient for player light
+                const gradient = ctx.createRadialGradient(
+                    window.gameState.player.x, window.gameState.player.y, 0,
+                    window.gameState.player.x, window.gameState.player.y, effectiveLightRadius
+                );
+                gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+                
+                // Draw darkness
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Apply global darkness based on light level
+                ctx.fillStyle = `rgba(0, 0, 0, ${1 - window.gameState.lightLevel})`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.restore();
+                
+                // Draw orbs
+                window.gameState.orbs.forEach(orb => orb.draw());
+                
+                // Draw enemies
+                window.gameState.enemies.forEach(enemy => enemy.draw());
+                
+                // Draw particles
+                window.gameState.particles.forEach(particle => particle.draw());
+                
+                // Draw player
+                ctx.save();
+                
+                // Draw player light
+                const playerGradient = ctx.createRadialGradient(
+                    window.gameState.player.x, window.gameState.player.y, 0,
+                    window.gameState.player.x, window.gameState.player.y, effectiveLightRadius
+                );
+                playerGradient.addColorStop(0, 'rgba(74, 158, 255, 0.3)');
+                playerGradient.addColorStop(1, 'rgba(74, 158, 255, 0)');
+                
+                ctx.beginPath();
+                ctx.arc(window.gameState.player.x, window.gameState.player.y, effectiveLightRadius, 0, Math.PI * 2);
+                ctx.fillStyle = playerGradient;
+                ctx.fill();
+                
+                // Draw player body with color that changes based on speed
+                const speedRatio = (window.gameState.player.speed - window.gameState.player.baseSpeed) / 3;
+                const blue = Math.min(255, 255 + speedRatio * 100);
+                const green = Math.max(0, 158 - speedRatio * 50);
+                const red = Math.max(0, 74 - speedRatio * 30);
+                
+                ctx.beginPath();
+                ctx.arc(window.gameState.player.x, window.gameState.player.y, window.gameState.player.radius, 0, Math.PI * 2);
+                ctx.fillStyle = window.gameState.player.isStealth ? '#2a5a9f' : `rgb(${red}, ${green}, ${blue})`;
+                ctx.fill();
+                
+                // Draw stealth indicator
+                if (window.gameState.player.isStealth) {
+                    ctx.strokeStyle = 'rgba(42, 90, 159, 0.5)';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+                
+                ctx.restore();
+            }
+            
+            // Game loop
+            function gameLoop() {
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            }
+            
+            // Update UI elements
+            function updateUI() {
+                document.getElementById('score').textContent = window.gameState.score;
+                document.getElementById('orbCount').textContent = window.gameState.orbs.length;
+                document.getElementById('highScoreValue').textContent = window.gameState.highScore;
+                document.getElementById('lightBar').style.width = `${window.gameState.lightLevel * 100}%`;
+                
+                // Update power-up UI
+                const powerUpElement = document.getElementById('powerUp');
+                if (window.gameState.powerUp.cooldown > 0) {
+                    powerUpElement.classList.add('cooldown');
+                } else {
+                    powerUpElement.classList.remove('cooldown');
+                }
+            }
+            
+            // Update statistics display
+            function updateStatsDisplay() {
+                document.getElementById('statGamesPlayed').textContent = window.gameState.stats.gamesPlayed;
+                document.getElementById('statTotalOrbs').textContent = window.gameState.stats.totalOrbs;
+                document.getElementById('statHighScore').textContent = window.gameState.stats.highScore;
+                
+                const avgScore = window.gameState.stats.gamesPlayed > 0 ? Math.round(window.gameState.stats.totalScore / window.gameState.stats.gamesPlayed) : 0;
+                document.getElementById('statAvgScore').textContent = avgScore;
+                
+                document.getElementById('statTotalTime').textContent = formatTime(window.gameState.stats.totalTime);
+                document.getElementById('statLongestTime').textContent = formatTime(window.gameState.stats.longestTime);
+                document.getElementById('statEnemiesAvoided').textContent = window.gameState.stats.enemiesAvoided;
+                document.getElementById('statTimesCaught').textContent = window.gameState.stats.timesCaught;
+                document.getElementById('statPowerUpsUsed').textContent = window.gameState.stats.powerUpsUsed;
+                document.getElementById('statStealthTime').textContent = formatTime(window.gameState.stats.stealthTime);
+            }
+            
+            // Format time for display
+            function formatTime(frames) {
+                const seconds = Math.floor(frames / 60);
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                
+                if (minutes > 0) {
+                    return `${minutes}m ${remainingSeconds}s`;
+                } else {
+                    return `${seconds}s`;
+                }
+            }
+            
+            // Save statistics to localStorage
+            function saveStats() {
+                localStorage.setItem('statGamesPlayed', window.gameState.stats.gamesPlayed);
+                localStorage.setItem('statTotalOrbs', window.gameState.stats.totalOrbs);
+                localStorage.setItem('shadowCollectorHighScore', window.gameState.stats.highScore);
+                localStorage.setItem('statTotalScore', window.gameState.stats.totalScore);
+                localStorage.setItem('statTotalTime', window.gameState.stats.totalTime);
+                localStorage.setItem('statLongestTime', window.gameState.stats.longestTime);
+                localStorage.setItem('statEnemiesAvoided', window.gameState.stats.enemiesAvoided);
+                localStorage.setItem('statTimesCaught', window.gameState.stats.timesCaught);
+                localStorage.setItem('statPowerUpsUsed', window.gameState.stats.powerUpsUsed);
+                localStorage.setItem('statStealthTime', window.gameState.stats.stealthTime);
+            }
+            
+            // Game over
+            function gameOver() {
+                console.log('Game over!');
+                window.gameState.running = false;
+                
+                // Update statistics
+                window.gameState.stats.gamesPlayed++;
+                window.gameState.stats.totalScore += window.gameState.score;
+                window.gameState.stats.totalTime += window.gameState.stats.currentGameTime;
+                window.gameState.stats.enemiesAvoided += window.gameState.stats.currentEnemiesAvoided;
+                window.gameState.stats.timesCaught++;
+                window.gameState.stats.stealthTime += window.gameState.stats.currentStealthTime;
+                
+                if (window.gameState.stats.currentGameTime > window.gameState.stats.longestTime) {
+                    window.gameState.stats.longestTime = window.gameState.stats.currentGameTime;
+                }
+                
+                // Check if new high score
+                const isNewHighScore = window.gameState.score > window.gameState.highScore;
+                if (isNewHighScore) {
+                    window.gameState.highScore = window.gameState.score;
+                    window.gameState.stats.highScore = window.gameState.score;
+                    document.getElementById('newHighScore').classList.remove('hidden');
+                } else {
+                    document.getElementById('newHighScore').classList.add('hidden');
+                }
+                
+                // Save statistics
+                saveStats();
+                
+                document.getElementById('finalScore').textContent = window.gameState.score;
+                document.getElementById('gameOverScreen').classList.remove('hidden');
+            }
+            
+            // Start game
+            function startGame() {
+                console.log('Starting game...');
+                init();
+                window.gameState.running = true;
+                window.gameState.paused = false;
+                document.getElementById('startScreen').classList.add('hidden');
+                document.getElementById('gameOverScreen').classList.add('hidden');
+                document.getElementById('pauseScreen').classList.add('hidden');
+                document.getElementById('statsScreen').classList.add('hidden');
+            }
+            
+            // Pause game
+            function pauseGame() {
+                if (window.gameState.running) {
+                    window.gameState.paused = true;
+                    document.getElementById('pauseScreen').classList.remove('hidden');
+                }
+            }
+            
+            // Resume game
+            function resumeGame() {
+                if (window.gameState.running) {
+                    window.gameState.paused = false;
+                    document.getElementById('pauseScreen').classList.add('hidden');
+                }
+            }
+            
+            // Show statistics
+            function showStats() {
+                updateStatsDisplay();
+                document.getElementById('statsScreen').classList.remove('hidden');
+            }
+            
+            // Hide statistics
+            function hideStats() {
+                document.getElementById('statsScreen').classList.add('hidden');
+            }
+            
+            // Reset statistics
+            function resetStats() {
+                if (confirm('Are you sure you want to reset all statistics? This cannot be undone.')) {
+                    window.gameState.stats = {
+                        gamesPlayed: 0,
+                        totalOrbs: 0,
+                        highScore: 0,
+                        totalScore: 0,
+                        totalTime: 0,
+                        longestTime: 0,
+                        enemiesAvoided: 0,
+                        timesCaught: 0,
+                        powerUpsUsed: 0,
+                        stealthTime: 0,
+                        currentGameTime: 0,
+                        currentStealthTime: 0,
+                        currentEnemiesAvoided: 0
+                    };
+                    
+                    window.gameState.highScore = 0;
+                    saveStats();
+                    updateStatsDisplay();
+                    updateUI();
+                    
+                    // Update menu high score
+                    document.getElementById('menuHighScore').textContent = 0;
+                }
+            }
+            
+            // Event listeners
+            document.addEventListener('keydown', (e) => {
+                keys[e.key] = true;
+                
+                // Toggle stealth
+                if (e.key === 'Shift') {
+                    window.gameState.player.isStealth = true;
+                }
+                
+                // Pause game with Escape key
+                if (e.key === 'Escape' && window.gameState.running && !window.gameState.paused) {
+                    pauseGame();
+                } else if (e.key === 'Escape' && window.gameState.running && window.gameState.paused) {
+                    resumeGame();
+                }
+            });
+            
+            document.addEventListener('keyup', (e) => {
+                keys[e.key] = false;
+                
+                // Toggle stealth
+                if (e.key === 'Shift') {
+                    window.gameState.player.isStealth = false;
+                }
+            });
+            
+            // Touch controls for mobile
+            const joystickContainer = document.querySelector('.joystick-container');
+            const joystick = document.querySelector('.joystick');
+            const stealthButton = document.getElementById('stealthButton');
+            
+            // Joystick controls
+            joystickContainer.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                touch.joystick.active = true;
+                updateJoystick(e.touches[0]);
+            });
+            
+            joystickContainer.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (touch.joystick.active) {
+                    updateJoystick(e.touches[0]);
+                }
+            });
+            
+            joystickContainer.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                touch.joystick.active = false;
+                joystick.style.transform = 'translate(0, 0)';
+            });
+            
+            function updateJoystick(touch) {
+                const rect = joystickContainer.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                let deltaX = touch.clientX - centerX;
+                let deltaY = touch.clientY - centerY;
+                
+                // Calculate distance from center
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                const maxDistance = rect.width / 2 - joystick.width / 2;
+                
+                // Limit joystick movement
+                if (distance > maxDistance) {
+                    deltaX = (deltaX / distance) * maxDistance;
+                    deltaY = (deltaY / distance) * maxDistance;
+                }
+                
+                // Update joystick position
+                joystick.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                
+                // Update normalized direction
+                touch.joystick.x = deltaX / maxDistance;
+                touch.joystick.y = deltaY / maxDistance;
+            }
+            
+            // Stealth button
+            stealthButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                window.gameState.player.isStealth = true;
+                stealthButton.classList.add('active');
+            });
+            
+            stealthButton.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                window.gameState.player.isStealth = false;
+                stealthButton.classList.remove('active');
+            });
+            
+            // Power-up button
+            document.getElementById('powerUp').addEventListener('click', () => {
+                if (window.gameState.powerUp.cooldown === 0) {
+                    window.gameState.powerUp.active = true;
+                    window.gameState.powerUp.duration = 300;
+                    window.gameState.powerUp.cooldown = 600;
+                    document.getElementById('powerUp').classList.add('active');
+                    
+                    // Track power-up usage
+                    window.gameState.stats.powerUpsUsed++;
+                    
+                    // Create power-up activation effect
+                    for (let i = 0; i < 20; i++) {
+                        window.gameState.particles.push(new Particle(window.gameState.player.x, window.gameState.player.y, '#ffffff'));
+                    }
+                }
+            });
+            
+            // Button event listeners
+            document.getElementById('startButton').addEventListener('click', startGame);
+            document.getElementById('statsMenuButton').addEventListener('click', showStats);
+            document.getElementById('resumeButton').addEventListener('click', resumeGame);
+            document.getElementById('restartButton').addEventListener('click', startGame);
+            document.getElementById('playAgainButton').addEventListener('click', startGame);
+            document.getElementById('statsPauseButton').addEventListener('click', showStats);
+            document.getElementById('statsGameOverButton').addEventListener('click', showStats);
+            document.getElementById('closeStatsButton').addEventListener('click', hideStats);
+            document.getElementById('resetStatsButton').addEventListener('click', resetStats);
+            document.getElementById('pauseButton').addEventListener('click', pauseGame);
+            document.getElementById('statsButton').addEventListener('click', showStats);
+            
+            // Initialize high score display
+            document.getElementById('menuHighScore').textContent = window.gameState.highScore;
+            
+            // Detect mobile device
+            function isMobileDevice() {
+                return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+            }
+            
+            // Show mobile controls if on mobile
+            if (isMobileDevice()) {
+                document.getElementById('mobileControls').style.display = 'block';
+                document.getElementById('stealthButton').style.display = 'flex';
+            }
+            
+            // Start game loop
+            gameLoop();
+            
+            console.log('Game setup complete!');
+        }); 
