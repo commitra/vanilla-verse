@@ -326,5 +326,13 @@
     "category": "Game",
     "categoryKey": "game",
     "difficulty": "Intermediate"
-  }
+  },
+  {
+  "title": "JSON Formatter & Validator",
+  "slug": "json-formatter",
+  "description": "A JavaScript JSON Formatter and Validator with tree view, syntax highlighting, schema-free validation helpers, and export/import features.",
+  "category": "Tool",
+  "categoryKey": "tool",
+  "difficulty": "Intermediate"
+}
 ]
