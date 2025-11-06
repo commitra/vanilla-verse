@@ -63,7 +63,7 @@ function renderContributors(list) {
           <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" class="link" style="color:inherit;text-decoration:none;">
             <span>${username}</span>
           </a>
-          <span class="badge" aria-hidden="true">${githubIconSVG()}<span style="margin-left:6px">${contributions}</span></span>
+
         </div>
         <div class="username">@${username}</div>
       </div>
