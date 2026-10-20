@@ -156,5 +156,14 @@ window.addEventListener('storage', (e) => {
 
 // keyboard: quick add focus
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'n') { input.focus(); }
+    // Ignore shortcuts with modifier keys.
+    if (e.ctrlKey || e.altKey || e.metaKey || e.shiftKey) return;
+
+    // Ignore typing inside editable elements.
+    if (e.target.matches('input, textarea, select, [contenteditable="true"]')) return;
+
+    if (e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        input.focus();
+    }
 });
